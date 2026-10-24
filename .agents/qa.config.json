@@ -1,0 +1,10 @@
+{
+  "project": { "name": "my-app", "environments": ["dev", "staging"], "defaultEnv": "staging", "protectedHosts": ["www.example.com"] },
+  "framework": { "root": ".", "playwrightVersion": "1.64.1", "testIdAttribute": "data-testid", "fixturesImport": "@fixtures",
+                 "pagesDir": "src/pages", "modulesDir": "src/modules", "priorityTags": ["@P0", "@P1", "@P2"], "suiteTags": ["@smoke", "@regression"] },
+  "requirements": { "adapter": "files", "mcpServer": null, "acceptanceCriteriaField": null },
+  "knowledge": { "mcpServer": null, "minScore": 0.75,
+                 "collections": { "plans": "test-plans", "cases": "test-cases", "patterns": "patterns", "rca": "rca" } },
+  "ci": { "platform": "github-actions" },
+  "gates": { "fileDefects": "ask", "knowledgeWrite": "ask", "dashboardPush": "ask", "securityScan": "ask", "updateBaselines": "ask", "riskAcceptance": "ask" }
+}

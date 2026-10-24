@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": ["Bash(npm run verify)", "Bash(npx playwright test *)", "Bash(npx playwright show-report *)", "Bash(npx playwright show-trace *)",
+              "Bash(npx eslint *)", "Bash(git diff *)", "Bash(git status *)", "Bash(git log *)"],
+    "ask": ["Bash(npx playwright test *--update-snapshots*)", "Bash(git push *)", "Bash(npm install *)", "Bash(docker run *zaproxy*)", "Bash(k6 run *)"],
+    "deny": ["Read(./.env)", "Read(./**/.env*)", "Read(./**/playwright/.auth/**)"]
+  },
+  "hooks": {
+    "PostToolUse": [{ "matcher": "Edit|Write|MultiEdit", "hooks": [{ "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/governance-check.sh" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-gate.sh" }] }]
+  }
+}

@@ -1,0 +1,1535 @@
+{
+  "generatedBy": "scripts/build-skill-manifest.mjs",
+  "pack": "enterprise-playwright-ai-skill-pack",
+  "skillsDir": ".agents/skills",
+  "count": 47,
+  "tiers": {
+    "1": 6,
+    "2": 6,
+    "3": 29,
+    "4": 6
+  },
+  "skills": [
+    {
+      "folder": "accessibility-testing",
+      "path": ".agents/skills/accessibility-testing/SKILL.md",
+      "name": "accessibility-testing",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "WCAG accessibility validation with Playwright: automated axe-core scans scoped to WCAG 2.2 A and AA, keyboard navigation and focus order tests, accessible-name checks with aria snapshots, and reporting of violations with impact and remediation. Use whenever the user asks for accessibility, a11y or WCAG tests, keyboard-only navigation checks, screen reader or ARIA checks, focus management, colour contrast or an accessibility audit of a page. Not for visual regression (visual-testing) or general functional tests (playwright-test-generation).",
+      "useWhen": "the user asks for accessibility, a11y or WCAG tests, keyboard-only navigation checks, screen reader or ARIA checks, focus management, colour contrast or an accessibility audit of a page.",
+      "notFor": "visual regression (visual-testing) or general functional tests (playwright-test-generation).",
+      "notForSkills": [
+        "playwright-test-generation",
+        "visual-testing"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "agent-telemetry",
+      "path": ".agents/skills/agent-telemetry/SKILL.md",
+      "name": "agent-telemetry",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Observability for the pack's own agent runs (not the system under test): emit OpenTelemetry spans for each orchestration step, skill and tool call, trace the agent's LLM calls (model, latency, tokens, cost, routing decision, outcome) in a Langfuse-style view, record verify/gate results and evidence links, and expose Prometheus metrics for run duration, pass rate, cost and gate blocks. Use whenever the user asks to observe, trace, debug, measure or audit the agent itself — why a skill was chosen, how long a run took, token/cost tracking, LLM-call tracing, or a dashboard of agent behaviour. Not for observing the application under test (observability-monitoring), test result reporting (reporting-analytics), or test-flakiness (regression-optimization). Telemetry records process and decisions with redaction; it never stores secrets, credentials or target data.",
+      "useWhen": "the user asks to observe, trace, debug, measure or audit the agent itself — why a skill was chosen, how long a run took, token/cost tracking, LLM-call tracing, or a dashboard of agent behaviour.",
+      "notFor": "observing the application under test (observability-monitoring), test result reporting (reporting-analytics), or test-flakiness (regression-optimization). Telemetry records process and decisions with redaction; it never stores secrets, credentials or target data.",
+      "notForSkills": [
+        "observability-monitoring",
+        "regression-optimization",
+        "reporting-analytics"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "What to emit",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "api-security-review",
+      "path": ".agents/skills/api-security-review/SKILL.md",
+      "name": "api-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "API-layer security checks with Playwright's request API, aligned to the OWASP API Security Top 10, for services the team owns and may test: object- and function-level authorisation (BOLA / BFLA), unrestricted resource consumption (rate limits), mass assignment, excessive data exposure, security misconfiguration, and token handling at the endpoint. Use whenever the user asks for an API security assessment, OWASP API Top 10 checks, BOLA/IDOR at the API, broken function-level authorisation, API rate-limit or mass-assignment checks, or a \"Playwright API security tester\". Not for UI/browser auth flows (auth-access-control-review), API contracts and schemas (api-testing), or JWT internals (jwt-validation-review). Asserts API controls hold; it does not exploit them or exfiltrate data.",
+      "useWhen": "the user asks for an API security assessment, OWASP API Top 10 checks, BOLA/IDOR at the API, broken function-level authorisation, API rate-limit or mass-assignment checks, or a \"Playwright API security tester\".",
+      "notFor": "UI/browser auth flows (auth-access-control-review), API contracts and schemas (api-testing), or JWT internals (jwt-validation-review). Asserts API controls hold; it does not exploit them or exfiltrate data.",
+      "notForSkills": [
+        "api-testing",
+        "auth-access-control-review",
+        "jwt-validation-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map (OWASP API Top 10)",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "api-testing",
+      "path": ".agents/skills/api-testing/SKILL.md",
+      "name": "api-testing",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "API, contract and schema validation testing with Playwright's request API: per-role API contexts, status-before-body assertions, Zod schema validation, negative and authorisation cases, and API-based setup for UI tests. Use whenever the user asks to test REST or HTTP endpoints, validate responses or schemas, check contracts between services, test API authentication or permissions at the endpoint level, or convert RestAssured, requests or Robot RequestsLibrary tests. Not for load testing (performance-testing), OWASP attack patterns (api-security-review) or UI flows (playwright-test-generation).",
+      "useWhen": "the user asks to test REST or HTTP endpoints, validate responses or schemas, check contracts between services, test API authentication or permissions at the endpoint level, or convert RestAssured, requests or Robot RequestsLibrary tests.",
+      "notFor": "load testing (performance-testing), OWASP attack patterns (api-security-review) or UI flows (playwright-test-generation).",
+      "notForSkills": [
+        "api-security-review",
+        "performance-testing",
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Fixture",
+        "Spec template",
+        "Coverage per endpoint",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "auth-access-control-review",
+      "path": ".agents/skills/auth-access-control-review/SKILL.md",
+      "name": "auth-access-control-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Authentication, authorisation and session security checks with Playwright, for applications the team owns and may test: access control and IDOR (403/404), privilege-escalation prevention, session and cookie flags, login rate limiting and lockout, logout invalidation, session renewal on login, token-leakage checks, and password-reset non-enumeration. Covers OWASP A01 and A07. Use whenever the user asks for auth tests, authorisation or permission checks, role-based access tests, IDOR, session or cookie security, MFA enforcement, brute-force protection, or a \"Playwright auth/session security tester\". Not for injection (injection-handling-review), headers and CORS (security-headers-review), or endpoint schemas (api-testing). This asserts controls hold; it does not brute-force credentials or bypass authentication.",
+      "useWhen": "the user asks for auth tests, authorisation or permission checks, role-based access tests, IDOR, session or cookie security, MFA enforcement, brute-force protection, or a \"Playwright auth/session security tester\".",
+      "notFor": "injection (injection-handling-review), headers and CORS (security-headers-review), or endpoint schemas (api-testing). This asserts controls hold; it does not brute-force credentials or bypass authentication.",
+      "notForSkills": [
+        "api-testing",
+        "injection-handling-review",
+        "security-headers-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "aws-security-review",
+      "path": ".agents/skills/aws-security-review/SKILL.md",
+      "name": "aws-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Read-only AWS security posture review for accounts the team owns and is authorised to assess: IAM least-privilege and MFA, public S3 and unencrypted storage, security-group exposure, CloudTrail/Config logging, KMS and secrets handling, and public database access, evaluated against the CIS AWS Benchmark and AWS best practice using read-only tooling (Prowler, ScoutSuite, or `aws` describe/get calls). Use whenever the user asks for an AWS security review or assessment, IAM review, S3 exposure check, CIS AWS benchmarking, or cloud misconfiguration findings on AWS. Not for Azure (azure-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
+      "useWhen": "the user asks for an AWS security review or assessment, IAM review, S3 exposure check, CIS AWS benchmarking, or cloud misconfiguration findings on AWS.",
+      "notFor": "Azure (azure-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
+      "notForSkills": [
+        "azure-security-review",
+        "kubernetes-security-audit",
+        "web-app-security-assessment"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Review areas (CIS AWS-aligned)",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "azure-security-review",
+      "path": ".agents/skills/azure-security-review/SKILL.md",
+      "name": "azure-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Read-only Azure security posture review for subscriptions the team owns and is authorised to assess: Entra ID and RBAC least privilege, public storage accounts and encryption, network security group exposure, Key Vault and secrets handling, diagnostic/activity logging, and Microsoft Defender for Cloud coverage, evaluated against the CIS Azure Benchmark using read-only tooling (Defender for Cloud, ScoutSuite/Prowler, `az` show/list). Use whenever the user asks for an Azure security review or assessment, Entra ID/RBAC review, storage exposure check, NSG review, CIS Azure benchmarking, or Azure misconfiguration findings. Not for AWS (aws-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
+      "useWhen": "the user asks for an Azure security review or assessment, Entra ID/RBAC review, storage exposure check, NSG review, CIS Azure benchmarking, or Azure misconfiguration findings.",
+      "notFor": "AWS (aws-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
+      "notForSkills": [
+        "aws-security-review",
+        "kubernetes-security-audit",
+        "web-app-security-assessment"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Review areas (CIS Azure-aligned)",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "ci-cd-pipeline-config",
+      "path": ".agents/skills/ci-cd-pipeline-config/SKILL.md",
+      "name": "ci-cd-pipeline-config",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Creates and maintains CI/CD pipelines that run the Playwright suite and the wider quality layers on GitHub Actions, GitLab CI, Azure DevOps or Jenkins: stage ordering, sharding with blob report merging, the pinned Playwright container image, caching, secrets, artifacts, scheduled performance and security jobs, and quality gates. Use whenever the user asks to add, fix, speed up or review a pipeline, run tests in CI, shard tests, publish reports, or schedule nightly or cloud-grid runs. Not for making the tests themselves faster or less flaky (regression-optimization).",
+      "useWhen": "the user asks to add, fix, speed up or review a pipeline, run tests in CI, shard tests, publish reports, or schedule nightly or cloud-grid runs.",
+      "notFor": "making the tests themselves faster or less flaky (regression-optimization).",
+      "notForSkills": [
+        "regression-optimization"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Stage order",
+        "GitHub Actions skeleton",
+        "Platform notes",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "ci-cd-security-validation",
+      "path": ".agents/skills/ci-cd-security-validation/SKILL.md",
+      "name": "ci-cd-security-validation",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Secures the CI/CD pipeline itself for repositories the team owns: least-privilege workflow tokens, third-party actions pinned to commit SHAs, secrets only from the secret store, required security gates (SAST, dependency audit, secret scan) wired into stages, artifact/build provenance, and protection of the release path. Covers OWASP A08 (software & data integrity) for the delivery pipeline. Use whenever the user asks to secure or audit a pipeline, harden GitHub Actions / GitLab CI / Azure DevOps / Jenkins, review workflow permissions, pin actions, add security gates to CI, or protect the build/supply chain. Not for building the functional pipeline (ci-cd-pipeline-config) or scanning app dependencies in isolation (dependency-vulnerability-audit). It hardens pipeline configuration; it does not attack build systems.",
+      "useWhen": "the user asks to secure or audit a pipeline, harden GitHub Actions / GitLab CI / Azure DevOps / Jenkins, review workflow permissions, pin actions, add security gates to CI, or protect the build/supply chain.",
+      "notFor": "building the functional pipeline (ci-cd-pipeline-config) or scanning app dependencies in isolation (dependency-vulnerability-audit). It hardens pipeline configuration; it does not attack build systems.",
+      "notForSkills": [
+        "ci-cd-pipeline-config",
+        "dependency-vulnerability-audit"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Hardening checklist",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "cloud-security-review",
+      "path": ".agents/skills/cloud-security-review/SKILL.md",
+      "name": "cloud-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Cloud-agnostic, read-only security posture review for cloud accounts the team owns and is authorised to assess, framed by the shared-responsibility model and CIS benchmarks: identity and least privilege, public storage and encryption, network exposure, logging and monitoring, secrets and key management. Routes provider specifics to aws-security-review and azure-security-review. Use whenever the user asks for a cloud security assessment or review, cloud misconfiguration findings, shared-responsibility or CIS cloud benchmarking, or multi-cloud posture — without naming a single provider, or across more than one. Not for a single provider's deep review (see aws-security-review / azure-security-review), Kubernetes (kubernetes-security-audit), containers (docker-security-review), or risk posture across every source (security-posture-management). Reviews configuration read-only; it changes and exploits nothing.",
+      "useWhen": "the user asks for a cloud security assessment or review, cloud misconfiguration findings, shared-responsibility or CIS cloud benchmarking, or multi-cloud posture — without naming a single provider, or across more than one.",
+      "notFor": "a single provider's deep review (see aws-security-review / azure-security-review), Kubernetes (kubernetes-security-audit), containers (docker-security-review), or risk posture across every source (security-posture-management). Reviews configuration read-only; it changes and exploits nothing.",
+      "notForSkills": [
+        "aws-security-review",
+        "azure-security-review",
+        "docker-security-review",
+        "kubernetes-security-audit",
+        "security-posture-management"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Provider routing",
+        "Domain checklist (provider-independent)",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "csrf-protection-review",
+      "path": ".agents/skills/csrf-protection-review/SKILL.md",
+      "name": "csrf-protection-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Cross-site request forgery protection checks with Playwright, for applications the team owns and may test: assert that state-changing requests require a valid anti-CSRF token, that a missing or wrong token is rejected, that session cookies use SameSite, and that unsafe methods reject cross-origin/forged requests. Covers the CSRF part of OWASP A01/A05. Use whenever the user asks for CSRF testing or analysis, anti-CSRF token checks, SameSite cookie checks, or state-changing request protection. Not for read-side access control (auth-access-control-review), header hygiene in general (security-headers-review), or server-side URL fetching (ssrf-defence-review). This asserts protections are enforced; it does not build a working CSRF attack against a victim.",
+      "useWhen": "the user asks for CSRF testing or analysis, anti-CSRF token checks, SameSite cookie checks, or state-changing request protection.",
+      "notFor": "read-side access control (auth-access-control-review), header hygiene in general (security-headers-review), or server-side URL fetching (ssrf-defence-review). This asserts protections are enforced; it does not build a working CSRF attack against a victim.",
+      "notForSkills": [
+        "auth-access-control-review",
+        "security-headers-review",
+        "ssrf-defence-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "deepeval",
+      "path": ".agents/skills/deepeval/SKILL.md",
+      "name": "deepeval",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Evaluates the quality of the AI outputs the pack produces, using the open-source DeepEval framework (\"Pytest for LLMs\"): scores generated tests, migration conversions, defect analyses, reports and the orchestrator's skill-routing with LLM-as-judge (G-Eval), RAG, tool-use and task-completion metrics, against golden datasets, and gates regressions in CI. Use whenever the user asks to evaluate or regression-test AI/LLM output quality, score generated tests or migrations or reports, check RAG faithfulness or answer relevancy, verify tool/routing correctness, build an eval dataset of goldens, or add an LLM-quality gate to CI. Not for static skill-set checks — frontmatter, overlap, routing coverage (skill-evaluation) — or runtime telemetry of agent runs (agent-telemetry); DeepEval scores whether the outputs are good, which those two do not. Runs locally; a provider key is needed only for LLM-judge metrics.",
+      "useWhen": "the user asks to evaluate or regression-test AI/LLM output quality, score generated tests or migrations or reports, check RAG faithfulness or answer relevancy, verify tool/routing correctness, build an eval dataset of goldens, or add an LLM-quality gate to CI.",
+      "notFor": "static skill-set checks — frontmatter, overlap, routing coverage (skill-evaluation) — or runtime telemetry of agent runs (agent-telemetry); DeepEval scores whether the outputs are good, which those two do not. Runs locally; a provider key is needed only for LLM-judge metrics.",
+      "notForSkills": [
+        "agent-telemetry",
+        "skill-evaluation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "What to evaluate (pack output → metric)",
+        "Eval modes (match the scope)",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "defect-analysis",
+      "path": ".agents/skills/defect-analysis/SKILL.md",
+      "name": "defect-analysis",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Root cause analysis for failing Playwright tests from traces, logs, screenshots, videos and reports: reproduces the failure, reads the trace and error context, classifies it into one cause with evidence, checks for flakiness, and drafts a deduplicated defect when it's a product bug. Use whenever a test fails or is red in CI, the user shares a trace, report, screenshot or error, asks why a test failed, or wants a bug report written from a failure. Not for suite-wide flakiness programmes (regression-optimization) or performance budget breaches without a failure (performance-testing).",
+      "useWhen": "a test fails or is red in CI, the user shares a trace, report, screenshot or error, asks why a test failed, or wants a bug report written from a failure.",
+      "notFor": "suite-wide flakiness programmes (regression-optimization) or performance budget breaches without a failure (performance-testing).",
+      "notForSkills": [
+        "performance-testing",
+        "regression-optimization"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Evidence to read",
+        "Classes",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "dependency-vulnerability-audit",
+      "path": ".agents/skills/dependency-vulnerability-audit/SKILL.md",
+      "name": "dependency-vulnerability-audit",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Software-composition analysis for the project's dependencies, for code the team owns: finds known vulnerabilities with npm audit / OSV-Scanner (and pip-audit, etc. by ecosystem), generates a CycloneDX SBOM, triages advisories by severity and reachability, sets a fail-the-build threshold, and produces upgrade/remediation guidance. Covers OWASP A06 and the components side of A08. Use whenever the user asks to audit dependencies, scan for CVEs or vulnerable packages, generate an SBOM, or add a dependency-security gate to CI. Not for the team's own code patterns (secure-code-review), hard-coded secrets (secrets-detection), container base-image scanning (docker-security-review), or the cross-scanner CVE lifecycle, vendor SBOMs and compliance evidence (security-posture-management). Reports known advisories; it does not exploit them.",
+      "useWhen": "the user asks to audit dependencies, scan for CVEs or vulnerable packages, generate an SBOM, or add a dependency-security gate to CI.",
+      "notFor": "the team's own code patterns (secure-code-review), hard-coded secrets (secrets-detection), container base-image scanning (docker-security-review), or the cross-scanner CVE lifecycle, vendor SBOMs and compliance evidence (security-posture-management). Reports known advisories; it does not exploit them.",
+      "notForSkills": [
+        "docker-security-review",
+        "secrets-detection",
+        "secure-code-review",
+        "security-posture-management"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Workflow",
+        "Templates",
+        "Triage",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "docker-security-review",
+      "path": ".agents/skills/docker-security-review/SKILL.md",
+      "name": "docker-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Container image and Dockerfile security review for images the team owns: non-root user, minimal and pinned base images, no secrets baked into layers, reduced attack surface, healthchecks, and known-vulnerability scanning of the image, evaluated against the CIS Docker Benchmark and image best practice with tooling (Trivy/Grype, hadolint, Dockle). Use whenever the user asks for a Docker or container image security assessment, Dockerfile review or linting, base-image or non-root hardening, image vulnerability scanning, or CIS Docker benchmarking. Not for the orchestrator (kubernetes-security-audit), app dependencies in source (dependency-vulnerability-audit), cloud registries' IAM (cloud-security-review), or the cross-scanner CVE lifecycle (security-posture-management). It reviews build config and scans images; it does not attack running containers.",
+      "useWhen": "the user asks for a Docker or container image security assessment, Dockerfile review or linting, base-image or non-root hardening, image vulnerability scanning, or CIS Docker benchmarking.",
+      "notFor": "the orchestrator (kubernetes-security-audit), app dependencies in source (dependency-vulnerability-audit), cloud registries' IAM (cloud-security-review), or the cross-scanner CVE lifecycle (security-posture-management). It reviews build config and scans images; it does not attack running containers.",
+      "notForSkills": [
+        "cloud-security-review",
+        "dependency-vulnerability-audit",
+        "kubernetes-security-audit",
+        "security-posture-management"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Review areas (CIS Docker-aligned)",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "file-upload-security-review",
+      "path": ".agents/skills/file-upload-security-review/SKILL.md",
+      "name": "file-upload-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "File-upload handling checks with Playwright, for applications the team owns and may test: assert that upload endpoints reject disallowed types and spoofed content-types, enforce size limits, strip or reject path-traversal filenames, store files outside the web root / non-executable, and never return executable content. Covers OWASP A05 and the upload side of A03. Use whenever the user asks for file-upload security testing or review, malicious-upload handling, content-type or extension validation, or avatar/document/attachment upload checks. Not for other injection (injection-handling-review), stored XSS in rendered content (xss-output-encoding-review), or storage IAM (cloud-security-review). This asserts dangerous uploads are rejected; it uses benign marker files and never creates a web shell or executable payload.",
+      "useWhen": "the user asks for file-upload security testing or review, malicious-upload handling, content-type or extension validation, or avatar/document/attachment upload checks.",
+      "notFor": "other injection (injection-handling-review), stored XSS in rendered content (xss-output-encoding-review), or storage IAM (cloud-security-review). This asserts dangerous uploads are rejected; it uses benign marker files and never creates a web shell or executable payload.",
+      "notForSkills": [
+        "cloud-security-review",
+        "injection-handling-review",
+        "xss-output-encoding-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "framework-governance",
+      "path": ".agents/skills/framework-governance/SKILL.md",
+      "name": "framework-governance",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Enterprise architecture governance for a Playwright TypeScript framework: enforces no XPath, no waitForTimeout, no duplicate page objects, no hard-coded test data and dependency injection through fixtures, using ESLint, dependency rules, a governance script, Claude Code hooks and review checklists, with a waiver process. Use whenever the user asks to set up, audit, enforce or review framework standards, coding rules, lint rules, architecture boundaries, or whether changes follow the framework conventions, and before reporting any test-code change as done. Not for writing new tests (playwright-test-generation).",
+      "useWhen": "the user asks to set up, audit, enforce or review framework standards, coding rules, lint rules, architecture boundaries, or whether changes follow the framework conventions, and before reporting any test-code change as done.",
+      "notFor": "writing new tests (playwright-test-generation).",
+      "notForSkills": [
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Rules and enforcement",
+        "ESLint core (flat config)",
+        "Verify script",
+        "Claude Code hooks (`.claude/settings.json`)",
+        "Waivers",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "injection-handling-review",
+      "path": ".agents/skills/injection-handling-review/SKILL.md",
+      "name": "injection-handling-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "SQL, NoSQL, OS-command and path-traversal handling checks with Playwright, for applications the team owns and may test: feed a small, non-destructive marker set to inputs and assert the application handles it safely (no 5xx, no database or stack-trace text, no path escape) rather than returning an exploitable response. Covers OWASP A03 (injection, excluding XSS). Use whenever the user asks for SQL injection testing, injection handling, command-injection or path-traversal checks, or \"does input get sanitised\". Not for XSS (xss-output-encoding-review), SSRF (ssrf-defence-review), or source-level review (secure-code-review). This proves safe handling; it does not extract data, exploit a database, or run commands.",
+      "useWhen": "the user asks for SQL injection testing, injection handling, command-injection or path-traversal checks, or \"does input get sanitised\".",
+      "notFor": "XSS (xss-output-encoding-review), SSRF (ssrf-defence-review), or source-level review (secure-code-review). This proves safe handling; it does not extract data, exploit a database, or run commands.",
+      "notForSkills": [
+        "secure-code-review",
+        "ssrf-defence-review",
+        "xss-output-encoding-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Marker set and expectations",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "jwt-validation-review",
+      "path": ".agents/skills/jwt-validation-review/SKILL.md",
+      "name": "jwt-validation-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "JSON Web Token validation checks with Playwright, for applications the team owns and may test: assert the server rejects `alg:none`, tampered signatures, expired or not-yet-valid tokens, and wrong `aud`/`iss`, that algorithms are not confusable (RS↔HS), and that tokens never appear in URLs, logs or client storage. Covers OWASP A02/A07. Use whenever the user asks for JWT security analysis, token validation checks, `alg:none` or signature-tampering handling, token expiry/claims checks, or JWT leakage review. Not for login flows and sessions (auth-access-control-review) or endpoint authorisation in general (api-security-review). This asserts the server rejects manipulated tokens; it does not forge a valid token or bypass auth.",
+      "useWhen": "the user asks for JWT security analysis, token validation checks, `alg:none` or signature-tampering handling, token expiry/claims checks, or JWT leakage review.",
+      "notFor": "login flows and sessions (auth-access-control-review) or endpoint authorisation in general (api-security-review). This asserts the server rejects manipulated tokens; it does not forge a valid token or bypass auth.",
+      "notForSkills": [
+        "api-security-review",
+        "auth-access-control-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "kubernetes-security-audit",
+      "path": ".agents/skills/kubernetes-security-audit/SKILL.md",
+      "name": "kubernetes-security-audit",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Read-only Kubernetes security audit for clusters and manifests the team owns: RBAC least privilege, Pod Security Standards (no privileged/root, dropped capabilities, read-only root FS), network policies, secrets handling, resource limits, and image provenance, evaluated against the CIS Kubernetes Benchmark and Pod Security Standards with read-only tooling (kube-bench, kubescape, Trivy, `kubectl get`). Use whenever the user asks for a Kubernetes or k8s security audit, manifest or RBAC review, Pod Security Standards/admission checks, network-policy review, or CIS Kubernetes benchmarking. Not for the container image build (docker-security-review), cloud control plane (cloud-security-review / aws / azure), or app-layer checks. It reviews manifests and read-only cluster state; it makes no changes and exploits nothing.",
+      "useWhen": "the user asks for a Kubernetes or k8s security audit, manifest or RBAC review, Pod Security Standards/admission checks, network-policy review, or CIS Kubernetes benchmarking.",
+      "notFor": "the container image build (docker-security-review), cloud control plane (cloud-security-review / aws / azure), or app-layer checks. It reviews manifests and read-only cluster state; it makes no changes and exploits nothing.",
+      "notForSkills": [
+        "cloud-security-review",
+        "docker-security-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Review areas",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "locator-strategy",
+      "path": ".agents/skills/locator-strategy/SKILL.md",
+      "name": "locator-strategy",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Centralised selector governance for Playwright: chooses, reviews and fixes locators using the priority getByRole, getByLabel, getByPlaceholder, getByText, getByTestId, with CSS only as a ticketed last resort and XPath forbidden. Converts legacy Selenium, Robot Framework or Cypress selectors, resolves strict-mode violations, and upgrades brittle locators against the live page. Use whenever the user asks which locator to use, why an element can't be found, how to fix a strict mode violation, how to replace XPath or CSS selectors, or to audit selectors. Not for page class structure (page-object-engineering) or diagnosing a whole failing run (defect-analysis).",
+      "useWhen": "the user asks which locator to use, why an element can't be found, how to fix a strict mode violation, how to replace XPath or CSS selectors, or to audit selectors.",
+      "notFor": "page class structure (page-object-engineering) or diagnosing a whole failing run (defect-analysis).",
+      "notForSkills": [
+        "defect-analysis",
+        "page-object-engineering"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Priority (in order)",
+        "Fixing problems",
+        "Converting legacy selectors",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "migration-analysis",
+      "path": ".agents/skills/migration-analysis/SKILL.md",
+      "name": "migration-analysis",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Plans and performs migration of Robot Framework, Selenium (Java, Python, C#, JavaScript), Cypress and TestNG suites to Playwright TypeScript: reads the legacy code without running it, builds a backlog with complexity and migration waves, converts tests by intent rather than syntax, and proves behaviour with a parity comparison against the legacy run. Use whenever the user wants to migrate, convert, port or assess a legacy UI test suite, estimate migration effort, plan waves, or compare legacy and Playwright results. Not for writing brand-new tests (playwright-test-generation).",
+      "useWhen": "the user wants to migrate, convert, port or assess a legacy UI test suite, estimate migration effort, plan waves, or compare legacy and Playwright results.",
+      "notFor": "writing brand-new tests (playwright-test-generation).",
+      "notForSkills": [
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Legacy ids",
+        "Procedure",
+        "Mapping",
+        "Robot Framework specifics",
+        "Selenium specifics",
+        "TestNG specifics",
+        "Maven and the Java toolchain",
+        "Cypress specifics",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "mobile-testing",
+      "path": ".agents/skills/mobile-testing/SKILL.md",
+      "name": "mobile-testing",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Mobile-web testing with Playwright device emulation, for applications the team owns: emulated iOS/Android viewports and user agents, touch and tap gestures, responsive layout and breakpoint checks, orientation, and optional real-device cloud grids. Use whenever the user asks to test mobile web, responsive design, touch interactions, small-screen layouts, device-specific rendering, or to run the suite on emulated phones and tablets. Not for native app automation (out of Playwright's scope — use a device framework), desktop visual diffs (visual-testing), or Core Web Vitals budgets (performance-testing).",
+      "useWhen": "the user asks to test mobile web, responsive design, touch interactions, small-screen layouts, device-specific rendering, or to run the suite on emulated phones and tablets.",
+      "notFor": "native app automation (out of Playwright's scope — use a device framework), desktop visual diffs (visual-testing), or Core Web Vitals budgets (performance-testing).",
+      "notForSkills": [
+        "performance-testing",
+        "visual-testing"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "network-security-review",
+      "path": ".agents/skills/network-security-review/SKILL.md",
+      "name": "network-security-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Network security architecture and configuration review for environments the team owns: trust zones and segmentation, firewall/security-group rules and ingress exposure, TLS configuration and certificate hygiene, management-plane access, and egress controls, assessed from configuration and documentation against best practice. Use whenever the user asks for a network security review, segmentation or firewall-rule review, TLS/certificate configuration checks, exposure or attack-surface review, or zero-trust network design feedback. Not for cloud account posture (cloud-security-review / aws / azure), Kubernetes network policies (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration and design; active scanning or probing of hosts is out of scope and, where permitted at all, stays gated and authorised.",
+      "useWhen": "the user asks for a network security review, segmentation or firewall-rule review, TLS/certificate configuration checks, exposure or attack-surface review, or zero-trust network design feedback.",
+      "notFor": "cloud account posture (cloud-security-review / aws / azure), Kubernetes network policies (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration and design; active scanning or probing of hosts is out of scope and, where permitted at all, stays gated and authorised.",
+      "notForSkills": [
+        "cloud-security-review",
+        "kubernetes-security-audit",
+        "web-app-security-assessment"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Review areas",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "observability-monitoring",
+      "path": ".agents/skills/observability-monitoring/SKILL.md",
+      "name": "observability-monitoring",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Observability validation and synthetic monitoring for services the team owns: assert that health and readiness endpoints behave, that structured logs, metrics (RED/USE) and OpenTelemetry traces are emitted for key flows, and stand up Playwright-based synthetic checks that run on a schedule against non-production (and, where authorised, production read-only) to catch regressions in availability and latency. Use whenever the user asks for observability, monitoring, synthetic checks, health/readiness probes, telemetry or trace validation, uptime checks, or dashboards and alert wiring. Not for in-browser Core Web Vitals (performance-testing), CI pipeline config (ci-cd-pipeline-config), or SLOs and error budgets (sre-reliability).",
+      "useWhen": "the user asks for observability, monitoring, synthetic checks, health/readiness probes, telemetry or trace validation, uptime checks, or dashboards and alert wiring.",
+      "notFor": "in-browser Core Web Vitals (performance-testing), CI pipeline config (ci-cd-pipeline-config), or SLOs and error budgets (sre-reliability).",
+      "notForSkills": [
+        "ci-cd-pipeline-config",
+        "performance-testing",
+        "sre-reliability"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "page-object-engineering",
+      "path": ".agents/skills/page-object-engineering/SKILL.md",
+      "name": "page-object-engineering",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Designs and maintains the page object architecture for a Playwright TypeScript framework: page classes that encapsulate locators and atomic actions, modules that hold business workflows, shared components, and the fixtures that inject them. Use whenever the user asks to create, refactor, split, merge or review page objects, page classes, components or modules, add locators to a page, or reduce duplication between pages. Not for choosing a specific selector (locator-strategy), writing the test itself (playwright-test-generation) or governance audits (framework-governance).",
+      "useWhen": "the user asks to create, refactor, split, merge or review page objects, page classes, components or modules, add locators to a page, or reduce duplication between pages.",
+      "notFor": "choosing a specific selector (locator-strategy), writing the test itself (playwright-test-generation) or governance audits (framework-governance).",
+      "notForSkills": [
+        "framework-governance",
+        "locator-strategy",
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Layer map",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "pentest-report-generator",
+      "path": ".agents/skills/pentest-report-generator/SKILL.md",
+      "name": "pentest-report-generator",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Turns classified security findings from the review skills into an enterprise security assessment report: executive summary, scope and authorisation, findings each with CVSS severity, evidence, impact and remediation, a prioritised roadmap, and a retest/closure section — written for mixed audiences and handled with restricted visibility. Use whenever the user asks to generate a penetration test or security assessment report, write up findings, produce an executive security summary, score findings with CVSS, or create a remediation plan. Not for finding the issues (web-app-security-assessment and the focused review skills), general dashboards (reporting-analytics), or tracking findings to closure (security-posture-management). Consolidates and communicates findings; it performs no testing.",
+      "useWhen": "the user asks to generate a penetration test or security assessment report, write up findings, produce an executive security summary, score findings with CVSS, or create a remediation plan.",
+      "notFor": "finding the issues (web-app-security-assessment and the focused review skills), general dashboards (reporting-analytics), or tracking findings to closure (security-posture-management). Consolidates and communicates findings; it performs no testing.",
+      "notForSkills": [
+        "reporting-analytics",
+        "security-posture-management",
+        "web-app-security-assessment"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Severity (CVSS)",
+        "Report template",
+        "Document control",
+        "1. Executive summary",
+        "2. Scope & methodology",
+        "3. Findings summary",
+        "4. Detailed findings  (repeat per finding)",
+        "5. Remediation roadmap",
+        "6. Retest / closure",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "performance-testing",
+      "path": ".agents/skills/performance-testing/SKILL.md",
+      "name": "performance-testing",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Core Web Vitals and UI performance validation with Playwright: LCP, CLS, INP and TTFB in the browser, Chromium DevTools Protocol metrics, network and CPU throttling, performance budgets as assertions, and k6 load scripts with thresholds for the APIs behind the UI. Use whenever the user asks about page speed, Core Web Vitals, performance budgets, slow pages, load or stress testing, latency SLAs, throughput or how the app behaves under concurrent users. Not for functional API checks (api-testing) or debugging a single failing test (defect-analysis).",
+      "useWhen": "the user asks about page speed, Core Web Vitals, performance budgets, slow pages, load or stress testing, latency SLAs, throughput or how the app behaves under concurrent users.",
+      "notFor": "functional API checks (api-testing) or debugging a single failing test (defect-analysis).",
+      "notForSkills": [
+        "api-testing",
+        "defect-analysis"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Browser: Core Web Vitals",
+        "Backend: k6 load",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "playwright-test-generation",
+      "path": ".agents/skills/playwright-test-generation/SKILL.md",
+      "name": "playwright-test-generation",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Primary code-generation skill for Playwright TypeScript tests: feature, smoke, regression, functional and end-to-end flows. Turns a requirement, ticket, user story, acceptance criteria or plain description into a test plan, test cases and specs that use the repository's fixtures, page objects and modules, grounding the plan in past test knowledge when a knowledge MCP server is configured. Use whenever the user asks to write, add, generate, automate or extend UI or E2E tests, cover a story or ticket, or turn test cases into automation. Not for selectors alone (locator-strategy), page object design (page-object-engineering), API-only tests (api-testing) or fixing a failing test (defect-analysis).",
+      "useWhen": "the user asks to write, add, generate, automate or extend UI or E2E tests, cover a story or ticket, or turn test cases into automation.",
+      "notFor": "selectors alone (locator-strategy), page object design (page-object-engineering), API-only tests (api-testing) or fixing a failing test (defect-analysis).",
+      "notForSkills": [
+        "api-testing",
+        "defect-analysis",
+        "locator-strategy",
+        "page-object-engineering"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Procedure",
+        "Spec template",
+        "Test types",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "project-setup",
+      "path": ".agents/skills/project-setup/SKILL.md",
+      "name": "project-setup",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Reads an unfamiliar repository and sets the pack up in it, generically. First it discovers the stack read-only (package manager, Node, any existing Playwright config and tests, ESLint/tsconfig, the test-id attribute, base URL and environments, CI platform, app type, existing page objects and fixtures, and any legacy suites), writes the project-specific values into .agents/qa.config.json, and then scaffolds only what is missing so that `npm run verify` and the layered Playwright projects actually run. Use whenever the user installs or onboards the pack, points it at a new or existing repository, asks to bootstrap, initialise or set up the framework, or says \"make this work in my project\". Not for ongoing rule enforcement (framework-governance), converting a legacy suite (migration-analysis), or writing feature tests (playwright-test-generation). Discovery is read-only and nothing is overwritten without confirmation.",
+      "useWhen": "the user installs or onboards the pack, points it at a new or existing repository, asks to bootstrap, initialise or set up the framework, or says \"make this work in my project\".",
+      "notFor": "ongoing rule enforcement (framework-governance), converting a legacy suite (migration-analysis), or writing feature tests (playwright-test-generation). Discovery is read-only and nothing is overwritten without confirmation.",
+      "notForSkills": [
+        "framework-governance",
+        "migration-analysis",
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Phase 1 — Read the repo (discovery, read-only)",
+        "Phase 2 — Set up (create only what is missing)",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 4
+    },
+    {
+      "folder": "regression-optimization",
+      "path": ".agents/skills/regression-optimization/SKILL.md",
+      "name": "regression-optimization",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Reduces flakiness and speeds up Playwright regression suites: proves and quarantines flaky tests, removes root causes of nondeterminism, tunes workers, sharding and retries, selects tests by change or risk, and reports suite health. Use whenever the user mentions flaky or intermittent tests, a slow suite, too many retries, long CI times, test selection or impact analysis, smoke suite selection, or quarantining tests. Not for one specific failure's root cause (defect-analysis) or writing pipeline files (ci-cd-pipeline-config).",
+      "useWhen": "the user mentions flaky or intermittent tests, a slow suite, too many retries, long CI times, test selection or impact analysis, smoke suite selection, or quarantining tests.",
+      "notFor": "one specific failure's root cause (defect-analysis) or writing pipeline files (ci-cd-pipeline-config).",
+      "notForSkills": [
+        "ci-cd-pipeline-config",
+        "defect-analysis"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Flakiness causes and fixes",
+        "Speed levers",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "reporting-analytics",
+      "path": ".agents/skills/reporting-analytics/SKILL.md",
+      "name": "reporting-analytics",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Test reporting and analytics for Playwright suites: configures reporters, normalises results from every layer into one result file, computes pass rate, flaky rate, duration and failure trends, measures requirement coverage from test annotations, and publishes dashboards or summaries. Use whenever the user asks for test reports, dashboards, trends, metrics, coverage of requirements or acceptance criteria, release readiness summaries, or pushing results to a dashboard or chat. Not for diagnosing individual failures (defect-analysis), configuring CI jobs (ci-cd-pipeline-config), or security risk posture (security-posture-management).",
+      "useWhen": "the user asks for test reports, dashboards, trends, metrics, coverage of requirements or acceptance criteria, release readiness summaries, or pushing results to a dashboard or chat.",
+      "notFor": "diagnosing individual failures (defect-analysis), configuring CI jobs (ci-cd-pipeline-config), or security risk posture (security-posture-management).",
+      "notForSkills": [
+        "ci-cd-pipeline-config",
+        "defect-analysis",
+        "security-posture-management"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Reporters",
+        "Normalised result file",
+        "Metrics",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "secrets-detection",
+      "path": ".agents/skills/secrets-detection/SKILL.md",
+      "name": "secrets-detection",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Detects hard-coded secrets (API keys, tokens, passwords, private keys, connection strings) in the repository and its git history and wires prevention into pre-commit and CI, for code the team owns: scanning with gitleaks / detect-secrets / trufflehog, reporting findings by location and type without ever printing the secret value, maintaining a reviewed baseline, and guiding rotation. Covers OWASP A05 and the leakage side of A02. Use whenever the user asks to find or scan for secrets, hard-coded credentials, leaked keys, pre-commit secret hooks, or history cleanup. Not for dependency CVEs (dependency-vulnerability-audit), runtime headers (security-headers-review), or cloud key policy (cloud-security-review). Never reads `.env*` to print its contents and never echoes a detected value.",
+      "useWhen": "the user asks to find or scan for secrets, hard-coded credentials, leaked keys, pre-commit secret hooks, or history cleanup.",
+      "notFor": "dependency CVEs (dependency-vulnerability-audit), runtime headers (security-headers-review), or cloud key policy (cloud-security-review). Never reads `.env*` to print its contents and never echoes a detected value.",
+      "notForSkills": [
+        "cloud-security-review",
+        "dependency-vulnerability-audit",
+        "security-headers-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "What to scan and how",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "secure-code-review",
+      "path": ".agents/skills/secure-code-review/SKILL.md",
+      "name": "secure-code-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Source-level security review of code the team owns: spot vulnerable patterns across the OWASP / CWE classes (injection, XSS, access control, SSRF, deserialisation, secrets, crypto misuse) and give the concrete fix, backed by SAST (CodeQL / Semgrep) wired into CI. Use whenever the user asks for a secure code review, to review a diff or module for security, to find insecure patterns or anti-patterns, to add SAST/static security analysis, or for remediation guidance on a vulnerability class. Not for runtime behaviour checks (the focused *-review skills), dependency CVEs (dependency-vulnerability-audit), or design-level review (security-architecture-review). It identifies and fixes weaknesses in the team's own code; it does not produce exploits.",
+      "useWhen": "the user asks for a secure code review, to review a diff or module for security, to find insecure patterns or anti-patterns, to add SAST/static security analysis, or for remediation guidance on a vulnerability class.",
+      "notFor": "runtime behaviour checks (the focused *-review skills), dependency CVEs (dependency-vulnerability-audit), or design-level review (security-architecture-review). It identifies and fixes weaknesses in the team's own code; it does not produce exploits.",
+      "notForSkills": [
+        "dependency-vulnerability-audit",
+        "security-architecture-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "What to look for → fix",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "security-architecture-review",
+      "path": ".agents/skills/security-architecture-review/SKILL.md",
+      "name": "security-architecture-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Design-level security review of a system or feature the team owns: evaluate the architecture against security principles (defence in depth, least privilege, zero trust, secure defaults, fail secure), check that identity, data protection, secrets, logging and trust boundaries are designed in, and map required controls to the skills that verify them. Covers OWASP A04 (insecure design). Use whenever the user asks for a security architecture review, a design or control-coverage review, a security design assessment, zero-trust or defence-in-depth feedback, or \"is this architecture secure\". Not for enumerating new threats from scratch (threat-modeling), source-level review (secure-code-review), or network topology specifics (network-security-review). It reviews design and documents; it touches no running system.",
+      "useWhen": "the user asks for a security architecture review, a design or control-coverage review, a security design assessment, zero-trust or defence-in-depth feedback, or \"is this architecture secure\".",
+      "notFor": "enumerating new threats from scratch (threat-modeling), source-level review (secure-code-review), or network topology specifics (network-security-review). It reviews design and documents; it touches no running system.",
+      "notForSkills": [
+        "network-security-review",
+        "secure-code-review",
+        "threat-modeling"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Principles & what to confirm",
+        "Template",
+        "System: <name>   Authoriser: <name>   Inputs: <design docs/diagrams>   Date: <date>",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "security-headers-review",
+      "path": ".agents/skills/security-headers-review/SKILL.md",
+      "name": "security-headers-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "HTTP security-header, CORS and transport checks with Playwright, for applications the team owns: assert CSP, HSTS, X-Content-Type-Options, frame protection, Referrer-Policy and Permissions-Policy are present and well-formed, that CORS rejects unknown origins, that HTTPS is enforced, and that server fingerprinting headers are absent. Covers OWASP A05 and the transport side of A02. Use whenever the user asks for security headers analysis, a CSP validator, CORS checks, HSTS/HTTPS enforcement, or clickjacking protection. Not for auth or cookies (auth-access-control-review), XSS payload handling (xss-output-encoding-review), or cloud posture (cloud-security-review). This reads and evaluates response headers; it does not test CSP bypasses.",
+      "useWhen": "the user asks for security headers analysis, a CSP validator, CORS checks, HSTS/HTTPS enforcement, or clickjacking protection.",
+      "notFor": "auth or cookies (auth-access-control-review), XSS payload handling (xss-output-encoding-review), or cloud posture (cloud-security-review). This reads and evaluates response headers; it does not test CSP bypasses.",
+      "notForSkills": [
+        "auth-access-control-review",
+        "cloud-security-review",
+        "xss-output-encoding-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Expected headers",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "security-posture-management",
+      "path": ".agents/skills/security-posture-management/SKILL.md",
+      "name": "security-posture-management",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Programme-level security risk management for the software the team ships and the vendors it relies on: an SBOM inventory (own and vendor-supplied, with VEX), the CVE lifecycle across every scanner (deduplicate, enrich with CISA KEV and EPSS, prioritise, set SLAs, track exceptions to expiry), vendor risk assessed from the evidence vendors supply, compliance mapping with audit-ready evidence, and security posture as trended metrics. Use whenever the user asks about vendor or third-party risk, SBOM intake or VEX, CVE triage, SLAs or exceptions, \"are we affected by CVE-…\", KEV or EPSS prioritisation, threat intelligence, compliance or audit evidence, a risk register, or posture metrics. Not for scanning dependencies (dependency-vulnerability-audit), images (docker-security-review) or cloud accounts (cloud-security-review), design-time threats (threat-modeling), one engagement's report (pentest-report-generator) or test dashboards (reporting-analytics). It never scans a vendor or exploits a CVE.",
+      "useWhen": "the user asks about vendor or third-party risk, SBOM intake or VEX, CVE triage, SLAs or exceptions, \"are we affected by CVE-…\", KEV or EPSS prioritisation, threat intelligence, compliance or audit evidence, a risk register, or posture metrics.",
+      "notFor": "scanning dependencies (dependency-vulnerability-audit), images (docker-security-review) or cloud accounts (cloud-security-review), design-time threats (threat-modeling), one engagement's report (pentest-report-generator) or test dashboards (reporting-analytics). It never scans a vendor or exploits a CVE.",
+      "notForSkills": [
+        "cloud-security-review",
+        "dependency-vulnerability-audit",
+        "docker-security-review",
+        "pentest-report-generator",
+        "reporting-analytics",
+        "threat-modeling"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Workstreams",
+        "Prioritise (first match wins)",
+        "Vendor tiers",
+        "Compliance map (examples; scope comes from `security.frameworks`)",
+        "Posture metrics",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 5
+    },
+    {
+      "folder": "security-regression-suite",
+      "path": ".agents/skills/security-regression-suite/SKILL.md",
+      "name": "security-regression-suite",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Assembles the focused security checks into a maintainable, non-destructive Playwright regression suite for an application the team owns: consistent `tests/security/` layout, `@security` tagging and the `security` project, a stable baseline so only new findings fail, and CI wiring that runs the deterministic checks on every pipeline and heavier passive scans on a schedule. Use whenever the user asks to generate a security regression suite, a \"Playwright security scanner/validator\" that runs repeatably, a security smoke/baseline for CI, or to organise existing security tests. Not for authoring a single category's checks (the focused *-review skills) or general CI structure (ci-cd-pipeline-config). It runs and organises the defensive checks; it adds no offensive scanning.",
+      "useWhen": "the user asks to generate a security regression suite, a \"Playwright security scanner/validator\" that runs repeatably, a security smoke/baseline for CI, or to organise existing security tests.",
+      "notFor": "authoring a single category's checks (the focused *-review skills) or general CI structure (ci-cd-pipeline-config). It runs and organises the defensive checks; it adds no offensive scanning.",
+      "notForSkills": [
+        "ci-cd-pipeline-config"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Suite layout",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "skill-authoring",
+      "path": ".agents/skills/skill-authoring/SKILL.md",
+      "name": "skill-authoring",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Meta-skill for extending this pack: create or revise a SKILL.md that matches the pack's exact conventions — spec-compliant frontmatter (name, description, metadata), the right tier, a clear single responsibility with \"Not for\" neighbours, non-negotiables, a coverage table, working templates, a procedure and a definition of done — and update the routing table and guide so the new skill is discoverable. Use whenever the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions. Not for enforcing code rules in test code (framework-governance) or writing tests (playwright-test-generation). New skills stay narrow, non-duplicative and, if security-related, defensive and authorised-only.",
+      "useWhen": "the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions.",
+      "notFor": "\" neighbours, non-negotiables, a coverage table, working templates, a procedure and a definition of done — and update the routing table and guide so the new skill is discoverable. Use whenever the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions. Not for enforcing code rules in test code (framework-governance) or writing tests (playwright-test-generation). New skills stay narrow, non-duplicative and, if security-related, defensive and authorised-only.",
+      "notForSkills": [
+        "framework-governance",
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Tier guide",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "skill-evaluation",
+      "path": ".agents/skills/skill-evaluation/SKILL.md",
+      "name": "skill-evaluation",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "4",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Validates and measures the skill set itself: builds a machine-readable manifest from every SKILL.md, enforces the frontmatter schema, required sections and name/folder match, detects overlapping or duplicate skills (trigger collisions and missing \"Not for\" cross-references), verifies routing coverage (every skill routed, no orphan rows), checks tier/domain balance, and runs a trigger-accuracy eval against example requests — then gates CI on the results. Use whenever the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI. Not for enforcing test-code rules (framework-governance) or authoring a single skill (skill-authoring). It measures the pack; it runs deterministically and stores no secrets.",
+      "useWhen": "the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI.",
+      "notFor": "\" cross-references), verifies routing coverage (every skill routed, no orphan rows), checks tier/domain balance, and runs a trigger-accuracy eval against example requests — then gates CI on the results. Use whenever the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI. Not for enforcing test-code rules (framework-governance) or authoring a single skill (skill-authoring). It measures the pack; it runs deterministically and stores no secrets.",
+      "notForSkills": [
+        "framework-governance",
+        "skill-authoring"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Checks",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "sre-reliability",
+      "path": ".agents/skills/sre-reliability/SKILL.md",
+      "name": "sre-reliability",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "2",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Site-reliability engineering practices for services the team owns: define SLIs and SLOs, track an error budget, gate releases on it, run bounded resilience checks (timeout, retry, fallback and graceful-degradation behaviour under fault injection in non-production), and keep incident runbooks and postmortems. Use whenever the user asks about reliability, SLIs/SLOs, error budgets, availability targets, resilience or fault-injection/chaos checks, graceful degradation, incident response or postmortems, or release gating on reliability. Not for emitting telemetry and synthetic monitors (observability-monitoring), test flakiness (regression-optimization), or pipeline mechanics (ci-cd-pipeline-config). Resilience checks are authorised, non-production and bounded; this is not chaos engineering against live systems.",
+      "useWhen": "the user asks about reliability, SLIs/SLOs, error budgets, availability targets, resilience or fault-injection/chaos checks, graceful degradation, incident response or postmortems, or release gating on reliability.",
+      "notFor": "emitting telemetry and synthetic monitors (observability-monitoring), test flakiness (regression-optimization), or pipeline mechanics (ci-cd-pipeline-config). Resilience checks are authorised, non-production and bounded; this is not chaos engineering against live systems.",
+      "notForSkills": [
+        "ci-cd-pipeline-config",
+        "observability-monitoring",
+        "regression-optimization"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 2
+    },
+    {
+      "folder": "ssrf-defence-review",
+      "path": ".agents/skills/ssrf-defence-review/SKILL.md",
+      "name": "ssrf-defence-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Server-side request forgery defence checks with Playwright, for applications the team owns and may test: on features where the server fetches a user-supplied URL, assert that requests to internal, loopback, link-local and cloud-metadata targets are refused and only allow-listed destinations are reached. Covers OWASP A10. Use whenever the user asks for SSRF testing or assessment, URL-fetch / webhook / image-proxy security, or \"can the server be made to call internal hosts\". Not for other injection (injection-handling-review), outbound CORS/headers (security-headers-review), or cloud IAM posture (cloud-security-review). This asserts internal targets are blocked; it does not reach a metadata endpoint or exfiltrate anything.",
+      "useWhen": "the user asks for SSRF testing or assessment, URL-fetch / webhook / image-proxy security, or \"can the server be made to call internal hosts\".",
+      "notFor": "other injection (injection-handling-review), outbound CORS/headers (security-headers-review), or cloud IAM posture (cloud-security-review). This asserts internal targets are blocked; it does not reach a metadata endpoint or exfiltrate anything.",
+      "notForSkills": [
+        "cloud-security-review",
+        "injection-handling-review",
+        "security-headers-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Target set and expectations",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "test-data-management",
+      "path": ".agents/skills/test-data-management/SKILL.md",
+      "name": "test-data-management",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "1",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Dynamic, factory-driven test data for Playwright: data factories, API-based seeding, unique data per worker, cleanup in fixture teardown, environment configuration validated at start, and secrets kept out of code. Use whenever the user asks to create test data, users, orders or accounts for tests, remove hard-coded data, make tests parallel-safe, seed state before a UI test, clean up after tests, or manage environment variables and credentials for tests. Not for API contract testing (api-testing) or selector work (locator-strategy).",
+      "useWhen": "the user asks to create test data, users, orders or accounts for tests, remove hard-coded data, make tests parallel-safe, seed state before a UI test, clean up after tests, or manage environment variables and credentials for tests.",
+      "notFor": "API contract testing (api-testing) or selector work (locator-strategy).",
+      "notForSkills": [
+        "api-testing",
+        "locator-strategy"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Structure",
+        "Templates",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 3
+    },
+    {
+      "folder": "threat-modeling",
+      "path": ".agents/skills/threat-modeling/SKILL.md",
+      "name": "threat-modeling",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Structured threat modelling for a feature or system the team is building: draw the data-flow and trust boundaries, enumerate threats with STRIDE, rate them, and propose mitigations and the tests that verify them. Covers OWASP A04 (insecure design). Use whenever the user asks for a threat model, STRIDE analysis, attack tree, data-flow or trust-boundary diagram, abuse/misuse cases, or \"what could go wrong with this design\", or wants a Playwright threat-modelling assistant to turn threats into checks. Not for reviewing an existing architecture's controls (security-architecture-review), running the checks (auth-access-control-review, injection-handling-review), or external threat intelligence (security-posture-management). Design-stage analysis; it touches no running system.",
+      "useWhen": "the user asks for a threat model, STRIDE analysis, attack tree, data-flow or trust-boundary diagram, abuse/misuse cases, or \"what could go wrong with this design\", or wants a Playwright threat-modelling assistant to turn threats into checks.",
+      "notFor": "reviewing an existing architecture's controls (security-architecture-review), running the checks (auth-access-control-review, injection-handling-review), or external threat intelligence (security-posture-management). Design-stage analysis; it touches no running system.",
+      "notForSkills": [
+        "auth-access-control-review",
+        "injection-handling-review",
+        "security-architecture-review",
+        "security-posture-management"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Method",
+        "Template",
+        "System: <feature>        Authoriser: <name>        Date: <date>",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "visual-testing",
+      "path": ".agents/skills/visual-testing/SKILL.md",
+      "name": "visual-testing",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Visual regression and screenshot comparison testing with Playwright: toHaveScreenshot on pages and components, masking dynamic content, disabling animations, stable baselines generated in the pinned Playwright container, per-platform snapshot handling, and a reviewed update process. Use whenever the user asks for visual tests, screenshot comparison, pixel diffs, layout or style regression checks, updating or reviewing baselines, or fixing flaky screenshots. Not for functional assertions (playwright-test-generation) or accessibility (accessibility-testing).",
+      "useWhen": "the user asks for visual tests, screenshot comparison, pixel diffs, layout or style regression checks, updating or reviewing baselines, or fixing flaky screenshots.",
+      "notFor": "functional assertions (playwright-test-generation) or accessibility (accessibility-testing).",
+      "notForSkills": [
+        "accessibility-testing",
+        "playwright-test-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Template",
+        "Choosing scope",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "web-app-security-assessment",
+      "path": ".agents/skills/web-app-security-assessment/SKILL.md",
+      "name": "web-app-security-assessment",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Plans and runs an authorised, defensive web-application security assessment with Playwright: agrees scope and authorisation, maps the feature to the OWASP Top 10, selects the focused security review skills, runs them as non-destructive checks against an owned non-production environment, and consolidates findings for the report. Use whenever the user asks for a web app security assessment, a penetration test of an app they own, OWASP Top 10 coverage, a security review of a feature or release, or a plan for security testing. Not for the single-category checks themselves (auth-access-control-review, injection-handling-review, xss-output-encoding-review, security-headers-review), API-only scope (api-security-review), cloud or infra posture (cloud-security-review), or the write-up (pentest-report-generator).",
+      "useWhen": "the user asks for a web app security assessment, a penetration test of an app they own, OWASP Top 10 coverage, a security review of a feature or release, or a plan for security testing.",
+      "notFor": "the single-category checks themselves (auth-access-control-review, injection-handling-review, xss-output-encoding-review, security-headers-review), API-only scope (api-security-review), cloud or infra posture (cloud-security-review), or the write-up (pentest-report-generator).",
+      "notForSkills": [
+        "api-security-review",
+        "auth-access-control-review",
+        "cloud-security-review",
+        "injection-handling-review",
+        "pentest-report-generator",
+        "security-headers-review",
+        "xss-output-encoding-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "OWASP Top 10 → skill map",
+        "Scope sheet",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    },
+    {
+      "folder": "xss-output-encoding-review",
+      "path": ".agents/skills/xss-output-encoding-review/SKILL.md",
+      "name": "xss-output-encoding-review",
+      "keys": [
+        "name",
+        "description",
+        "metadata"
+      ],
+      "tier": "3",
+      "pack": "enterprise-playwright-ai-skill-pack",
+      "metadataKeys": [
+        "tier",
+        "pack"
+      ],
+      "description": "Cross-site scripting handling checks with Playwright, for applications the team owns and may test: submit a small set of benign XSS markers and assert they are stored and rendered as inert, escaped text (never executed), that a Content-Security-Policy is present, and that no script dialog fires. Covers the XSS part of OWASP A03. Use whenever the user asks for XSS detection or testing, output-encoding checks, stored/reflected/DOM XSS handling, or a \"Playwright CSP/XSS tester\". Not for other injection (injection-handling-review), full header coverage (security-headers-review), or source review (secure-code-review). This proves payloads are neutralised; it does not craft working exploits or steal sessions.",
+      "useWhen": "the user asks for XSS detection or testing, output-encoding checks, stored/reflected/DOM XSS handling, or a \"Playwright CSP/XSS tester\".",
+      "notFor": "other injection (injection-handling-review), full header coverage (security-headers-review), or source review (secure-code-review). This proves payloads are neutralised; it does not craft working exploits or steal sessions.",
+      "notForSkills": [
+        "injection-handling-review",
+        "secure-code-review",
+        "security-headers-review"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Coverage map",
+        "Spec template",
+        "Procedure",
+        "Definition of Done"
+      ],
+      "templates": 1
+    }
+  ]
+}

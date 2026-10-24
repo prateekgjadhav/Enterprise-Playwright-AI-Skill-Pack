@@ -1,0 +1,27 @@
+# The skill-evaluation gate: the manifest is current, and the skills pass the hard checks.
+name: skill-validation
+on:
+  pull_request:
+    paths: ['.agents/**', 'CLAUDE.md', 'tests/skills/**', 'scripts/build-skill-manifest.mjs', 'scripts/check-skills.mjs', '.github/workflows/skill-validation.yml']
+  push:
+    branches: [main]
+    paths: ['.agents/**', 'CLAUDE.md', 'tests/skills/**', 'scripts/build-skill-manifest.mjs', 'scripts/check-skills.mjs', '.github/workflows/skill-validation.yml']
+permissions:
+  contents: read
+jobs:
+  skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Manifest is current
+        run: |
+          node scripts/build-skill-manifest.mjs .agents/skills > .agents/skills-manifest.json
+          git diff --exit-code -- .agents/skills-manifest.json || {
+            echo "::error::.agents/skills-manifest.json is stale. Run: node scripts/build-skill-manifest.mjs .agents/skills > .agents/skills-manifest.json, then commit it."
+            exit 1
+          }
+      - name: Skill checks
+        run: node scripts/check-skills.mjs .agents/skills-manifest.json tests/skills/trigger-cases.json   # non-zero fails the build
