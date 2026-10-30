@@ -5,15 +5,13 @@
 [![ESLint](https://img.shields.io/badge/Governance-Fail--Closed-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)
 [![Allure](https://img.shields.io/badge/Reporting-Allure-FF7043?logo=qameta&logoColor=white)](https://allurereport.org/)
 
-<<<<<<< HEAD
 > **Autonomous Quality Engineering & Agentic Testing Framework for Enterprise Systems.**  
 > Transforms conversational AI coding agents (Claude Code, Antigravity, and MCP-compatible platforms) into disciplined, production-grade SDET pairs that plan from project history, enforce architectural rules, execute layered test projects, and report verified evidence.
 =======
 The complete setup and implementation guide is available in
 [`docs/setup-guide.html`](docs/setup-guide.html)); open it in a browser.
->>>>>>> b11fe0f3475b8e546ca183eff34dd4a70f634862
 
----
+
 
 ## Executive Overview
 
