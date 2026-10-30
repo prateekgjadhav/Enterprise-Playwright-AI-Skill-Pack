@@ -7,7 +7,8 @@
 
 > **Autonomous Quality Engineering & Agentic Testing Framework for Enterprise Systems.**  
 > Transforms conversational AI coding agents (Claude Code, Antigravity, and MCP-compatible platforms) into disciplined, production-grade SDET pairs that plan from project history, enforce architectural rules, execute layered test projects, and report verified evidence.
-=======
+
+
 The complete setup and implementation guide is available in
 [`docs/setup-guide.html`](docs/setup-guide.html)); open it in a browser.
 
