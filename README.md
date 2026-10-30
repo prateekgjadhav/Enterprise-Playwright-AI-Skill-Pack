@@ -5,8 +5,7 @@ about Playwright testing — functional, operational, security or risk — into 
 the right skills, follow the rules, verify, run, and report with evidence.
 
 The complete setup and implementation guide is available in
-[`Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html`](Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html)
-(or [`docs/setup-guide.html`](docs/setup-guide.html)); open it in a browser.
+[`docs/setup-guide.html`](docs/setup-guide.html)); open it in a browser.
 
 ## Requirements
 
