@@ -1,0 +1,9 @@
+node_modules/
+playwright-report/
+test-results/
+.skill-pack-backup/
+.agents/rag-index/
+llm-validation/reports/
+.env*
+!*.example
+

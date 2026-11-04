@@ -23,6 +23,7 @@
 ## Table of Contents
 
 - [Why Enterprise Playwright AI Skill Pack?](#why-enterprise-playwright-ai-skill-pack)
+- [The 4-Phase Onboarding Lifecycle](#the-4-phase-onboarding-lifecycle)
 - [The 8-Stage Execution Rail](#the-8-stage-execution-rail)
 - [Core Architectural Pillars](#core-architectural-pillars)
   - [1. Deterministic Agent Orchestration](#1-deterministic-agent-orchestration)
@@ -32,6 +33,7 @@
   - [5. Unified Multi-Tier Reporting](#5-unified-multi-tier-reporting)
 - [Before vs. After: The Governance Advantage](#before-vs-after-the-governance-advantage)
 - [Quick Start & Local Verification](#quick-start--local-verification)
+- [Target Environment & Testbed Configuration](#target-environment--testbed-configuration)
 - [Target Repository Onboarding](#target-repository-onboarding)
 - [Complete Skill Catalogue](#complete-skill-catalogue)
 - [CI/CD Pipeline Integration](#cicd-pipeline-integration)
@@ -61,6 +63,29 @@ The **Enterprise Playwright AI Skill Pack** solves this by wrapping agent tools 
 | **Grounding** | Hallucinated requirements and guess-work | RAG-grounded in requirements, tickets, defect history, and root causes |
 | **Safety** | May execute unsafe commands on live endpoints | Strict protected host denylists (`project.protectedHosts`), zero production access |
 | **Reporting** | Ephemeral, unstructured terminal text | Unified Allure reporting with traces, videos, categories, and evidence blocks |
+
+---
+
+## The 4-Phase Onboarding Lifecycle
+
+Onboarding an unfamiliar repository follows the strict reviewable 4-phase lifecycle outlined in `BOOTSTRAP_PROMPT.md`:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                          4-PHASE AGENT ONBOARDING LIFECYCLE                            │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+    [Phase 1: Read-Only Discovery] ──▶ Scans stack, test estate, CI, environments & risks.
+                   │                   Produces structured Discovery Report; STOPS for user.
+                   ▼
+    [Phase 2: Setup Planning]      ──▶ Generates actionable checklist & proposed qa.config.json.
+                   │                   Identifies state-changing mutation flows; STOPS for user.
+                   ▼
+    [Phase 3: Execution & Setup]   ──▶ Runs installer, links skills, applies configs, and scaffolds
+                   │                   missing baseline files (@fixtures, Page Objects, Smoke spec).
+                   ▼
+    [Phase 4: Proof & Evidence]    ──▶ Proves setup with `npm run verify`, repeat-each=3 smoke tests,
+                                       skills check gate, and outputs standard Evidence Block.
+```
 
 ---
 
@@ -114,6 +139,7 @@ Framework rules are enforced via executable hooks in `.claude/hooks/` and standa
 - Test design is anchored in reality: Feature requirements $\rightarrow$ existing specs $\rightarrow$ historical defects $\rightarrow$ Root Cause Analyses (RCAs).
 - Built-in `qa-knowledge` MCP server provides hybrid search (BM25 for exact codes/stack traces + vector search for semantic requirements + graph search for multi-hop traceability).
 - High-fidelity scenario generation: Maps acceptance criteria into positive, negative, boundary, role-permission, and regression guard specs.
+- Structured directories under `knowledge/` (`test-plans/`, `test-cases/`, `patterns/`, `rca/`) ingest institutional testing knowledge.
 
 ### 4. Defensive Security & Risk Posture
 - **Defensive Application Security**: Authorised-only security testing covering OWASP Top 10 vulnerabilities (BOLA/IDOR, broken authentication, injection, CSRF, security headers, and SSRF defense).
@@ -171,7 +197,7 @@ test.describe('Authentication Flows', () => {
 ## Quick Start & Local Verification
 
 ### Prerequisites
-- **Node.js**: `18.0.0` or newer (LTS recommended)
+- **Node.js**: `18.0.0` or newer (CI runs on Node 24)
 - **Git**: Installed and initialized in your repository
 - **OS**: macOS, Linux, or Windows (WSL / Git Bash / PowerShell)
 
@@ -181,7 +207,7 @@ test.describe('Authentication Flows', () => {
 npm install
 
 # 2. Download Playwright browser binaries
-npx playwright install --with-deps
+npx playwright install chromium
 ```
 
 ### Verification Chain
@@ -189,11 +215,11 @@ Run the complete static governance, type-checking, and lint pipeline:
 ```bash
 npm run verify
 ```
-*Executes `eslint .` (framework rules) $\rightarrow$ `tsc --noEmit` (strict types) $\rightarrow$ `node scripts/governance-check-all.mjs` (governance rules).*
+*Executes `eslint .` (framework rules + TypeScript-ESLint) $\rightarrow$ `tsc --noEmit` (strict types) $\rightarrow$ `node scripts/governance-check-all.mjs` (governance rules).*
 
 ### Test Execution
 ```bash
-# Run all configured test projects
+# Run all configured test projects against default environment
 npm test
 
 # Run smoke test suite (@smoke)
@@ -205,7 +231,46 @@ npm run test:regression
 # Target isolated project layers
 npx playwright test --project=functional
 npx playwright test --project=api
+npx playwright test --project=visual
+npx playwright test --project=a11y
 npx playwright test --project=security
+```
+
+---
+
+## Target Environment & Testbed Configuration
+
+The framework is configured via [`.agents/qa.config.json`](.agents/qa.config.json) to target an authorized testbed while strictly safeguarding production hosts:
+
+```json
+{
+  "project": {
+    "name": "enterprise-playwright-suite",
+    "environments": ["dev", "staging"],
+    "defaultEnv": "staging",
+    "baseUrl": "https://demoqa.com",
+    "protectedHosts": ["production.example.com"]
+  },
+  "framework": {
+    "root": ".",
+    "playwrightVersion": "1.49.1",
+    "testIdAttribute": "data-testid",
+    "fixturesImport": "@fixtures",
+    "pagesDir": "src/pages",
+    "modulesDir": "src/modules",
+    "priorityTags": ["@P0", "@P1", "@P2"],
+    "suiteTags": ["@smoke", "@regression"],
+    "style": "spec"
+  },
+  "gates": {
+    "fileDefects": "ask",
+    "knowledgeWrite": "ask",
+    "dashboardPush": "ask",
+    "securityScan": "ask",
+    "updateBaselines": "ask",
+    "riskAcceptance": "ask"
+  }
+}
 ```
 
 ---
@@ -300,11 +365,12 @@ The framework provides **47 specialized skills** structured across 6 core operat
 
 ## CI/CD Pipeline Integration
 
-Here is a recommended GitHub Actions workflow utilizing the pack's verification chain and sharded Playwright runners:
+Two GitHub Actions pipelines automate quality validation:
+1. [`.github/workflows/skill-validation.yml`](.github/workflows/skill-validation.yml): Verifies skill manifest currency (`build-skill-manifest.mjs`) and executes hard skill routing benchmarks (`check-skills.mjs`).
+2. [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml): Runs the full governance chain (`npm run verify`) and executes the Playwright smoke suite.
 
 ```yaml
-name: Quality Gate & Test Execution
-
+name: playwright-tests
 on:
   push:
     branches: [main]
@@ -312,46 +378,29 @@ on:
     branches: [main]
 
 jobs:
-  verify:
-    name: Governance & Static Analysis
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
-      - name: Run Verification Chain
-        run: npm run verify
-
   test:
-    name: Playwright Tests
-    needs: verify
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4]
-        shardTotal: [4]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
-      - run: npm ci
-      - name: Install Playwright Browsers
+      - name: Install dependencies
+        run: npm ci
+      - name: Run governance & static analysis
+        run: npm run verify
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-      - name: Execute Sharded Suite
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      - name: Upload Allure Results
+      - name: Run Playwright smoke tests
+        run: npm run test:smoke
+      - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-${{ matrix.shardIndex }}
-          path: allure-results/
-          retention-days: 7
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
 ```
 
 ---
@@ -362,7 +411,7 @@ jobs:
 enterprise-playwright-ai-skill-pack/
 ├── README.md                                                 # Executive architecture and framework guide
 ├── setup.sh                                                  # Non-destructive target repository installer
-├── Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html # Complete reference manual
+├── Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html # Complete manual (root)
 ├── package.json                                              # Pinned dependencies & verification scripts
 ├── playwright.config.ts                                      # Multi-project test execution configuration
 ├── tsconfig.json                                             # Strict TypeScript config with @fixtures path alias
@@ -378,17 +427,25 @@ enterprise-playwright-ai-skill-pack/
 │
 ├── tests/                                                    # Test suites and routing validations
 │   ├── functional/
-│   │   └── smoke.spec.ts                                     # Baseline tagged smoke test suite
+│   │   └── smoke.spec.ts                                     # Baseline tagged smoke test suite (@P0 @smoke)
 │   └── skills/
 │       └── trigger-cases.json                                # Skill routing evaluation dataset (50+ cases)
+│
+├── knowledge/                                                # Institutional QA knowledge collections
+│   ├── test-plans/                                           # Epics and test plan briefs
+│   ├── test-cases/                                           # Canonical test specifications
+│   ├── patterns/                                             # Reusable architectural test patterns
+│   └── rca/                                                  # Root cause defect analyses
 │
 ├── .agents/                                                  # Skill modules and configuration
 │   ├── qa.config.json                                        # Project settings, hosts, tags, and approval gates
 │   ├── skills-manifest.json                                  # Machine-readable skill catalog manifest
+│   ├── discovery/                                            # Target discovery maps & recorded flows
 │   └── skills/                                               # 47 modular agent skills
 │
 ├── .claude/                                                  # Agent tooling, permissions, and hooks
 │   ├── settings.json                                         # Permissions and hook registrations
+│   ├── skills/                                               # Linked runtime skills for agent tools
 │   ├── hooks/
 │   │   ├── governance-check.sh                               # PostToolUse lint and syntax validator
 │   │   └── stop-gate.sh                                      # Fail-closed pre-completion verify gate
@@ -397,7 +454,8 @@ enterprise-playwright-ai-skill-pack/
 │
 ├── .github/
 │   └── workflows/
-│       └── skill-validation.yml                              # CI pipeline for skill manifest validation
+│       ├── skill-validation.yml                              # CI pipeline for skill manifest validation
+│       └── playwright.yml                                    # CI pipeline for governance & smoke execution
 │
 ├── docs/                                                     # Technical documentation
 │   └── setup-guide.html                                      # Standalone interactive offline HTML guide
@@ -418,7 +476,7 @@ Every agent response and pull request must strictly comply with the following st
 
 1. **Setup-First & Generic**: Project values reside in [`.agents/qa.config.json`](.agents/qa.config.json) only—never hard-coded into skills or specs.
 2. **Fail-Closed Governance**: `npm run verify` must pass with exit code `0`. Any waiver requires an inline reason and ticket reference.
-3. **Target Protection**: Production hosts in `project.protectedHosts` must never be targeted by automated suites. All tests execute exclusively against approved non-production environments (`project.allowedHosts`).
+3. **Target Protection**: Production hosts in `project.protectedHosts` must never be targeted by automated suites. All tests execute exclusively against approved non-production environments.
 4. **Secret Hygiene**: Zero tolerance for credentials in code, git history, or agent transcripts. Never read `.env*` or auth state files directly.
 5. **Standard Evidence Block**: Every agent interaction concludes with the mandatory evidence block:
    ```text
@@ -429,7 +487,8 @@ Every agent response and pull request must strictly comply with the following st
 
 ## Documentation & Resources
 
-- 📘 **[Setup and Implementation Guide](docs/setup-guide.html)**: Interactive offline guide covering all architecture tiers, security protocols, and RAG configuration.
+- 📘 **[Setup and Implementation Guide](Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html)**: Complete HTML reference manual in the root directory.
+- 📘 **[Docs Setup Guide](docs/setup-guide.html)**: Interactive offline guide covering all architecture tiers, security protocols, and RAG configuration.
 - 🎭 **[Official Playwright Documentation](https://playwright.dev/docs/intro)**: Playwright guides, API reference, and locator strategies.
 - 🛡️ **[OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)**: Benchmark testing methodologies for web applications.
 
