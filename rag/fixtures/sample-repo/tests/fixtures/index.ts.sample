@@ -1,0 +1,13 @@
+import { test as base } from '@playwright/test';
+import { CartPage } from '../../src/pages/CartPage';
+import { LoginPage } from '../../src/pages/LoginPage';
+import { OrdersPage } from '../../src/pages/OrdersPage';
+import { CheckoutModule } from '../../src/modules/CheckoutModule';
+
+export const test = base.extend<{ cartPage: CartPage; loginPage: LoginPage; ordersPage: OrdersPage; checkoutModule: CheckoutModule }>({
+  cartPage: async ({ page }, use) => { await use(new CartPage(page)); },
+  loginPage: async ({ page }, use) => { await use(new LoginPage(page)); },
+  ordersPage: async ({ page }, use) => { await use(new OrdersPage(page)); },
+  checkoutModule: async ({ page }, use) => { await use(new CheckoutModule(page)); },
+});
+export { expect } from '@playwright/test';

@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Enterprise Playwright AI Skill Pack \u2014 .agents/qa.config.json",
+  "description": "Project values for the pack. Shipped empty on purpose: the loader fails closed until config-proposal fills it and a reviewer merges it. No version fields.",
+  "type": "object",
+  "required": [
+    "project",
+    "environments",
+    "defaultEnvironment",
+    "framework",
+    "secrets",
+    "ai",
+    "telemetry"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "owners"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owners": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "environments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "owner",
+          "ticket",
+          "dataClass",
+          "hosts",
+          "reviewBy"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ticket": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dataClass": {
+            "enum": [
+              "public",
+              "internal",
+              "confidential"
+            ]
+          },
+          "hosts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9.-]+$"
+            }
+          },
+          "reviewBy": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "defaultEnvironment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "productionHosts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "framework": {
+      "type": "object",
+      "required": [
+        "testIdAttribute",
+        "fixturesImport",
+        "priorityTags",
+        "roles"
+      ],
+      "properties": {
+        "fixturesImport": {
+          "const": "@fixtures"
+        },
+        "priorityTags": {
+          "const": [
+            "@P0",
+            "@P1",
+            "@P2"
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "secrets": {
+      "type": "object",
+      "required": [
+        "provider",
+        "refs"
+      ],
+      "properties": {
+        "provider": {
+          "enum": [
+            "ci-env",
+            "vault",
+            "aws-sm",
+            "gcp-sm",
+            "azure-kv",
+            "1password"
+          ]
+        },
+        "refs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\S{1,200}$"
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "attestation"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "attestation": {
+                "type": "string",
+                "pattern": "^governance/approvals/"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ai": {
+      "type": "object",
+      "properties": {
+        "gateway": {
+          "type": "object",
+          "properties": {
+            "baseUrl": {
+              "type": "string"
+            },
+            "routesFile": {
+              "type": "string"
+            }
+          }
+        },
+        "judgeModel": {
+          "type": "string"
+        },
+        "budgets": {
+          "type": "object",
+          "properties": {
+            "sessionTokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "dailyTokens": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "otlpEndpoint": {
+          "type": "string"
+        },
+        "captureContent": {
+          "const": false
+        }
+      }
+    }
+  }
+}

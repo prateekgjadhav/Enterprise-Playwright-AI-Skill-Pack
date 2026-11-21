@@ -1,20 +1,22 @@
 #!/usr/bin/env node
 // The skill-evaluation gate. Hard checks fail the build; soft signals warn, or fail with --fail-on-soft.
-//   hard: manifest freshness, frontmatter schema, name/folder, pack, required sections, "Not for" references,
-//         routing coverage (CLAUDE.md names every skill and no unknown one), trigger cases name real skills
-//   soft: tier balance, trigger-term overlap without a mutual "Not for", trigger accuracy (a lexical proxy)
+//   hard: frontmatter schema (no metadata, no versions, allowed-tools required), name/folder, catalogue (every skill once,
+//         T3/T4 off by default with a Gate section), required sections, "Not for" references, routing coverage
+//         (AGENTS.md names every skill and no unknown one), trigger cases name real skills, trigger accuracy (lexical proxy)
+//   soft: category balance, trigger-term overlap without a mutual "Not for"
 // Usage, from the repository root:
-//   node scripts/check-skills.mjs [.agents/skills-manifest.json] [tests/skills/trigger-cases.json] [--fail-on-soft]
+//   node scripts/check-skills.mjs [tests/skills/trigger-cases.json] [--fail-on-soft]   (the manifest is rebuilt and written)
 // Thresholds may be set in .agents/qa.config.json under "skillEvaluation":
-//   { "maxTierShare": 0.45, "overlapThreshold": 0.5, "minTriggerAccuracy": 0.9, "failOnSoft": false }
-import { readFileSync, existsSync } from 'node:fs';
-import { buildManifest, PACK } from './build-skill-manifest.mjs';
+//   { "maxCategoryShare": 0.3, "overlapThreshold": 0.5, "minTriggerAccuracy": 0.95, "failOnSoft": false }
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { buildManifest, TIERS, CATALOG } from './build-skill-manifest.mjs';
 
 const readJson = (p) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return null; } };
 const readText = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
 const argv = process.argv.slice(2);
-const [manifestPath = '.agents/skills-manifest.json', casesPath = 'tests/skills/trigger-cases.json'] = argv.filter((a) => !a.startsWith('--'));
-const T = { maxTierShare: 0.45, overlapThreshold: 0.5, minTriggerAccuracy: 0.9, failOnSoft: false, ...(readJson('.agents/qa.config.json')?.skillEvaluation ?? {}) };
+const [casesPath = 'tests/skills/trigger-cases.json'] = argv.filter((a) => !a.startsWith('--'));
+const manifestPath = '.agents/skills-manifest.json';
+const T = { maxCategoryShare: 0.3, overlapThreshold: 0.5, minTriggerAccuracy: 0.95, failOnSoft: false, ...(readJson('.agents/qa.config.json')?.skillEvaluation ?? {}) };
 if (argv.includes('--fail-on-soft')) T.failOnSoft = true;
 
 const hard = [], soft = [], info = [];
@@ -22,43 +24,48 @@ const fail = (check, msg) => hard.push(`${check}: ${msg}`);
 const warn = (check, msg) => soft.push(`${check}: ${msg}`);
 const pct = (x) => `${Math.round(x * 100)}%`;
 
-const manifest = readJson(manifestPath);
-if (!manifest) {
-  console.error(`check-skills: cannot read ${manifestPath}. Build it first: node scripts/build-skill-manifest.mjs .agents/skills > ${manifestPath}`);
-  process.exit(1);
-}
-const fresh = buildManifest(manifest.skillsDir);
-if (JSON.stringify(fresh) !== JSON.stringify(manifest)) {
-  fail('manifest', `${manifestPath} is stale. Rebuild and commit it: node scripts/build-skill-manifest.mjs ${manifest.skillsDir} > ${manifestPath}`);
-}
+const fresh = buildManifest('.agents/skills');
+writeFileSync(manifestPath, JSON.stringify(fresh, null, 2) + '\n');   // derived (git-ignored); the knowledge graph reads it
 const skills = fresh.skills;
 const names = new Set(skills.map((s) => s.name).filter(Boolean));
 
 // Hard: schema, pack, sections, references
-const ALLOWED_KEYS = new Set(['name', 'description', 'metadata', 'license', 'compatibility', 'allowed-tools']);
-const REQUIRED_SECTIONS = ['Non-negotiables', 'Procedure', 'Definition of Done'];
+const ALLOWED_KEYS = new Set(['name', 'description', 'allowed-tools']);
+const REQUIRED_SECTIONS = ['Non-negotiables', 'Inputs and outputs', 'Procedure', 'Verify', 'Evidence', 'Definition of Done'];
 for (const s of skills) {
   const id = s.folder;
   if (s.error) { fail('schema', `${id}: ${s.error}`); continue; }
-  for (const k of ['name', 'description', 'metadata']) if (!s.keys.includes(k)) fail('schema', `${id}: frontmatter is missing "${k}"`);
-  for (const k of s.keys) if (!ALLOWED_KEYS.has(k)) fail('schema', `${id}: unexpected frontmatter key "${k}"`);
-  for (const k of ['tier', 'pack']) if (!s.metadataKeys.includes(k)) fail('schema', `${id}: metadata is missing "${k}"`);
-  if (!['1', '2', '3', '4'].includes(String(s.tier))) fail('schema', `${id}: tier must be 1 to 4, found "${s.tier}"`);
+  for (const k of ['name', 'description']) if (!s.keys.includes(k)) fail('schema', `${id}: frontmatter is missing "${k}"`);
+  if (s.keys.includes('metadata')) fail('schema', `${id}: skills carry no metadata block; tier, category and default live in .agents/skills-catalog.json`);
+  if (!s.allowedTools) fail('schema', `${id}: frontmatter is missing "allowed-tools"`);
+  const cat = CATALOG.skills[id];
+  if (cat && ['T3', 'T4'].includes(cat.tier) && cat.default !== 'off') fail('catalogue', `${id}: ${cat.tier} skills must be default "off"`);
+  if (cat && ['T3', 'T4'].includes(cat.tier) && !s.sections.includes('Gate')) fail('sections', `${id}: ${cat.tier} skills need a "## Gate" section`);
+  if (s.keys.some((k) => /version/i.test(k))) fail('schema', `${id}: skills carry no version field; git history is the record`);
+  for (const k of s.keys) if (!ALLOWED_KEYS.has(k) && k !== 'metadata' && !/version/i.test(k)) fail('schema', `${id}: unexpected frontmatter key "${k}"`);
+  if (!Object.keys(TIERS).includes(String(s.tier))) fail('catalogue', `${id}: not listed in .agents/skills-catalog.json`);
   if (s.name !== id) fail('schema', `${id}: name "${s.name}" does not match its folder`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s.name ?? '') || String(s.name).length > 64) fail('schema', `${id}: name must be kebab-case and at most 64 characters`);
   if (!s.description) fail('schema', `${id}: description is empty`);
   else if (s.description.length > 1024) fail('schema', `${id}: description is ${s.description.length} characters (the limit is 1024)`);
   if (!s.useWhen) fail('schema', `${id}: description has no "Use whenever…" trigger`);
   if (!s.notFor) fail('schema', `${id}: description has no "Not for…" exclusion`);
-  if (s.pack !== PACK) fail('pack', `${id}: pack is "${s.pack}", expected "${PACK}"`);
   for (const sec of REQUIRED_SECTIONS) if (!s.sections.includes(sec)) fail('sections', `${id}: missing "## ${sec}"`);
   for (const ref of s.notForSkills) if (!names.has(ref)) fail('references', `${id}: "Not for" names "${ref}", which is not a skill`);
 }
 
-// Hard: routing coverage against the orchestrator (CLAUDE.md, or the copy setup.sh installs beside a CLAUDE.md of your own)
-const routingDoc = ['CLAUDE.md', '.agents/CLAUDE.pack.md'].map(readText).find((t) => t && /^## Routing/m.test(t));
+// Hard: the catalogue names only real skills, each once, with a known tier and category
+for (const [n, e] of Object.entries(CATALOG.skills)) {
+  if (!skills.some((s) => s.folder === n)) fail('catalogue', `the catalogue lists "${n}", which has no .agents/skills/${n}/SKILL.md`);
+  if (!TIERS[e.tier]) fail('catalogue', `${n}: unknown tier "${e.tier}"`);
+  if (!CATALOG.categories[e.category]) fail('catalogue', `${n}: unknown category "${e.category}"`);
+  if (!['on', 'off'].includes(e.default)) fail('catalogue', `${n}: default must be "on" or "off"`);
+}
+
+// Hard: routing coverage against the orchestrator (AGENTS.md)
+const routingDoc = ['AGENTS.md'].map(readText).find((t) => t && /^## Routing/m.test(t));
 if (!routingDoc) {
-  fail('routing', 'no "## Routing" section found in CLAUDE.md or .agents/CLAUDE.pack.md');
+  fail('routing', 'no "## Routing" section found in AGENTS.md');
 } else {
   const rest = routingDoc.slice(routingDoc.search(/^## Routing/m) + 3);
   const next = rest.search(/^## /m);
@@ -67,9 +74,9 @@ if (!routingDoc) {
   for (const m of routing.matchAll(/`([a-z0-9]+(?:-[a-z0-9]+)+)`/g)) if (!names.has(m[1])) fail('routing', `the orchestrator routes to "${m[1]}", which is not a skill`);
 }
 
-// Soft: tier balance
-for (const [tier, n] of Object.entries(fresh.tiers)) {
-  if (n / skills.length > T.maxTierShare) warn('tier-balance', `tier ${tier} holds ${n} of ${skills.length} skills (${pct(n / skills.length)}; the limit is ${pct(T.maxTierShare)})`);
+// Soft: category balance
+for (const [cat, n] of Object.entries(fresh.categories)) {
+  if (n / skills.length > T.maxCategoryShare) warn('category-balance', `category ${cat} holds ${n} of ${skills.length} skills (${pct(n / skills.length)}; the limit is ${pct(T.maxCategoryShare)})`);
 }
 
 // Soft: trigger-term overlap between skills that do not exclude each other
@@ -131,7 +138,7 @@ if (!Array.isArray(cases) || !cases.length) {
   }
   const n = cases.filter((x) => names.has(x.expect)).length || 1;
   info.push(`trigger accuracy (lexical proxy): ${pct(top1 / n)} top-1, ${pct(top3 / n)} top-3 over ${n} cases`);
-  if (top1 / n < T.minTriggerAccuracy) warn('triggers', `top-1 accuracy ${pct(top1 / n)} is below ${pct(T.minTriggerAccuracy)}. Misrouted: ${misses.slice(0, 5).join('; ')}`);
+  if (top1 / n < T.minTriggerAccuracy) fail('triggers', `top-1 accuracy ${pct(top1 / n)} is below ${pct(T.minTriggerAccuracy)}. Misrouted: ${misses.slice(0, 5).join('; ')}`);
   for (const m of misses) info.push(`misrouted: ${m}`);
 }
 

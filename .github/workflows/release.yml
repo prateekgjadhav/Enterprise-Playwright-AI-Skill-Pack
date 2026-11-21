@@ -1,0 +1,51 @@
+# Signs a pack release. The release identity is content, not a number: the sha256 of skills.lock.json. On every
+# push to main that changes pack files this workflow checks the committed lock is current, signs it keylessly with
+# the workflow's OIDC identity, attests build provenance and publishes the archive as release pack-<digest12>.
+# No version numbers, no changelog, no release notes beyond the digest. Pack repository only (not installed).
+name: release
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["skills.lock.json.sigstore.json"]
+permissions: { contents: read }
+concurrency: { group: release, cancel-in-progress: false }
+jobs:
+  sign:
+    runs-on: ubuntu-24.04
+    environment: release
+    permissions: { contents: write, id-token: write, attestations: write }
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443 api.github.com:443 uploads.github.com:443 registry.npmjs.org:443
+            fulcio.sigstore.dev:443 rekor.sigstore.dev:443 tuf-repo-cdn.sigstore.dev:443 token.actions.githubusercontent.com:443
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v5 # pin: renovate
+        with: { node-version-file: .nvmrc }
+      - uses: sigstore/cosign-installer@v3 # pin: renovate
+      - name: The committed lock and guide are current
+        run: |
+          node scripts/build-lock.mjs
+          git diff --exit-code skills.lock.json || { echo "skills.lock.json is stale: run node scripts/build-lock.mjs in the pull request"; exit 1; }
+          node scripts/gen-docs.mjs --check
+      - id: digest
+        run: echo "short=$(node -e "console.log(require('./skills.lock.json').digest.slice(0,12))")" >> "$GITHUB_OUTPUT"
+      - name: Sign the lock (keyless)
+        run: cosign sign-blob skills.lock.json --bundle skills.lock.json.sigstore.json --yes
+      - name: Archive and SBOM
+        run: |
+          git archive --format=zip --prefix=enterprise-playwright-ai-skill-pack/ -o pack.zip HEAD
+          zip -q -j pack.zip skills.lock.json.sigstore.json
+          mv pack.zip "pack-${{ steps.digest.outputs.short }}.zip"
+          npm sbom --sbom-format cyclonedx --package-lock-only > sbom.cdx.json || echo '{}' > sbom.cdx.json
+      - uses: actions/attest-build-provenance@v2 # pin: renovate
+        with: { subject-path: "pack-${{ steps.digest.outputs.short }}.zip,skills.lock.json,sbom.cdx.json" }
+      - name: Publish pack-<digest12>
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          gh release create "pack-${{ steps.digest.outputs.short }}" --target "$GITHUB_SHA" --title "pack-${{ steps.digest.outputs.short }}" \
+            --notes "Lock digest $(node -e "console.log(require('./skills.lock.json').digest)")" \
+            "pack-${{ steps.digest.outputs.short }}.zip" skills.lock.json skills.lock.json.sigstore.json sbom.cdx.json

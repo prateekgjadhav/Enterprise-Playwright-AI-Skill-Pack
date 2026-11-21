@@ -1,0 +1,9 @@
+name: regression
+on:
+  schedule:
+    - cron: '0 2 * * *'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx playwright test --grep @smoke

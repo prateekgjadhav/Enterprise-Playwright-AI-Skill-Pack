@@ -1,32 +1,15 @@
-import playwright from 'eslint-plugin-playwright';
 import tseslint from 'typescript-eslint';
+import qa from './eslint/qa-rules.mjs';
+
+const QA = Object.fromEntries(Object.keys(qa.rules).map((r) => [`qa/${r}`, 'error']));
 
 export default [
+  { ignores: ['node_modules/**', 'rag/**', 'scripts/**', 'hooks/**', 'eslint/**', 'evals/**', 'reports/**', 'test-results/**', 'playwright-report/**', 'blob-report/**', 'dist/**'] },
   ...tseslint.configs.recommended,
-  playwright.configs['flat/recommended'],
   {
-    files: ['src/**/*.ts', 'tests/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: "CallExpression[callee.property.name='locator'] > Literal[value=/^(xpath=|\\/\\/)/]",
-          message: 'No XPath locators — use role/label/test-id (locator-strategy).'
-        }
-      ]
-    }
+    linterOptions: { noInlineConfig: true, reportUnusedDisableDirectives: 'error' },
+    plugins: { qa },
+    files: ['src/**/*.ts', 'tests/**/*.ts', 'playwright.config.ts'],
+    rules: QA,
   },
-  {
-    files: ['tests/**/*.ts', 'tests/**/*.spec.ts'],
-    rules: {
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: "NewExpression[callee.name=/Page$/]",
-          message: 'No new …Page() in specs — inject via fixtures.'
-        }
-      ]
-    }
-  }
 ];

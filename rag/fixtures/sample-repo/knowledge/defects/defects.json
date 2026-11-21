@@ -1,0 +1,8 @@
+[
+  { "id": "DEF-201", "title": "Coupon discount rounded on the gross price", "status": "closed", "severity": "major",
+    "requirement": "PROJ-101", "tests": ["tests/e2e/checkout/coupons.spec.ts::PROJ-101 AC1 applying a valid coupon reduces the cart total"],
+    "rca": "RCA-201", "description": "With an item discount and a coupon together, the coupon was calculated on the gross price, so the total was too low by a few cents." },
+  { "id": "DEF-202", "title": "Sign in times out behind the cookie overlay", "status": "closed", "severity": "minor",
+    "requirement": "PROJ-102", "signature": "TimeoutError waiting for getByRole('button', { name: 'Sign in' })",
+    "description": "The cookie consent overlay covered the sign in button on first visit, so the click timed out intermittently." }
+]

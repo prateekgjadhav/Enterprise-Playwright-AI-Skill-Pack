@@ -1,0 +1,189 @@
+# Hardened CI. Actions are referenced by tag here and pinned to full commit SHAs (tag kept as a comment) by
+# Renovate's helpers:pinGitHubActionDigests or `pinact run` before first merge; check-pins fails until they are.
+name: ci
+on:
+  pull_request: {}
+  push: { branches: [main] }
+permissions: { contents: read }
+concurrency: { group: ci-${{ github.ref }}, cancel-in-progress: true }
+
+jobs:
+  pack-integrity:
+    runs-on: ubuntu-24.04
+    outputs:
+      configured: ${{ steps.cfg.outputs.configured }}
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443 api.github.com:443 codeload.github.com:443 objects.githubusercontent.com:443
+            registry.npmjs.org:443 tuf-repo-cdn.sigstore.dev:443 rekor.sigstore.dev:443 fulcio.sigstore.dev:443
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false, fetch-depth: 0 }
+      - uses: actions/setup-node@v5 # pin: renovate
+        with: { node-version-file: .nvmrc }
+      - uses: sigstore/cosign-installer@v3 # pin: renovate
+      - uses: open-policy-agent/setup-opa@v2 # pin: renovate
+      - name: Lock and signature
+        env:
+          QA_RELEASE_IDENTITY: ${{ vars.QA_RELEASE_IDENTITY }}
+        run: |
+          node scripts/verify-lock.mjs
+          if [ "${{ github.event_name }}" = "pull_request" ] && ! git diff --quiet "origin/${{ github.base_ref }}" -- skills.lock.json; then
+            echo "skills.lock.json changes in this pull request: release.yml signs the new lock after merge."
+          else
+            test -n "$QA_RELEASE_IDENTITY" || { echo "vars.QA_RELEASE_IDENTITY is not set (fail closed)"; exit 1; }
+            cosign verify-blob skills.lock.json --bundle skills.lock.json.sigstore.json \
+              --certificate-identity "$QA_RELEASE_IDENTITY" --certificate-oidc-issuer https://token.actions.githubusercontent.com
+          fi
+      - name: Skills, prompts, docs and policy files
+        run: |
+          node scripts/check-skills.mjs
+          node scripts/check-allowed-tools.mjs
+          node scripts/skill-scan.mjs
+          node scripts/check-prompts.mjs
+          node scripts/gen-docs.mjs --check
+          node scripts/secrets-scan.mjs
+          node scripts/check-gateway.mjs
+          node scripts/check-telemetry-contract.mjs
+          node scripts/egress-list.mjs --check
+          node scripts/check-pins.mjs
+      - name: Policy
+        run: |
+          opa test policy/ -v
+          node scripts/policy-input.mjs --out .agents/out/policy-input.json
+          test "$(opa eval --format raw --data policy --input .agents/out/policy-input.json 'data.qa.deny')" = "[]"
+      - name: Pack self-tests
+        run: node --test rag/test/*.test.mjs scripts/test/*.test.mjs scripts/self-healing/heal.test.mjs
+      - id: cfg
+        run: echo "configured=$(node -e "console.log((require('./.agents/qa.config.json').environments||[]).length>0)")" >> "$GITHUB_OUTPUT"
+
+  verify-code:
+    needs: pack-integrity
+    if: needs.pack-integrity.outputs.configured == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with: { egress-policy: block, allowed-endpoints: "github.com:443 registry.npmjs.org:443" }
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v5 # pin: renovate
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: npm audit signatures
+      - run: npm run verify:code
+      - run: node scripts/mcp-pin.mjs --check
+
+  e2e:
+    needs: verify-code
+    runs-on: ubuntu-24.04
+    environment: e2e
+    permissions: { contents: read, id-token: write }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.0-noble" } # pin: renovate adds @sha256 digest
+    strategy:
+      fail-fast: false
+      matrix: { browser: [chromium, firefox, webkit], shard: [1, 2, 3, 4] }
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with:
+          egress-policy: block
+          # environment hosts are added by egress-policy (node scripts/egress-list.mjs --check verifies them)
+          allowed-endpoints: >
+            github.com:443 registry.npmjs.org:443 token.actions.githubusercontent.com:443
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - run: npm ci --ignore-scripts
+      - id: provider
+        run: echo "name=$(node -e "console.log(require('./.agents/qa.config.json').secrets.provider)")" >> "$GITHUB_OUTPUT"
+      # Secret stores through OIDC federation: no long-lived credentials in the repository or the workflow.
+      - if: steps.provider.outputs.name == 'vault'
+        uses: hashicorp/vault-action@v3 # pin: renovate
+        with: { url: "${{ vars.VAULT_ADDR }}", method: jwt, role: "${{ vars.VAULT_ROLE }}", exportToken: true, secrets: "" }
+      - if: steps.provider.outputs.name == 'aws-sm'
+        uses: aws-actions/configure-aws-credentials@v4 # pin: renovate
+        with: { role-to-assume: "${{ vars.AWS_ROLE_ARN }}", aws-region: "${{ vars.AWS_REGION }}" }
+      - if: steps.provider.outputs.name == 'gcp-sm'
+        uses: google-github-actions/auth@v2 # pin: renovate
+        with: { workload_identity_provider: "${{ vars.GCP_WIF_PROVIDER }}", service_account: "${{ vars.GCP_SERVICE_ACCOUNT }}" }
+      - if: steps.provider.outputs.name == 'azure-kv'
+        uses: azure/login@v2 # pin: renovate
+        with: { client-id: "${{ vars.AZURE_CLIENT_ID }}", tenant-id: "${{ vars.AZURE_TENANT_ID }}", subscription-id: "${{ vars.AZURE_SUBSCRIPTION_ID }}" }
+      - name: Tests
+        env: { CI: "true", QA_ENV: "${{ vars.QA_ENV }}", QA_CANARY_SECRET: "${{ secrets.QA_CANARY_SECRET }}" }
+        run: npx playwright test --project="${{ matrix.browser }}-*" --shard=${{ matrix.shard }}/4 --pass-with-no-tests
+      - id: scrub
+        if: success() || failure()
+        env: { QA_CANARY_SECRET: "${{ secrets.QA_CANARY_SECRET }}" }
+        run: node scripts/scrub-artifacts.mjs blob-report test-results reports && node scripts/secrets-scan.mjs blob-report test-results
+      - if: (success() || failure()) && steps.scrub.outcome == 'success'
+        uses: actions/upload-artifact@v4 # pin: renovate
+        with: { name: "blob-${{ matrix.browser }}-${{ matrix.shard }}", path: blob-report, retention-days: 7, if-no-files-found: ignore }
+
+  quarantine:
+    needs: verify-code
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    environment: e2e
+    permissions: { contents: read, id-token: write }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.0-noble" } # pin: renovate adds @sha256 digest
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with: { egress-policy: block, allowed-endpoints: "github.com:443 registry.npmjs.org:443" }
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - run: npm ci --ignore-scripts
+      - run: npx playwright test --project=quarantine --pass-with-no-tests
+        env: { CI: "true", QA_ENV: "${{ vars.QA_ENV }}" }
+      - if: success() || failure()
+        run: node scripts/scrub-artifacts.mjs test-results blob-report
+
+  merge-reports:
+    needs: e2e
+    if: always() && needs.e2e.result != 'skipped'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with: { egress-policy: block, allowed-endpoints: "github.com:443 api.github.com:443 registry.npmjs.org:443" }
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v5 # pin: renovate
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@v5 # pin: renovate
+        with: { pattern: "blob-*", path: all-blob, merge-multiple: true }
+      - run: npx playwright merge-reports --reporter html,junit all-blob
+      - run: node scripts/scrub-artifacts.mjs playwright-report && node scripts/secrets-scan.mjs playwright-report
+      - uses: actions/upload-artifact@v4 # pin: renovate
+        with: { name: html-report, path: playwright-report, retention-days: 7 }
+
+  eval-gate:
+    needs: pack-integrity
+    runs-on: ubuntu-24.04
+    permissions: { contents: read, id-token: write }
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with:
+          egress-policy: block
+          # + the model gateway host when vars.QA_GATEWAY_CONFIGURED is true (egress-policy)
+          allowed-endpoints: >
+            github.com:443 pypi.org:443 files.pythonhosted.org:443 registry.npmjs.org:443
+            token.actions.githubusercontent.com:443 pipelines.actions.githubusercontent.com:443
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v5 # pin: renovate
+        with: { node-version-file: .nvmrc }
+      - name: Deterministic AI gates (no model)
+        run: |
+          node rag/cli.mjs ingest
+          node rag/cli.mjs bench --write
+          node rag/cli.mjs kpi --write
+      - name: LLM-judged gates (pinned judge through the gateway)
+        if: vars.QA_GATEWAY_CONFIGURED == 'true'
+        env: { QA_GATEWAY_TOKEN_AUDIENCE: "${{ vars.QA_GATEWAY_AUDIENCE }}" }
+        run: |
+          pip install --require-hashes -r evals/requirements.txt
+          export QA_GATEWAY_TOKEN="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=$QA_GATEWAY_TOKEN_AUDIENCE" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).value))")"
+          python3 evals/deepeval/run_evals.py
+          python3 evals/ragas/run_ragas.py
+      - run: node scripts/ai-release-gate.mjs

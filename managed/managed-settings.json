@@ -1,0 +1,211 @@
+{
+  "allowManagedPermissionRulesOnly": true,
+  "allowManagedHooksOnly": true,
+  "allowManagedMcpServersOnly": true,
+  "allowedMcpServers": [
+    {
+      "serverName": "qa-knowledge"
+    },
+    {
+      "serverName": "playwright-test"
+    }
+  ],
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Edit(./src/**)",
+      "Write(./src/**)",
+      "Edit(./tests/**)",
+      "Write(./tests/**)",
+      "Write(./.agents/out/**)",
+      "Bash(npm run verify)",
+      "Bash(npm run verify:pack)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx eslint:*)",
+      "Bash(npx playwright test --list)",
+      "Bash(npx playwright test --list:*)",
+      "Bash(git status)",
+      "Bash(git ls-files:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git diff --name-only:*)",
+      "Bash(node scripts/verify-lock.mjs:*)",
+      "Bash(node scripts/check-skills.mjs:*)",
+      "Bash(node scripts/skill-scan.mjs:*)",
+      "Bash(node scripts/check-allowed-tools.mjs:*)",
+      "Bash(node scripts/validate-config.mjs:*)",
+      "Bash(node scripts/check-pins.mjs:*)",
+      "Bash(node scripts/secrets-scan.mjs:*)",
+      "Bash(node scripts/classify-context.mjs:*)",
+      "Bash(node scripts/budget-status.mjs:*)",
+      "Bash(node scripts/check-gateway.mjs:*)",
+      "Bash(node scripts/egress-list.mjs:*)",
+      "Bash(node scripts/mcp-pin.mjs:*)",
+      "Bash(node scripts/policy-input.mjs:*)",
+      "Bash(node scripts/check-telemetry-contract.mjs:*)",
+      "Bash(node scripts/verify-attestation.mjs:*)",
+      "Bash(node scripts/scrub-artifacts.mjs:*)",
+      "Bash(node /opt/qa-pack/hooks/verify-scope.mjs --check:*)",
+      "Bash(node rag/cli.mjs context:*)",
+      "Bash(node rag/cli.mjs search:*)",
+      "Bash(node rag/cli.mjs scenarios:*)",
+      "Bash(node rag/cli.mjs coverage:*)",
+      "Bash(node rag/cli.mjs trace:*)",
+      "Bash(node rag/cli.mjs impact:*)",
+      "Bash(node rag/cli.mjs status)",
+      "Bash(node rag/cli.mjs guard:*)",
+      "Bash(node rag/cli.mjs plan:*)",
+      "Bash(opa eval:*)",
+      "Bash(cosign verify-blob:*)",
+      "Bash(gh attestation verify:*)",
+      "Bash(npm audit signatures)",
+      "Bash(npm sbom:*)"
+    ],
+    "ask": [
+      "Edit(./.agents/**)",
+      "Write(./.agents/**)",
+      "Edit(./AGENTS.md)",
+      "Edit(./.github/workflows/**)",
+      "Edit(./playwright.config.ts)",
+      "Edit(./governance/waivers.yaml)",
+      "Edit(./governance/quarantine.yaml)",
+      "Edit(./docs/**)",
+      "Edit(./gateway/routes.json)",
+      "Edit(./telemetry/**)",
+      "Write(./reports/security/**)",
+      "Bash(npx playwright test:*)",
+      "Bash(npx playwright merge-reports:*)",
+      "Bash(node scripts/self-healing/heal.mjs:*)",
+      "Bash(node scripts/gen-docs.mjs:*)",
+      "Bash(node rag/cli.mjs memory:*)",
+      "Bash(node rag/cli.mjs bench:*)",
+      "Bash(node rag/cli.mjs kpi:*)",
+      "Bash(node scripts/ai-release-gate.mjs:*)",
+      "Bash(node scripts/ai-ops-dashboard.mjs:*)",
+      "Bash(python3 evals/deepeval/run_evals.py:*)",
+      "Bash(python3 evals/ragas/run_ragas.py:*)",
+      "Bash(gh workflow run approve.yml:*)",
+      "Bash(gh workflow run update-baselines.yml:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git switch -c:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./.auth/**)",
+      "Read(./secrets/**)",
+      "Read(./.agents/rag-index/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gcloud/**)",
+      "Edit(./.claude/settings.json)",
+      "Edit(./.claude/settings.local.json)",
+      "Edit(./skills.lock.json)",
+      "Edit(./skills.lock.json.sigstore.json)",
+      "Edit(./mcp.lock.json)",
+      "Edit(./policy/**)",
+      "Edit(./hooks/**)",
+      "Edit(./managed/**)",
+      "Edit(./governance/approvals/**)",
+      "Edit(./governance/scopes/**)",
+      "Edit(./governance/revoked-digests.txt)",
+      "Edit(./.github/CODEOWNERS)",
+      "Write(./policy/**)",
+      "Write(./hooks/**)",
+      "Write(./managed/**)",
+      "Write(./governance/approvals/**)",
+      "Write(./governance/scopes/**)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(printenv:*)",
+      "Bash(env)",
+      "Bash(set)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(rm -rf:*)",
+      "Bash(npm install:*)",
+      "Bash(npx playwright test --update-snapshots:*)",
+      "WebFetch"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "network": {
+      "allowManagedDomainsOnly": true,
+      "allowedDomains": [
+        "<filled by MDM from qa.config environments[].hosts>",
+        "<model gateway host>",
+        "<knowledge service host>",
+        "registry.npmjs.org"
+      ]
+    }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob|Bash|Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /opt/qa-pack/hooks/deny-secret-read.mjs"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /opt/qa-pack/hooks/verify-scope.mjs"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /opt/qa-pack/hooks/governance-check.mjs",
+            "timeout": 180
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__.*|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /opt/qa-pack/hooks/context-firewall.mjs"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /opt/qa-pack/hooks/stop-gate.mjs",
+            "timeout": 900
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "<your OTLP collector>",
+    "OTEL_SEMCONV_STABILITY_OPT_IN": "gen_ai_latest_experimental",
+    "OTEL_LOG_USER_PROMPTS": "0"
+  }
+}

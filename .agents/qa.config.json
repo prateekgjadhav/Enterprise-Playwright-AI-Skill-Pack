@@ -1,21 +1,36 @@
 {
+  "$schema": "./qa.config.schema.json",
   "project": {
-    "name": "enterprise-playwright-suite",
-    "environments": ["dev", "staging"],
-    "defaultEnv": "staging",
-    "baseUrl": "https://demoqa.com",
-    "protectedHosts": ["production.example.com"]
+    "name": "",
+    "owners": []
   },
+  "environments": [],
+  "defaultEnvironment": "",
+  "productionHosts": [],
   "framework": {
     "root": ".",
-    "playwrightVersion": "1.49.1",
     "testIdAttribute": "data-testid",
     "fixturesImport": "@fixtures",
     "pagesDir": "src/pages",
     "modulesDir": "src/modules",
-    "priorityTags": ["@P0", "@P1", "@P2"],
-    "suiteTags": ["@smoke", "@regression"],
-    "style": "spec"
+    "dataDir": "src/data",
+    "priorityTags": [
+      "@P0",
+      "@P1",
+      "@P2"
+    ],
+    "suiteTags": [
+      "@smoke",
+      "@regression"
+    ],
+    "roles": []
+  },
+  "secrets": {
+    "provider": "",
+    "refs": {}
+  },
+  "skills": {
+    "enabled": []
   },
   "requirements": {
     "adapter": "files",
@@ -23,7 +38,9 @@
     "acceptanceCriteriaField": null
   },
   "knowledge": {
-    "mcpServer": null,
+    "mcpServer": "qa-knowledge",
+    "endpoint": "",
+    "audience": "",
     "minScore": 0.75,
     "collections": {
       "plans": "test-plans",
@@ -32,15 +49,85 @@
       "rca": "rca"
     }
   },
-  "ci": {
-    "platform": "github-actions"
+  "ai": {
+    "gateway": {
+      "baseUrl": "",
+      "routesFile": "gateway/routes.json"
+    },
+    "judgeModel": "",
+    "budgets": {
+      "sessionTokens": 0,
+      "dailyTokens": 0
+    }
+  },
+  "rag": {
+    "security": {
+      "acl": {
+        "defaultPrincipals": [
+          "role:qa"
+        ],
+        "principalsEnv": "QA_RAG_PRINCIPALS",
+        "rules": [
+          {
+            "match": "security/**",
+            "allow": [
+              "role:security"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "aiGates": {
+    "required": [
+      "retrieval",
+      "kpis"
+    ],
+    "retrieval": {
+      "recall@5": 0.8,
+      "mrr": 0.6,
+      "scenarioAccuracy": 0.9
+    },
+    "kpis": {
+      "hallucination_rate": {
+        "max": 0.05
+      },
+      "assertion_quality": 0.7,
+      "locator_quality": 0.75,
+      "flakiness_prediction": {
+        "max": 0.3
+      }
+    },
+    "deepeval": {
+      "averageScore": 0.85,
+      "hallucination": {
+        "max": 0.05
+      }
+    },
+    "ragas": {
+      "faithfulness": 0.9,
+      "context_precision": 0.8,
+      "context_recall": 0.8,
+      "answer_relevancy": 0.8
+    }
+  },
+  "telemetry": {
+    "otlpEndpoint": "",
+    "captureContent": false
   },
   "gates": {
-    "fileDefects": "ask",
-    "knowledgeWrite": "ask",
-    "dashboardPush": "ask",
-    "securityScan": "ask",
-    "updateBaselines": "ask",
-    "riskAcceptance": "ask"
+    "knowledgeWrite": "ask"
+  },
+  "skillEvaluation": {
+    "minTriggerAccuracy": 0.95,
+    "overlapThreshold": 0.5,
+    "maxCategoryShare": 0.3,
+    "failOnSoft": false
+  },
+  "healing": {
+    "minConfidence": 0.8,
+    "results": "reports/results.json",
+    "snapshots": ".agents/discovery/pages",
+    "out": "reports/healing"
   }
 }

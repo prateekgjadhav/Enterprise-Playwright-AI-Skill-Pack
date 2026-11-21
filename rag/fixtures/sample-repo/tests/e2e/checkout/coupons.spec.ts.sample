@@ -1,0 +1,17 @@
+import { test, expect } from '@fixtures';
+
+test.describe('Checkout coupons', () => {
+  test('PROJ-101 AC1 applying a valid coupon reduces the cart total', { tag: ['@P0', '@checkout', '@smoke'] }, async ({ cartPage, checkoutModule }) => {
+    await checkoutModule.seedCartAndOpen(2);
+    await cartPage.applyCoupon('SAVE10');
+    await expect(cartPage.discountRow).toBeVisible();
+    await expect(cartPage.total).toHaveText('£90.00');
+  });
+
+  test('PROJ-101 AC2 removing the coupon restores the cart total', { tag: ['@P1', '@checkout', '@regression'] }, async ({ cartPage, checkoutModule }) => {
+    await checkoutModule.seedCartAndOpen(2);
+    await cartPage.applyCoupon('SAVE10');
+    await cartPage.removeCoupon();
+    await expect(cartPage.total).toHaveText('£100.00');
+  });
+});

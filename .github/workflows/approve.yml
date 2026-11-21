@@ -1,0 +1,53 @@
+# Identity-bound approvals for gated (T3) actions. A requester dispatches it; a reviewer approves the deployment to
+# the protected "approvals" environment (required reviewers, prevent self-review). The workflow records requester and
+# approver, refuses self-approval, writes governance/approvals/<id>.json, signs it keylessly and pushes both files
+# to the requester's branch. scripts/verify-attestation.mjs and the OPA policy check them.
+name: approve
+on:
+  workflow_dispatch:
+    inputs:
+      action: { description: "waiver | quarantine | baseline | knowledge-promotion | enable-skill | defect-filing | dashboard-publish | risk-acceptance | budget-increase", required: true }
+      subject: { description: "path (or skill name for enable-skill) being approved", required: true }
+      branch: { description: "branch that receives the attestation", required: true }
+      days: { description: "validity in days (max 90)", required: true, default: "30" }
+permissions: { contents: read }
+jobs:
+  attest:
+    runs-on: ubuntu-24.04
+    environment: approvals
+    permissions: { contents: write, id-token: write, actions: read }
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443 api.github.com:443 fulcio.sigstore.dev:443 rekor.sigstore.dev:443 tuf-repo-cdn.sigstore.dev:443
+            token.actions.githubusercontent.com:443
+      - uses: actions/checkout@v5 # pin: renovate
+        with: { ref: "${{ inputs.branch }}" }
+      - uses: sigstore/cosign-installer@v3 # pin: renovate
+      - name: Write the statement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTION: ${{ inputs.action }}
+          SUBJECT: ${{ inputs.subject }}
+          DAYS: ${{ inputs.days }}
+        run: |
+          case "$ACTION" in waiver|quarantine|baseline|knowledge-promotion|enable-skill|defect-filing|dashboard-publish|risk-acceptance|budget-increase) ;; *) echo "unknown action"; exit 1;; esac
+          [ "$DAYS" -ge 1 ] && [ "$DAYS" -le 90 ] || { echo "days must be 1-90"; exit 1; }
+          approver="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" --jq '.[0].user.login')"
+          requester="$GITHUB_TRIGGERING_ACTOR"
+          [ -n "$approver" ] && [ "$approver" != "$requester" ] || { echo "self-approval or missing reviewer"; exit 1; }
+          id="$(echo "$ACTION-$SUBJECT-$GITHUB_RUN_ID" | sha256sum | cut -c1-12)"
+          digest=""; [ -f "$SUBJECT" ] && digest="$(sha256sum "$SUBJECT" | cut -d' ' -f1)"; [ -n "$digest" ] || digest="$(printf '%s' "$SUBJECT" | sha256sum | cut -d' ' -f1)"
+          expires="$(date -u -d "+$DAYS days" +%Y-%m-%dT%H:%M:%SZ)"
+          mkdir -p governance/approvals
+          node -e "require('fs').writeFileSync('governance/approvals/$id.json', JSON.stringify({id:'$id',action:process.env.ACTION,subject:process.env.SUBJECT,digest:'$digest',requester:'$requester',approver:'$approver',run:'$GITHUB_RUN_ID',expires:'$expires'},null,2)+'\n')"
+          cosign sign-blob "governance/approvals/$id.json" --bundle "governance/approvals/$id.sigstore.json" --yes
+          echo "ID=$id" >> "$GITHUB_ENV"
+      - name: Push to the requester's branch
+        run: |
+          git config user.name "qa-approvals[bot]"; git config user.email "qa-approvals@users.noreply.github.com"
+          git add "governance/approvals/$ID.json" "governance/approvals/$ID.sigstore.json"
+          git commit -m "chore(approval): $ID ${{ inputs.action }} ${{ inputs.subject }}" -m "Agent-Authored: false"
+          git push origin "HEAD:${{ inputs.branch }}"

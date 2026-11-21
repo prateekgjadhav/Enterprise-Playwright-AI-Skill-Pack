@@ -1,0 +1,15 @@
+{
+  "semconv": "OpenTelemetry GenAI semantic conventions (Development status); opt in with OTEL_SEMCONV_STABILITY_OPT_IN=gen_ai_latest_experimental",
+  "captureContent": false,
+  "spans": {
+    "execute_tool": {
+      "namePattern": "^execute_tool qa-knowledge\\.[a-z_]+$",
+      "required": ["gen_ai.operation.name", "gen_ai.tool.name", "qa.skill.name", "qa.data_class"],
+      "forbidden": ["qa.query", "qa.text", "qa.content", "qa.prompt", "qa.completion", "gen_ai.input.messages", "gen_ai.output.messages"]
+    }
+  },
+  "agentHost": {
+    "note": "Agent hosts emit their own invoke_agent and chat spans; managed settings point them at the same OTLP endpoint.",
+    "required": ["gen_ai.operation.name", "gen_ai.provider.name", "gen_ai.request.model", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens"]
+  }
+}

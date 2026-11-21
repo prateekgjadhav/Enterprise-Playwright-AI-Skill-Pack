@@ -1,683 +1,1057 @@
 {
-  "generatedBy": "scripts/build-skill-manifest.mjs",
-  "pack": "enterprise-playwright-ai-skill-pack",
   "skillsDir": ".agents/skills",
-  "count": 47,
+  "count": 64,
   "tiers": {
-    "1": 6,
-    "2": 6,
-    "3": 29,
-    "4": 6
+    "T0": 20,
+    "T1": 29,
+    "T2": 5,
+    "T3": 6,
+    "T4": 4
+  },
+  "categories": {
+    "AIOps": 4,
+    "Author": 12,
+    "Design": 2,
+    "Exec": 10,
+    "Gov": 8,
+    "Meta": 8,
+    "Quality": 6,
+    "Sec": 8,
+    "SecTest": 6
   },
   "skills": [
     {
-      "folder": "accessibility-testing",
-      "path": ".agents/skills/accessibility-testing/SKILL.md",
-      "name": "accessibility-testing",
+      "folder": "accessibility-audit",
+      "path": ".agents/skills/accessibility-audit/SKILL.md",
+      "name": "accessibility-audit",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "WCAG accessibility validation with Playwright: automated axe-core scans scoped to WCAG 2.2 A and AA, keyboard navigation and focus order tests, accessible-name checks with aria snapshots, and reporting of violations with impact and remediation. Use whenever the user asks for accessibility, a11y or WCAG tests, keyboard-only navigation checks, screen reader or ARIA checks, focus management, colour contrast or an accessibility audit of a page. Not for visual regression (visual-testing) or general functional tests (playwright-test-generation).",
-      "useWhen": "the user asks for accessibility, a11y or WCAG tests, keyboard-only navigation checks, screen reader or ARIA checks, focus management, colour contrast or an accessibility audit of a page.",
-      "notFor": "visual regression (visual-testing) or general functional tests (playwright-test-generation).",
+      "tier": "T2",
+      "category": "Quality",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/a11y/**) Write(tests/a11y/**) Bash(npx playwright test --grep @a11y:*)",
+      "description": "Runs axe-core WCAG 2.2 AA checks through @axe-core/playwright on allowlisted pages and flows, fails on serious and critical violations and reports each by rule, impact and element. Use whenever someone asks for accessibility, WCAG, screen reader or keyboard checks, or an accessibility regression must be caught in CI. Not for structural snapshots (aria-snapshot-testing), visual comparisons (visual-snapshot-authoring), or manual usability review.",
+      "useWhen": "someone asks for accessibility, WCAG, screen reader or keyboard checks, or an accessibility regression must be caught in CI.",
+      "notFor": "structural snapshots (aria-snapshot-testing), visual comparisons (visual-snapshot-authoring), or manual usability review.",
       "notForSkills": [
-        "playwright-test-generation",
-        "visual-testing"
+        "aria-snapshot-testing",
+        "visual-snapshot-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "agent-telemetry",
-      "path": ".agents/skills/agent-telemetry/SKILL.md",
-      "name": "agent-telemetry",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Observability for the pack's own agent runs (not the system under test): emit OpenTelemetry spans for each orchestration step, skill and tool call, trace the agent's LLM calls (model, latency, tokens, cost, routing decision, outcome) in a Langfuse-style view, record verify/gate results and evidence links, and expose Prometheus metrics for run duration, pass rate, cost and gate blocks. Use whenever the user asks to observe, trace, debug, measure or audit the agent itself — why a skill was chosen, how long a run took, token/cost tracking, LLM-call tracing, or a dashboard of agent behaviour. Not for observing the application under test (observability-monitoring), test result reporting (reporting-analytics), or test-flakiness (regression-optimization). Telemetry records process and decisions with redaction; it never stores secrets, credentials or target data.",
-      "useWhen": "the user asks to observe, trace, debug, measure or audit the agent itself — why a skill was chosen, how long a run took, token/cost tracking, LLM-call tracing, or a dashboard of agent behaviour.",
-      "notFor": "observing the application under test (observability-monitoring), test result reporting (reporting-analytics), or test-flakiness (regression-optimization). Telemetry records process and decisions with redaction; it never stores secrets, credentials or target data.",
-      "notForSkills": [
-        "observability-monitoring",
-        "regression-optimization",
-        "reporting-analytics"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "What to emit",
-        "Templates",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 2
-    },
-    {
-      "folder": "api-security-review",
-      "path": ".agents/skills/api-security-review/SKILL.md",
-      "name": "api-security-review",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "API-layer security checks with Playwright's request API, aligned to the OWASP API Security Top 10, for services the team owns and may test: object- and function-level authorisation (BOLA / BFLA), unrestricted resource consumption (rate limits), mass assignment, excessive data exposure, security misconfiguration, and token handling at the endpoint. Use whenever the user asks for an API security assessment, OWASP API Top 10 checks, BOLA/IDOR at the API, broken function-level authorisation, API rate-limit or mass-assignment checks, or a \"Playwright API security tester\". Not for UI/browser auth flows (auth-access-control-review), API contracts and schemas (api-testing), or JWT internals (jwt-validation-review). Asserts API controls hold; it does not exploit them or exfiltrate data.",
-      "useWhen": "the user asks for an API security assessment, OWASP API Top 10 checks, BOLA/IDOR at the API, broken function-level authorisation, API rate-limit or mass-assignment checks, or a \"Playwright API security tester\".",
-      "notFor": "UI/browser auth flows (auth-access-control-review), API contracts and schemas (api-testing), or JWT internals (jwt-validation-review). Asserts API controls hold; it does not exploit them or exfiltrate data.",
-      "notForSkills": [
-        "api-testing",
-        "auth-access-control-review",
-        "jwt-validation-review"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Coverage map (OWASP API Top 10)",
-        "Spec template",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "api-testing",
-      "path": ".agents/skills/api-testing/SKILL.md",
-      "name": "api-testing",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "API, contract and schema validation testing with Playwright's request API: per-role API contexts, status-before-body assertions, Zod schema validation, negative and authorisation cases, and API-based setup for UI tests. Use whenever the user asks to test REST or HTTP endpoints, validate responses or schemas, check contracts between services, test API authentication or permissions at the endpoint level, or convert RestAssured, requests or Robot RequestsLibrary tests. Not for load testing (performance-testing), OWASP attack patterns (api-security-review) or UI flows (playwright-test-generation).",
-      "useWhen": "the user asks to test REST or HTTP endpoints, validate responses or schemas, check contracts between services, test API authentication or permissions at the endpoint level, or convert RestAssured, requests or Robot RequestsLibrary tests.",
-      "notFor": "load testing (performance-testing), OWASP attack patterns (api-security-review) or UI flows (playwright-test-generation).",
-      "notForSkills": [
-        "api-security-review",
-        "performance-testing",
-        "playwright-test-generation"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Fixture",
-        "Spec template",
-        "Coverage per endpoint",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 2
-    },
-    {
-      "folder": "auth-access-control-review",
-      "path": ".agents/skills/auth-access-control-review/SKILL.md",
-      "name": "auth-access-control-review",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Authentication, authorisation and session security checks with Playwright, for applications the team owns and may test: access control and IDOR (403/404), privilege-escalation prevention, session and cookie flags, login rate limiting and lockout, logout invalidation, session renewal on login, token-leakage checks, and password-reset non-enumeration. Covers OWASP A01 and A07. Use whenever the user asks for auth tests, authorisation or permission checks, role-based access tests, IDOR, session or cookie security, MFA enforcement, brute-force protection, or a \"Playwright auth/session security tester\". Not for injection (injection-handling-review), headers and CORS (security-headers-review), or endpoint schemas (api-testing). This asserts controls hold; it does not brute-force credentials or bypass authentication.",
-      "useWhen": "the user asks for auth tests, authorisation or permission checks, role-based access tests, IDOR, session or cookie security, MFA enforcement, brute-force protection, or a \"Playwright auth/session security tester\".",
-      "notFor": "injection (injection-handling-review), headers and CORS (security-headers-review), or endpoint schemas (api-testing). This asserts controls hold; it does not brute-force credentials or bypass authentication.",
-      "notForSkills": [
-        "api-testing",
-        "injection-handling-review",
-        "security-headers-review"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Coverage map",
-        "Spec template",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "aws-security-review",
-      "path": ".agents/skills/aws-security-review/SKILL.md",
-      "name": "aws-security-review",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Read-only AWS security posture review for accounts the team owns and is authorised to assess: IAM least-privilege and MFA, public S3 and unencrypted storage, security-group exposure, CloudTrail/Config logging, KMS and secrets handling, and public database access, evaluated against the CIS AWS Benchmark and AWS best practice using read-only tooling (Prowler, ScoutSuite, or `aws` describe/get calls). Use whenever the user asks for an AWS security review or assessment, IAM review, S3 exposure check, CIS AWS benchmarking, or cloud misconfiguration findings on AWS. Not for Azure (azure-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
-      "useWhen": "the user asks for an AWS security review or assessment, IAM review, S3 exposure check, CIS AWS benchmarking, or cloud misconfiguration findings on AWS.",
-      "notFor": "Azure (azure-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
-      "notForSkills": [
-        "azure-security-review",
-        "kubernetes-security-audit",
-        "web-app-security-assessment"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Review areas (CIS AWS-aligned)",
-        "Templates",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "azure-security-review",
-      "path": ".agents/skills/azure-security-review/SKILL.md",
-      "name": "azure-security-review",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Read-only Azure security posture review for subscriptions the team owns and is authorised to assess: Entra ID and RBAC least privilege, public storage accounts and encryption, network security group exposure, Key Vault and secrets handling, diagnostic/activity logging, and Microsoft Defender for Cloud coverage, evaluated against the CIS Azure Benchmark using read-only tooling (Defender for Cloud, ScoutSuite/Prowler, `az` show/list). Use whenever the user asks for an Azure security review or assessment, Entra ID/RBAC review, storage exposure check, NSG review, CIS Azure benchmarking, or Azure misconfiguration findings. Not for AWS (aws-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
-      "useWhen": "the user asks for an Azure security review or assessment, Entra ID/RBAC review, storage exposure check, NSG review, CIS Azure benchmarking, or Azure misconfiguration findings.",
-      "notFor": "AWS (aws-security-review), Kubernetes (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration read-only; it makes no changes and exploits nothing.",
-      "notForSkills": [
-        "aws-security-review",
-        "kubernetes-security-audit",
-        "web-app-security-assessment"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Review areas (CIS Azure-aligned)",
-        "Templates",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "ci-cd-pipeline-config",
-      "path": ".agents/skills/ci-cd-pipeline-config/SKILL.md",
-      "name": "ci-cd-pipeline-config",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Creates and maintains CI/CD pipelines that run the Playwright suite and the wider quality layers on GitHub Actions, GitLab CI, Azure DevOps or Jenkins: stage ordering, sharding with blob report merging, the pinned Playwright container image, caching, secrets, artifacts, scheduled performance and security jobs, and quality gates. Use whenever the user asks to add, fix, speed up or review a pipeline, run tests in CI, shard tests, publish reports, or schedule nightly or cloud-grid runs. Not for making the tests themselves faster or less flaky (regression-optimization).",
-      "useWhen": "the user asks to add, fix, speed up or review a pipeline, run tests in CI, shard tests, publish reports, or schedule nightly or cloud-grid runs.",
-      "notFor": "making the tests themselves faster or less flaky (regression-optimization).",
-      "notForSkills": [
-        "regression-optimization"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Stage order",
-        "GitHub Actions skeleton",
-        "Platform notes",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "ci-cd-security-validation",
-      "path": ".agents/skills/ci-cd-security-validation/SKILL.md",
-      "name": "ci-cd-security-validation",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Secures the CI/CD pipeline itself for repositories the team owns: least-privilege workflow tokens, third-party actions pinned to commit SHAs, secrets only from the secret store, required security gates (SAST, dependency audit, secret scan) wired into stages, artifact/build provenance, and protection of the release path. Covers OWASP A08 (software & data integrity) for the delivery pipeline. Use whenever the user asks to secure or audit a pipeline, harden GitHub Actions / GitLab CI / Azure DevOps / Jenkins, review workflow permissions, pin actions, add security gates to CI, or protect the build/supply chain. Not for building the functional pipeline (ci-cd-pipeline-config) or scanning app dependencies in isolation (dependency-vulnerability-audit). It hardens pipeline configuration; it does not attack build systems.",
-      "useWhen": "the user asks to secure or audit a pipeline, harden GitHub Actions / GitLab CI / Azure DevOps / Jenkins, review workflow permissions, pin actions, add security gates to CI, or protect the build/supply chain.",
-      "notFor": "building the functional pipeline (ci-cd-pipeline-config) or scanning app dependencies in isolation (dependency-vulnerability-audit). It hardens pipeline configuration; it does not attack build systems.",
-      "notForSkills": [
-        "ci-cd-pipeline-config",
-        "dependency-vulnerability-audit"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Hardening checklist",
-        "Templates",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 2
-    },
-    {
-      "folder": "cloud-security-review",
-      "path": ".agents/skills/cloud-security-review/SKILL.md",
-      "name": "cloud-security-review",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Cloud-agnostic, read-only security posture review for cloud accounts the team owns and is authorised to assess, framed by the shared-responsibility model and CIS benchmarks: identity and least privilege, public storage and encryption, network exposure, logging and monitoring, secrets and key management. Routes provider specifics to aws-security-review and azure-security-review. Use whenever the user asks for a cloud security assessment or review, cloud misconfiguration findings, shared-responsibility or CIS cloud benchmarking, or multi-cloud posture — without naming a single provider, or across more than one. Not for a single provider's deep review (see aws-security-review / azure-security-review), Kubernetes (kubernetes-security-audit), containers (docker-security-review), or risk posture across every source (security-posture-management). Reviews configuration read-only; it changes and exploits nothing.",
-      "useWhen": "the user asks for a cloud security assessment or review, cloud misconfiguration findings, shared-responsibility or CIS cloud benchmarking, or multi-cloud posture — without naming a single provider, or across more than one.",
-      "notFor": "a single provider's deep review (see aws-security-review / azure-security-review), Kubernetes (kubernetes-security-audit), containers (docker-security-review), or risk posture across every source (security-posture-management). Reviews configuration read-only; it changes and exploits nothing.",
-      "notForSkills": [
-        "aws-security-review",
-        "azure-security-review",
-        "docker-security-review",
-        "kubernetes-security-audit",
-        "security-posture-management"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Provider routing",
-        "Domain checklist (provider-independent)",
-        "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
     },
     {
-      "folder": "csrf-protection-review",
-      "path": ".agents/skills/csrf-protection-review/SKILL.md",
-      "name": "csrf-protection-review",
+      "folder": "agent-plan-intake",
+      "path": ".agents/skills/agent-plan-intake/SKILL.md",
+      "name": "agent-plan-intake",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Cross-site request forgery protection checks with Playwright, for applications the team owns and may test: assert that state-changing requests require a valid anti-CSRF token, that a missing or wrong token is rejected, that session cookies use SameSite, and that unsafe methods reject cross-origin/forged requests. Covers the CSRF part of OWASP A01/A05. Use whenever the user asks for CSRF testing or analysis, anti-CSRF token checks, SameSite cookie checks, or state-changing request protection. Not for read-side access control (auth-access-control-review), header hygiene in general (security-headers-review), or server-side URL fetching (ssrf-defence-review). This asserts protections are enforced; it does not build a working CSRF attack against a victim.",
-      "useWhen": "the user asks for CSRF testing or analysis, anti-CSRF token checks, SameSite cookie checks, or state-changing request protection.",
-      "notFor": "read-side access control (auth-access-control-review), header hygiene in general (security-headers-review), or server-side URL fetching (ssrf-defence-review). This asserts protections are enforced; it does not build a working CSRF attack against a victim.",
+      "tier": "T0",
+      "category": "Design",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Write(.agents/out/**)",
+      "description": "Reviews a Markdown test plan written by the Playwright planner agent against the environment allowlist, roles, data rules and governance before anything is generated, and returns it approved or with the exact edits required. Use whenever the Playwright planner has produced or updated a plan in specs/, or someone asks whether a generated plan is safe to hand to the generator, or a plan file in specs/ must be checked before generation. Not for designing scenarios from requirements (scenario-design), writing specs (spec-authoring), or repairing failing tests (test-healing), or observing agent activity (telemetry-instrumentation).",
+      "useWhen": "the Playwright planner has produced or updated a plan in specs/, or someone asks whether a generated plan is safe to hand to the generator, or a plan file in specs/ must be checked before generation.",
+      "notFor": "designing scenarios from requirements (scenario-design), writing specs (spec-authoring), or repairing failing tests (test-healing), or observing agent activity (telemetry-instrumentation).",
       "notForSkills": [
-        "auth-access-control-review",
-        "security-headers-review",
-        "ssrf-defence-review"
+        "scenario-design",
+        "spec-authoring",
+        "telemetry-instrumentation",
+        "test-healing"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 1
-    },
-    {
-      "folder": "deepeval",
-      "path": ".agents/skills/deepeval/SKILL.md",
-      "name": "deepeval",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Evaluates the quality of the AI outputs the pack produces, using the open-source DeepEval framework (\"Pytest for LLMs\"): scores generated tests, migration conversions, defect analyses, reports and the orchestrator's skill-routing with LLM-as-judge (G-Eval), RAG, tool-use and task-completion metrics, against golden datasets, and gates regressions in CI. Use whenever the user asks to evaluate or regression-test AI/LLM output quality, score generated tests or migrations or reports, check RAG faithfulness or answer relevancy, verify tool/routing correctness, build an eval dataset of goldens, or add an LLM-quality gate to CI. Not for static skill-set checks — frontmatter, overlap, routing coverage (skill-evaluation) — or runtime telemetry of agent runs (agent-telemetry); DeepEval scores whether the outputs are good, which those two do not. Runs locally; a provider key is needed only for LLM-judge metrics.",
-      "useWhen": "the user asks to evaluate or regression-test AI/LLM output quality, score generated tests or migrations or reports, check RAG faithfulness or answer relevancy, verify tool/routing correctness, build an eval dataset of goldens, or add an LLM-quality gate to CI.",
-      "notFor": "static skill-set checks — frontmatter, overlap, routing coverage (skill-evaluation) — or runtime telemetry of agent runs (agent-telemetry); DeepEval scores whether the outputs are good, which those two do not. Runs locally; a provider key is needed only for LLM-judge metrics.",
-      "notForSkills": [
-        "agent-telemetry",
-        "skill-evaluation"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "What to evaluate (pack output → metric)",
-        "Eval modes (match the scope)",
-        "Templates",
-        "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 3
-    },
-    {
-      "folder": "defect-analysis",
-      "path": ".agents/skills/defect-analysis/SKILL.md",
-      "name": "defect-analysis",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Root cause analysis for failing Playwright tests from traces, logs, screenshots, videos and reports: reproduces the failure, reads the trace and error context, classifies it into one cause with evidence, checks for flakiness, and drafts a deduplicated defect when it's a product bug. Use whenever a test fails or is red in CI, the user shares a trace, report, screenshot or error, asks why a test failed, or wants a bug report written from a failure. Not for suite-wide flakiness programmes (regression-optimization) or performance budget breaches without a failure (performance-testing).",
-      "useWhen": "a test fails or is red in CI, the user shares a trace, report, screenshot or error, asks why a test failed, or wants a bug report written from a failure.",
-      "notFor": "suite-wide flakiness programmes (regression-optimization) or performance budget breaches without a failure (performance-testing).",
-      "notForSkills": [
-        "performance-testing",
-        "regression-optimization"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Evidence to read",
-        "Classes",
-        "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
     },
     {
-      "folder": "dependency-vulnerability-audit",
-      "path": ".agents/skills/dependency-vulnerability-audit/SKILL.md",
-      "name": "dependency-vulnerability-audit",
+      "folder": "api-security-testing",
+      "path": ".agents/skills/api-security-testing/SKILL.md",
+      "name": "api-security-testing",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Software-composition analysis for the project's dependencies, for code the team owns: finds known vulnerabilities with npm audit / OSV-Scanner (and pip-audit, etc. by ecosystem), generates a CycloneDX SBOM, triages advisories by severity and reachability, sets a fail-the-build threshold, and produces upgrade/remediation guidance. Covers OWASP A06 and the components side of A08. Use whenever the user asks to audit dependencies, scan for CVEs or vulnerable packages, generate an SBOM, or add a dependency-security gate to CI. Not for the team's own code patterns (secure-code-review), hard-coded secrets (secrets-detection), container base-image scanning (docker-security-review), or the cross-scanner CVE lifecycle, vendor SBOMs and compliance evidence (security-posture-management). Reports known advisories; it does not exploit them.",
-      "useWhen": "the user asks to audit dependencies, scan for CVEs or vulnerable packages, generate an SBOM, or add a dependency-security gate to CI.",
-      "notFor": "the team's own code patterns (secure-code-review), hard-coded secrets (secrets-detection), container base-image scanning (docker-security-review), or the cross-scanner CVE lifecycle, vendor SBOMs and compliance evidence (security-posture-management). Reports known advisories; it does not exploit them.",
+      "tier": "T4",
+      "category": "SecTest",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(tests/sec/**) Write(tests/sec/**) Bash(npx playwright test --project=security:*) Write(reports/security/**)",
+      "description": "Tests in-scope APIs under a verified scope for broken object- and function-level authorisation, mass assignment, SSRF defences using only the scope's canary callback host, file-upload validation (type, size, content) and rate limiting. Use whenever an approved scope covers an API or an API finding needs a regression guard, or an upload endpoint's validation must be checked. Not for functional API tests (api-test-authoring), UI session checks (authz-session-testing), or input injection (injection-testing), or starting an assessment or pentest (security-scope-verify), or JWT checks (authz-session-testing), or someone asking to write API tests (api-test-authoring).",
+      "useWhen": "an approved scope covers an API or an API finding needs a regression guard, or an upload endpoint's validation must be checked.",
+      "notFor": "functional API tests (api-test-authoring), UI session checks (authz-session-testing), or input injection (injection-testing), or starting an assessment or pentest (security-scope-verify), or JWT checks (authz-session-testing), or someone asking to write API tests (api-test-authoring).",
       "notForSkills": [
-        "docker-security-review",
-        "secrets-detection",
-        "secure-code-review",
-        "security-posture-management"
+        "api-test-authoring",
+        "authz-session-testing",
+        "injection-testing",
+        "security-scope-verify"
       ],
       "sections": [
+        "Gate",
         "Non-negotiables",
-        "Workflow",
-        "Templates",
-        "Triage",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "docker-security-review",
-      "path": ".agents/skills/docker-security-review/SKILL.md",
-      "name": "docker-security-review",
+      "folder": "api-test-authoring",
+      "path": ".agents/skills/api-test-authoring/SKILL.md",
+      "name": "api-test-authoring",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Container image and Dockerfile security review for images the team owns: non-root user, minimal and pinned base images, no secrets baked into layers, reduced attack surface, healthchecks, and known-vulnerability scanning of the image, evaluated against the CIS Docker Benchmark and image best practice with tooling (Trivy/Grype, hadolint, Dockle). Use whenever the user asks for a Docker or container image security assessment, Dockerfile review or linting, base-image or non-root hardening, image vulnerability scanning, or CIS Docker benchmarking. Not for the orchestrator (kubernetes-security-audit), app dependencies in source (dependency-vulnerability-audit), cloud registries' IAM (cloud-security-review), or the cross-scanner CVE lifecycle (security-posture-management). It reviews build config and scans images; it does not attack running containers.",
-      "useWhen": "the user asks for a Docker or container image security assessment, Dockerfile review or linting, base-image or non-root hardening, image vulnerability scanning, or CIS Docker benchmarking.",
-      "notFor": "the orchestrator (kubernetes-security-audit), app dependencies in source (dependency-vulnerability-audit), cloud registries' IAM (cloud-security-review), or the cross-scanner CVE lifecycle (security-posture-management). It reviews build config and scans images; it does not attack running containers.",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/api/**) Write(tests/api/**) Bash(npx tsc --noEmit) Bash(npx playwright test --list)",
+      "description": "Writes API tests with Playwright's request context — relative paths on the configured API base, authentication from storage state or the secret provider, status, header and schema assertions, and setup that creates data through the API. Use whenever an endpoint needs tests, UI tests need faster API setup, or someone asks for REST or GraphQL coverage, or someone asks to write API tests for an endpoint such as orders, or a POST or GET needs validation-error tests. Not for detecting contract drift across services (contract-testing), API security testing (api-security-testing), or stubbing third parties (network-mocking).",
+      "useWhen": "an endpoint needs tests, UI tests need faster API setup, or someone asks for REST or GraphQL coverage, or someone asks to write API tests for an endpoint such as orders, or a POST or GET needs validation-error tests.",
+      "notFor": "detecting contract drift across services (contract-testing), API security testing (api-security-testing), or stubbing third parties (network-mocking).",
       "notForSkills": [
-        "cloud-security-review",
-        "dependency-vulnerability-audit",
-        "kubernetes-security-audit",
-        "security-posture-management"
+        "api-security-testing",
+        "contract-testing",
+        "network-mocking"
       ],
       "sections": [
         "Non-negotiables",
-        "Review areas (CIS Docker-aligned)",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "file-upload-security-review",
-      "path": ".agents/skills/file-upload-security-review/SKILL.md",
-      "name": "file-upload-security-review",
+      "folder": "approval-attestation",
+      "path": ".agents/skills/approval-attestation/SKILL.md",
+      "name": "approval-attestation",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "File-upload handling checks with Playwright, for applications the team owns and may test: assert that upload endpoints reject disallowed types and spoofed content-types, enforce size limits, strip or reject path-traversal filenames, store files outside the web root / non-executable, and never return executable content. Covers OWASP A05 and the upload side of A03. Use whenever the user asks for file-upload security testing or review, malicious-upload handling, content-type or extension validation, or avatar/document/attachment upload checks. Not for other injection (injection-handling-review), stored XSS in rendered content (xss-output-encoding-review), or storage IAM (cloud-security-review). This asserts dangerous uploads are rejected; it uses benign marker files and never creates a web shell or executable payload.",
-      "useWhen": "the user asks for file-upload security testing or review, malicious-upload handling, content-type or extension validation, or avatar/document/attachment upload checks.",
-      "notFor": "other injection (injection-handling-review), stored XSS in rendered content (xss-output-encoding-review), or storage IAM (cloud-security-review). This asserts dangerous uploads are rejected; it uses benign marker files and never creates a web shell or executable payload.",
+      "tier": "T3",
+      "category": "Gov",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Bash(gh workflow run approve.yml:*) Bash(node scripts/verify-attestation.mjs:*)",
+      "description": "Obtains an identity-bound, signed approval for a gated action — waiver, quarantine, baseline update, knowledge promotion, enabling an optional skill, defect filing or risk acceptance — through the approve.yml workflow in a protected environment with required reviewers, and verifies the signed bundle. Use whenever a T3 action needs approval or someone asks how to approve a gated change, or someone asks how to approve something or requests sign-off. Not for the waiver content (waiver-registry), security testing scope (security-scope-verify), or release signing (release-signing-verify), or pending memory entries (knowledge-provenance).",
+      "useWhen": "a T3 action needs approval or someone asks how to approve a gated change, or someone asks how to approve something or requests sign-off.",
+      "notFor": "the waiver content (waiver-registry), security testing scope (security-scope-verify), or release signing (release-signing-verify), or pending memory entries (knowledge-provenance).",
       "notForSkills": [
-        "cloud-security-review",
-        "injection-handling-review",
-        "xss-output-encoding-review"
+        "knowledge-provenance",
+        "release-signing-verify",
+        "security-scope-verify",
+        "waiver-registry"
       ],
       "sections": [
+        "Gate",
         "Non-negotiables",
-        "Coverage map",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "framework-governance",
-      "path": ".agents/skills/framework-governance/SKILL.md",
-      "name": "framework-governance",
+      "folder": "aria-snapshot-testing",
+      "path": ".agents/skills/aria-snapshot-testing/SKILL.md",
+      "name": "aria-snapshot-testing",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Enterprise architecture governance for a Playwright TypeScript framework: enforces no XPath, no waitForTimeout, no duplicate page objects, no hard-coded test data and dependency injection through fixtures, using ESLint, dependency rules, a governance script, Claude Code hooks and review checklists, with a waiver process. Use whenever the user asks to set up, audit, enforce or review framework standards, coding rules, lint rules, architecture boundaries, or whether changes follow the framework conventions, and before reporting any test-code change as done. Not for writing new tests (playwright-test-generation).",
-      "useWhen": "the user asks to set up, audit, enforce or review framework standards, coding rules, lint rules, architecture boundaries, or whether changes follow the framework conventions, and before reporting any test-code change as done.",
-      "notFor": "writing new tests (playwright-test-generation).",
+      "tier": "T1",
+      "category": "Quality",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/**) Bash(npx tsc --noEmit)",
+      "description": "Asserts page and component structure with toMatchAriaSnapshot — roles, names, hierarchy — where layout pixels do not matter, using partial matching and regular expressions for dynamic text. Use whenever structure, headings, landmarks or menu contents must be locked down, or a visual test is too brittle for what it checks. Not for pixel comparisons (visual-snapshot-authoring), WCAG rule audits (accessibility-audit), or locator choice (locator-selection).",
+      "useWhen": "structure, headings, landmarks or menu contents must be locked down, or a visual test is too brittle for what it checks.",
+      "notFor": "pixel comparisons (visual-snapshot-authoring), WCAG rule audits (accessibility-audit), or locator choice (locator-selection).",
       "notForSkills": [
-        "playwright-test-generation"
+        "accessibility-audit",
+        "locator-selection",
+        "visual-snapshot-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Rules and enforcement",
-        "ESLint core (flat config)",
-        "Verify script",
-        "Claude Code hooks (`.claude/settings.json`)",
-        "Waivers",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "injection-handling-review",
-      "path": ".agents/skills/injection-handling-review/SKILL.md",
-      "name": "injection-handling-review",
+      "folder": "artifact-redaction",
+      "path": ".agents/skills/artifact-redaction/SKILL.md",
+      "name": "artifact-redaction",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "SQL, NoSQL, OS-command and path-traversal handling checks with Playwright, for applications the team owns and may test: feed a small, non-destructive marker set to inputs and assert the application handles it safely (no 5xx, no database or stack-trace text, no path escape) rather than returning an exploitable response. Covers OWASP A03 (injection, excluding XSS). Use whenever the user asks for SQL injection testing, injection handling, command-injection or path-traversal checks, or \"does input get sanitised\". Not for XSS (xss-output-encoding-review), SSRF (ssrf-defence-review), or source-level review (secure-code-review). This proves safe handling; it does not extract data, exploit a database, or run commands.",
-      "useWhen": "the user asks for SQL injection testing, injection handling, command-injection or path-traversal checks, or \"does input get sanitised\".",
-      "notFor": "XSS (xss-output-encoding-review), SSRF (ssrf-defence-review), or source-level review (secure-code-review). This proves safe handling; it does not extract data, exploit a database, or run commands.",
+      "tier": "T1",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/scrub-artifacts.mjs:*)",
+      "description": "Scrubs Playwright traces, blob reports, HTML reports and HAR files before they leave the runner — opening trace zips, redacting registered secret values, authorization and cookie headers, tokens and personal data in every text entry, deleting .auth/ and storage state — and fails closed when anything cannot be parsed. Use whenever artifacts are about to be uploaded, a report or HAR is shared, or a secret was found in an artifact, or a token appears in a report or a HAR must be made safe to share. Not for scanning the repository (secrets-scan), merging reports (merge-reports), or resolving credentials (secret-provider-fixture).",
+      "useWhen": "artifacts are about to be uploaded, a report or HAR is shared, or a secret was found in an artifact, or a token appears in a report or a HAR must be made safe to share.",
+      "notFor": "scanning the repository (secrets-scan), merging reports (merge-reports), or resolving credentials (secret-provider-fixture).",
       "notForSkills": [
-        "secure-code-review",
-        "ssrf-defence-review",
-        "xss-output-encoding-review"
+        "merge-reports",
+        "secret-provider-fixture",
+        "secrets-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Marker set and expectations",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "jwt-validation-review",
-      "path": ".agents/skills/jwt-validation-review/SKILL.md",
-      "name": "jwt-validation-review",
+      "folder": "auth-setup-project",
+      "path": ".agents/skills/auth-setup-project/SKILL.md",
+      "name": "auth-setup-project",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "JSON Web Token validation checks with Playwright, for applications the team owns and may test: assert the server rejects `alg:none`, tampered signatures, expired or not-yet-valid tokens, and wrong `aud`/`iss`, that algorithms are not confusable (RS↔HS), and that tokens never appear in URLs, logs or client storage. Covers OWASP A02/A07. Use whenever the user asks for JWT security analysis, token validation checks, `alg:none` or signature-tampering handling, token expiry/claims checks, or JWT leakage review. Not for login flows and sessions (auth-access-control-review) or endpoint authorisation in general (api-security-review). This asserts the server rejects manipulated tokens; it does not forge a valid token or bypass auth.",
-      "useWhen": "the user asks for JWT security analysis, token validation checks, `alg:none` or signature-tampering handling, token expiry/claims checks, or JWT leakage review.",
-      "notFor": "login flows and sessions (auth-access-control-review) or endpoint authorisation in general (api-security-review). This asserts the server rejects manipulated tokens; it does not forge a valid token or bypass auth.",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/auth.setup.ts) Edit(playwright.config.ts) Bash(npx playwright test --list)",
+      "description": "Implements the Playwright setup project that signs in once per configured role through the secret provider and saves storage state to .auth/<role>.json, git-ignored and never uploaded, with every browser-and-role project depending on it. Use whenever tests need an authenticated session, specs log in through the UI repeatedly, or storage state handling must be fixed. Not for role-by-action permission tests (multi-role-auth), credentials adapters (secret-provider-fixture), or session security testing (authz-session-testing).",
+      "useWhen": "tests need an authenticated session, specs log in through the UI repeatedly, or storage state handling must be fixed.",
+      "notFor": "role-by-action permission tests (multi-role-auth), credentials adapters (secret-provider-fixture), or session security testing (authz-session-testing).",
       "notForSkills": [
-        "api-security-review",
-        "auth-access-control-review"
+        "authz-session-testing",
+        "multi-role-auth",
+        "secret-provider-fixture"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "kubernetes-security-audit",
-      "path": ".agents/skills/kubernetes-security-audit/SKILL.md",
-      "name": "kubernetes-security-audit",
+      "folder": "authz-session-testing",
+      "path": ".agents/skills/authz-session-testing/SKILL.md",
+      "name": "authz-session-testing",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Read-only Kubernetes security audit for clusters and manifests the team owns: RBAC least privilege, Pod Security Standards (no privileged/root, dropped capabilities, read-only root FS), network policies, secrets handling, resource limits, and image provenance, evaluated against the CIS Kubernetes Benchmark and Pod Security Standards with read-only tooling (kube-bench, kubescape, Trivy, `kubectl get`). Use whenever the user asks for a Kubernetes or k8s security audit, manifest or RBAC review, Pod Security Standards/admission checks, network-policy review, or CIS Kubernetes benchmarking. Not for the container image build (docker-security-review), cloud control plane (cloud-security-review / aws / azure), or app-layer checks. It reviews manifests and read-only cluster state; it makes no changes and exploits nothing.",
-      "useWhen": "the user asks for a Kubernetes or k8s security audit, manifest or RBAC review, Pod Security Standards/admission checks, network-policy review, or CIS Kubernetes benchmarking.",
-      "notFor": "the container image build (docker-security-review), cloud control plane (cloud-security-review / aws / azure), or app-layer checks. It reviews manifests and read-only cluster state; it makes no changes and exploits nothing.",
+      "tier": "T4",
+      "category": "SecTest",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(tests/sec/**) Write(tests/sec/**) Bash(npx playwright test --project=security:*) Write(reports/security/**)",
+      "description": "Tests that authorisation and sessions hold under a verified scope — object-level access between two synthetic customers (IDOR), role boundaries, CSRF protection, JWT validation (signature, expiry, algorithm), session fixation, logout and expiry. Use whenever an approved scope covers access control, sessions or tokens, or an open finding needs a regression guard, or someone asks whether one customer can see another customer's data, or for JWT or CSRF checks. Not for functional permission matrices (multi-role-auth), header checks (security-headers-check), or API-specific abuse (api-security-testing), or time-based expiry in the UI (clock-time-control).",
+      "useWhen": "an approved scope covers access control, sessions or tokens, or an open finding needs a regression guard, or someone asks whether one customer can see another customer's data, or for JWT or CSRF checks.",
+      "notFor": "functional permission matrices (multi-role-auth), header checks (security-headers-check), or API-specific abuse (api-security-testing), or time-based expiry in the UI (clock-time-control).",
       "notForSkills": [
-        "cloud-security-review",
-        "docker-security-review"
+        "api-security-testing",
+        "clock-time-control",
+        "multi-role-auth",
+        "security-headers-check"
       ],
       "sections": [
+        "Gate",
         "Non-negotiables",
-        "Review areas",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "locator-strategy",
-      "path": ".agents/skills/locator-strategy/SKILL.md",
-      "name": "locator-strategy",
+      "folder": "ci-workflow-authoring",
+      "path": ".agents/skills/ci-workflow-authoring/SKILL.md",
+      "name": "ci-workflow-authoring",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Centralised selector governance for Playwright: chooses, reviews and fixes locators using the priority getByRole, getByLabel, getByPlaceholder, getByText, getByTestId, with CSS only as a ticketed last resort and XPath forbidden. Converts legacy Selenium, Robot Framework or Cypress selectors, resolves strict-mode violations, and upgrades brittle locators against the live page. Use whenever the user asks which locator to use, why an element can't be found, how to fix a strict mode violation, how to replace XPath or CSS selectors, or to audit selectors. Not for page class structure (page-object-engineering) or diagnosing a whole failing run (defect-analysis).",
-      "useWhen": "the user asks which locator to use, why an element can't be found, how to fix a strict mode violation, how to replace XPath or CSS selectors, or to audit selectors.",
-      "notFor": "page class structure (page-object-engineering) or diagnosing a whole failing run (defect-analysis).",
+      "tier": "T1",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.github/workflows/**) Bash(node scripts/check-pins.mjs:*)",
+      "description": "Writes and changes CI workflows to the hardened baseline — actions pinned to full commit SHAs, read-only default token, job-level elevation only, OIDC instead of stored secrets, egress blocking, protected environments, concurrency groups and scrub-before-upload. Use whenever a workflow is added or changed, CI needs a new job, or a pipeline must run tests in another CI system. Not for sizing shards (sharding-config), pinning the runner image (runner-image-pinning), or auditing pins across the repo (dependency-pin-audit).",
+      "useWhen": "a workflow is added or changed, CI needs a new job, or a pipeline must run tests in another CI system.",
+      "notFor": "sizing shards (sharding-config), pinning the runner image (runner-image-pinning), or auditing pins across the repo (dependency-pin-audit).",
       "notForSkills": [
-        "defect-analysis",
-        "page-object-engineering"
+        "dependency-pin-audit",
+        "runner-image-pinning",
+        "sharding-config"
       ],
       "sections": [
         "Non-negotiables",
-        "Priority (in order)",
-        "Fixing problems",
-        "Converting legacy selectors",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "clock-time-control",
+      "path": ".agents/skills/clock-time-control/SKILL.md",
+      "name": "clock-time-control",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/**) Bash(npx tsc --noEmit)",
+      "description": "Tests time-dependent behaviour — expiry, countdowns, schedules, time zones — with page.clock (install, setFixedTime, runFor, fastForward) instead of sleeps. Use whenever behaviour depends on the current time, a test waits for a timer, or a flaky test depends on when it runs, or a test must check what happens after minutes or hours pass, such as expiry after 30 minutes, at midnight or in another timezone. Not for mocking network calls (network-mocking), fixing flaky tests in general (flake-triage), or performance timing (performance-vitals).",
+      "useWhen": "behaviour depends on the current time, a test waits for a timer, or a flaky test depends on when it runs, or a test must check what happens after minutes or hours pass, such as expiry after 30 minutes, at midnight or in another timezone.",
+      "notFor": "mocking network calls (network-mocking), fixing flaky tests in general (flake-triage), or performance timing (performance-vitals).",
+      "notForSkills": [
+        "flake-triage",
+        "network-mocking",
+        "performance-vitals"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "config-proposal",
+      "path": ".agents/skills/config-proposal/SKILL.md",
+      "name": "config-proposal",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*) Bash(git switch -c:*)",
+      "description": "Turns an approved discovery report into a proposed .agents/qa.config.json — environments with owner, ticket, data class, hosts and review date, roles, secret references, gateway and knowledge endpoints — validated and delivered on a branch for human review. Use whenever the discovery report is approved, qa.config.json is empty or invalid, or the first full configuration must be written, or someone asks to propose, fill in or fix the qa config. Not for adding one environment later (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself (repo-discovery), or healing proposals (test-healing).",
+      "useWhen": "the discovery report is approved, qa.config.json is empty or invalid, or the first full configuration must be written, or someone asks to propose, fill in or fix the qa config.",
+      "notFor": "adding one environment later (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself (repo-discovery), or healing proposals (test-healing).",
+      "notForSkills": [
+        "environment-allowlist",
+        "model-gateway-config",
+        "repo-discovery",
+        "test-healing"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "contract-testing",
+      "path": ".agents/skills/contract-testing/SKILL.md",
+      "name": "contract-testing",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/contract/**) Write(tests/contract/**) Bash(npx tsc --noEmit)",
+      "description": "Checks provider responses against the published OpenAPI or JSON Schema contract and classifies differences as breaking or additive, so a service change that would break its consumers is caught before release. Use whenever an API contract or schema changes, a consumer broke after a provider release, or someone asks for consumer-driven or schema contract checks. Not for functional API behaviour (api-test-authoring), API security (api-security-testing), or mocking (network-mocking), or creating a new skill (skill-authoring).",
+      "useWhen": "an API contract or schema changes, a consumer broke after a provider release, or someone asks for consumer-driven or schema contract checks.",
+      "notFor": "functional API behaviour (api-test-authoring), API security (api-security-testing), or mocking (network-mocking), or creating a new skill (skill-authoring).",
+      "notForSkills": [
+        "api-security-testing",
+        "api-test-authoring",
+        "network-mocking",
+        "skill-authoring"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "cost-budget-guard",
+      "path": ".agents/skills/cost-budget-guard/SKILL.md",
+      "name": "cost-budget-guard",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "AIOps",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/budget-status.mjs:*)",
+      "description": "Enforces token and cost budgets per session, skill and day from qa.config.json against the AI Ops log and the gateway's budget headers, warns at 80 percent and stops at 100 percent without silently switching to a cheaper model. Use whenever a session starts, the gateway returns 429, spend looks unusual, or someone asks how much the agent is costing. Not for changing routes (model-gateway-config), telemetry setup (telemetry-instrumentation), or eval gates (llm-eval-gating).",
+      "useWhen": "a session starts, the gateway returns 429, spend looks unusual, or someone asks how much the agent is costing.",
+      "notFor": "changing routes (model-gateway-config), telemetry setup (telemetry-instrumentation), or eval gates (llm-eval-gating).",
+      "notForSkills": [
+        "llm-eval-gating",
+        "model-gateway-config",
+        "telemetry-instrumentation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "data-classification",
+      "path": ".agents/skills/data-classification/SKILL.md",
+      "name": "data-classification",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/classify-context.mjs:*)",
+      "description": "Classifies a context bundle as public, internal, confidential or restricted from the environment's data class, path rules and personal-data detection before any model call, and picks the gateway route that class allows. Use whenever context is assembled for a model, a new source is added to retrieval, or someone asks what may be sent to which model, or someone asks whether notes can be sent to an external model. Not for redacting artifacts (artifact-redaction), configuring routes (model-gateway-config), or access control in retrieval (knowledge-retrieval).",
+      "useWhen": "context is assembled for a model, a new source is added to retrieval, or someone asks what may be sent to which model, or someone asks whether notes can be sent to an external model.",
+      "notFor": "redacting artifacts (artifact-redaction), configuring routes (model-gateway-config), or access control in retrieval (knowledge-retrieval).",
+      "notForSkills": [
+        "artifact-redaction",
+        "knowledge-retrieval",
+        "model-gateway-config"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "data-factory-authoring",
+      "path": ".agents/skills/data-factory-authoring/SKILL.md",
+      "name": "data-factory-authoring",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/data/**) Write(src/data/**) Bash(npx tsc --noEmit)",
+      "description": "Builds factories under src/data that create synthetic, unique-per-worker test data with automatic teardown, so tests never share or depend on fixed records and never use real personal data. Use whenever a test needs users, orders, products or other records, data collides between parallel workers, or hard-coded test data must be removed, or tests collide on the same user or record when run in parallel. Not for credentials and secrets (secret-provider-fixture), fixture lifetime (fixture-authoring), or mocking responses (network-mocking), or hard-coded passwords (secret-provider-fixture).",
+      "useWhen": "a test needs users, orders, products or other records, data collides between parallel workers, or hard-coded test data must be removed, or tests collide on the same user or record when run in parallel.",
+      "notFor": "credentials and secrets (secret-provider-fixture), fixture lifetime (fixture-authoring), or mocking responses (network-mocking), or hard-coded passwords (secret-provider-fixture).",
+      "notForSkills": [
+        "fixture-authoring",
+        "network-mocking",
+        "secret-provider-fixture"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "dependency-pin-audit",
+      "path": ".agents/skills/dependency-pin-audit/SKILL.md",
+      "name": "dependency-pin-audit",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/check-pins.mjs:*) Bash(npm audit signatures)",
+      "description": "Audits that every third-party reference is pinned — npm packages to exact versions with a committed lock file and verified registry signatures, GitHub Actions to full commit SHAs, container images to digests, Python requirements by hash — and that Renovate manages the updates. Use whenever dependencies, workflows or images change, before a release, or someone asks whether the supply chain is pinned. Not for generating the SBOM (sbom-generation), verifying the pack signature (release-signing-verify), or writing workflows (ci-workflow-authoring).",
+      "useWhen": "dependencies, workflows or images change, before a release, or someone asks whether the supply chain is pinned.",
+      "notFor": "generating the SBOM (sbom-generation), verifying the pack signature (release-signing-verify), or writing workflows (ci-workflow-authoring).",
+      "notForSkills": [
+        "ci-workflow-authoring",
+        "release-signing-verify",
+        "sbom-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "docs-generation",
+      "path": ".agents/skills/docs-generation/SKILL.md",
+      "name": "docs-generation",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(docs/**) Bash(node scripts/gen-docs.mjs:*)",
+      "description": "Regenerates the setup guide from the repository itself — catalogue, skill frontmatter, every shipped file and the lock — so the documentation cannot drift from what ships, and checks in CI that the committed guide is current. Use whenever skills, the catalogue, policies, hooks, workflows or the guide template change, or CI reports the guide is stale, or someone asks to regenerate or update the setup guide. Not for writing skill content (skill-authoring), verifying release signatures (release-signing-verify), or the evidence block of a task (evidence-report).",
+      "useWhen": "skills, the catalogue, policies, hooks, workflows or the guide template change, or CI reports the guide is stale, or someone asks to regenerate or update the setup guide.",
+      "notFor": "writing skill content (skill-authoring), verifying release signatures (release-signing-verify), or the evidence block of a task (evidence-report).",
+      "notForSkills": [
+        "evidence-report",
+        "release-signing-verify",
+        "skill-authoring"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "egress-policy",
+      "path": ".agents/skills/egress-policy/SKILL.md",
+      "name": "egress-policy",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.github/workflows/**) Bash(node scripts/egress-list.mjs:*)",
+      "description": "Keeps runner and sandbox egress lists in step with the environment allowlist — harden-runner allowed endpoints in workflows and the managed sandbox domains — and checks that no list allows more than the environments and the required infrastructure. Use whenever environments change, a job is blocked by egress, or someone asks what a runner may reach. Not for the environment entries themselves (environment-allowlist), workflow structure (ci-workflow-authoring), or MCP servers (mcp-server-vetting).",
+      "useWhen": "environments change, a job is blocked by egress, or someone asks what a runner may reach.",
+      "notFor": "the environment entries themselves (environment-allowlist), workflow structure (ci-workflow-authoring), or MCP servers (mcp-server-vetting).",
+      "notForSkills": [
+        "ci-workflow-authoring",
+        "environment-allowlist",
+        "mcp-server-vetting"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "environment-allowlist",
+      "path": ".agents/skills/environment-allowlist/SKILL.md",
+      "name": "environment-allowlist",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*)",
+      "description": "Adds, renews or removes a test environment in qa.config.json with owner, ticket, data class, hosts and a review date, so that only listed non-production hosts can ever be targeted by tests, crawls, healing or security checks. Use whenever a new test environment is onboarded, a host changes, or an environment's review date passes. Not for the first full configuration (config-proposal), runner and sandbox egress lists (egress-policy), or model routes (model-gateway-config).",
+      "useWhen": "a new test environment is onboarded, a host changes, or an environment's review date passes.",
+      "notFor": "the first full configuration (config-proposal), runner and sandbox egress lists (egress-policy), or model routes (model-gateway-config).",
+      "notForSkills": [
+        "config-proposal",
+        "egress-policy",
+        "model-gateway-config"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "evidence-report",
+      "path": ".agents/skills/evidence-report/SKILL.md",
+      "name": "evidence-report",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs guard:*) Write(.agents/out/**)",
+      "description": "Writes the closing evidence block for a task — request, skills with their lock hashes, grounding (cited context ids or no historical grounding), changes, verification commands with exit codes, results and artifact digests, risks — and validates it so no secret, personal data or uncited id leaks. Use whenever a task ends, a CI run needs a summary, or someone asks what was done and how it was proven. Not for merging test reports (merge-reports), explaining a failure (failure-rca), or security findings (security-findings-report).",
+      "useWhen": "a task ends, a CI run needs a summary, or someone asks what was done and how it was proven.",
+      "notFor": "merging test reports (merge-reports), explaining a failure (failure-rca), or security findings (security-findings-report).",
+      "notForSkills": [
+        "failure-rca",
+        "merge-reports",
+        "security-findings-report"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Format",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "failure-rca",
+      "path": ".agents/skills/failure-rca/SKILL.md",
+      "name": "failure-rca",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Write(.agents/out/**)",
+      "description": "Analyses a failing test from its scrubbed trace, error context, results JSON and similar past defects, decides whether it is a product, test or environment defect, and drafts a deduplicated bug report with evidence. Use whenever a test fails, CI is red, someone asks why a test broke, or a trace or error must be explained, or someone asks why did a test fail. Not for proving flakiness (flake-triage), repairing locators (test-healing), or security findings (security-findings-report), or retries that hide a failure (flake-triage).",
+      "useWhen": "a test fails, CI is red, someone asks why a test broke, or a trace or error must be explained, or someone asks why did a test fail.",
+      "notFor": "proving flakiness (flake-triage), repairing locators (test-healing), or security findings (security-findings-report), or retries that hide a failure (flake-triage).",
+      "notForSkills": [
+        "flake-triage",
+        "security-findings-report",
+        "test-healing"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "fixture-authoring",
+      "path": ".agents/skills/fixture-authoring/SKILL.md",
+      "name": "fixture-authoring",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/fixtures/**) Bash(npx tsc --noEmit)",
+      "description": "Adds or changes typed fixtures in src/fixtures so specs receive page objects, modules, factories, the secret provider and the egress guard by injection, with the right scope and teardown. Use whenever a spec needs a new dependency, setup is copied between specs, or a fixture leaks state or teardown fails, or a page object or client must be injected into specs. Not for writing page objects (page-object-authoring), credentials resolution (secret-provider-fixture), or authenticated state (auth-setup-project).",
+      "useWhen": "a spec needs a new dependency, setup is copied between specs, or a fixture leaks state or teardown fails, or a page object or client must be injected into specs.",
+      "notFor": "writing page objects (page-object-authoring), credentials resolution (secret-provider-fixture), or authenticated state (auth-setup-project).",
+      "notForSkills": [
+        "auth-setup-project",
+        "page-object-authoring",
+        "secret-provider-fixture"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "flake-quarantine",
+      "path": ".agents/skills/flake-quarantine/SKILL.md",
+      "name": "flake-quarantine",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T3",
+      "category": "Exec",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(governance/quarantine.yaml) Edit(tests/**) Bash(gh workflow run approve.yml:*)",
+      "description": "Quarantines a confirmed flaky test with an owner, ticket and expiry of at most 14 days in governance/quarantine.yaml, tags it @quarantine so it runs in the non-blocking job, and requires an identity-bound approval. Use whenever flake-triage has confirmed a flake that cannot be fixed at once and it blocks merges, or a flaky test blocks every merge. Not for confirming flakiness (flake-triage), rule exceptions (waiver-registry), or skipping tests.",
+      "useWhen": "flake-triage has confirmed a flake that cannot be fixed at once and it blocks merges, or a flaky test blocks every merge.",
+      "notFor": "confirming flakiness (flake-triage), rule exceptions (waiver-registry), or skipping tests.",
+      "notForSkills": [
+        "flake-triage",
+        "waiver-registry"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "flake-triage",
+      "path": ".agents/skills/flake-triage/SKILL.md",
+      "name": "flake-triage",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T2",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(npx playwright test:*) Write(.agents/out/**)",
+      "description": "Confirms and classifies a suspected flaky test by repeating only that test serially and then in parallel, comparing passing and failing traces, and naming the cause — timing, data, environment or product. Use whenever a test passes and fails without code changes, retries hide failures, or someone asks why a test is flaky, or a test is flaky, fails one run in ten, or retries hide a failure. Not for quarantining it (flake-quarantine), choosing tests for a change (test-impact-selection), or a single deterministic failure (failure-rca).",
+      "useWhen": "a test passes and fails without code changes, retries hide failures, or someone asks why a test is flaky, or a test is flaky, fails one run in ten, or retries hide a failure.",
+      "notFor": "quarantining it (flake-quarantine), choosing tests for a change (test-impact-selection), or a single deterministic failure (failure-rca).",
+      "notForSkills": [
+        "failure-rca",
+        "flake-quarantine",
+        "test-impact-selection"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "governance-lint",
+      "path": ".agents/skills/governance-lint/SKILL.md",
+      "name": "governance-lint",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(npm run verify) Bash(npx eslint:*) Bash(node scripts/policy-input.mjs:*) Bash(opa eval:*)",
+      "description": "Runs the governance checks that fail the build — AST ESLint rules (no XPath, no hard waits or networkidle, no page objects built in specs, no absolute URLs, no literal credentials, required tags, one page object per route, no focused or skipped tests), TypeScript, and the OPA policy over config, waivers and quarantine. Use whenever code is edited, before a task is declared done, or CI reports a governance failure, or someone asks whether a branch is ready to merge. Not for requesting an exception (waiver-registry), pinning audits (dependency-pin-audit), or skill files (skill-scan).",
+      "useWhen": "code is edited, before a task is declared done, or CI reports a governance failure, or someone asks whether a branch is ready to merge.",
+      "notFor": "requesting an exception (waiver-registry), pinning audits (dependency-pin-audit), or skill files (skill-scan).",
+      "notForSkills": [
+        "dependency-pin-audit",
+        "skill-scan",
+        "waiver-registry"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "injection-testing",
+      "path": ".agents/skills/injection-testing/SKILL.md",
+      "name": "injection-testing",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T4",
+      "category": "SecTest",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(tests/sec/**) Write(tests/sec/**) Bash(npx playwright test --project=security:*) Write(reports/security/**)",
+      "description": "Probes in-scope inputs with benign canary payloads for SQL, NoSQL, command and template injection and stored or reflected XSS under a verified scope, checking that input is handled and output is encoded, and stops at the first confirmed issue. Use whenever an approved scope covers input handling or an injection finding needs a regression guard. Not for API authorisation abuse (api-security-testing), headers (security-headers-check), or sessions (authz-session-testing).",
+      "useWhen": "an approved scope covers input handling or an injection finding needs a regression guard.",
+      "notFor": "API authorisation abuse (api-security-testing), headers (security-headers-check), or sessions (authz-session-testing).",
+      "notForSkills": [
+        "api-security-testing",
+        "authz-session-testing",
+        "security-headers-check"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "knowledge-provenance",
+      "path": ".agents/skills/knowledge-provenance/SKILL.md",
+      "name": "knowledge-provenance",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T3",
+      "category": "Sec",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs memory:*) Bash(node scripts/verify-attestation.mjs:*)",
+      "description": "Handles agent write-back to project knowledge and memory: proposals land in a staged area with source, author, evidence ids, sha256, classification and ACL, are redacted and injection-scanned, and are promoted to the trusted tier only with a verified approval attestation. Use whenever a learning, RCA or pattern should be remembered, staged knowledge awaits review, or poisoned knowledge must be revoked, or pending memory entries must be approved. Not for retrieving knowledge (knowledge-retrieval), approvals in general (approval-attestation), or ingesting repository files (knowledge-retrieval).",
+      "useWhen": "a learning, RCA or pattern should be remembered, staged knowledge awaits review, or poisoned knowledge must be revoked, or pending memory entries must be approved.",
+      "notFor": "retrieving knowledge (knowledge-retrieval), approvals in general (approval-attestation), or ingesting repository files (knowledge-retrieval).",
+      "notForSkills": [
+        "approval-attestation",
+        "knowledge-retrieval"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "knowledge-retrieval",
+      "path": ".agents/skills/knowledge-retrieval/SKILL.md",
+      "name": "knowledge-retrieval",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Bash(node rag/cli.mjs coverage:*) Bash(node rag/cli.mjs trace:*) Bash(node rag/cli.mjs status)",
+      "description": "Grounds design, RCA and impact analysis in the project's history through the qa-knowledge MCP server — query planning, hybrid BM25, vector and knowledge-graph retrieval, reranking and compression — with ACLs applied before scoring and every item returned wrapped as untrusted with provenance and trust score. Use whenever a skill needs prior tests, defects, RCA, requirements, coverage or traceability, or someone asks what the repository already knows, or someone asks for coverage of a requirement or to trace a requirement to its tests. Not for writing knowledge back (knowledge-provenance), scenario tables (scenario-design), or test selection (test-impact-selection).",
+      "useWhen": "a skill needs prior tests, defects, RCA, requirements, coverage or traceability, or someone asks what the repository already knows, or someone asks for coverage of a requirement or to trace a requirement to its tests.",
+      "notFor": "writing knowledge back (knowledge-provenance), scenario tables (scenario-design), or test selection (test-impact-selection).",
+      "notForSkills": [
+        "knowledge-provenance",
+        "scenario-design",
+        "test-impact-selection"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "llm-eval-gating",
+      "path": ".agents/skills/llm-eval-gating/SKILL.md",
+      "name": "llm-eval-gating",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T2",
+      "category": "AIOps",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs bench:*) Bash(node rag/cli.mjs kpi:*) Bash(python3 evals/deepeval/run_evals.py:*) Bash(python3 evals/ragas/run_ragas.py:*) Bash(node scripts/ai-release-gate.mjs:*) Bash(node scripts/ai-ops-dashboard.mjs:*)",
+      "description": "Gates changes to skills, prompts, the knowledge layer and generated tests on fixed thresholds — retrieval benchmark, AI test-quality KPIs (hallucinated fixtures, members and imports), DeepEval and RAGAS through the pinned judge model on the gateway at temperature zero — and produces one GO or NO-GO with the AI Ops dashboard. Use whenever skills, prompts, retrieval or generation change, a release is prepared, or someone asks whether AI quality regressed. Not for routing accuracy alone (skill-routing-eval), budgets (cost-budget-guard), or telemetry (telemetry-instrumentation).",
+      "useWhen": "skills, prompts, retrieval or generation change, a release is prepared, or someone asks whether AI quality regressed.",
+      "notFor": "routing accuracy alone (skill-routing-eval), budgets (cost-budget-guard), or telemetry (telemetry-instrumentation).",
+      "notForSkills": [
+        "cost-budget-guard",
+        "skill-routing-eval",
+        "telemetry-instrumentation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "locator-selection",
+      "path": ".agents/skills/locator-selection/SKILL.md",
+      "name": "locator-selection",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/pages/**) Edit(src/modules/**)",
+      "description": "Chooses, reviews and repairs locators in the priority getByRole, getByLabel, getByPlaceholder, getByText, getByTestId, with CSS only under a registered waiver and XPath forbidden; resolves strict-mode violations and converts legacy selectors. Use whenever someone asks which locator to use, why an element cannot be found, how to fix a strict mode violation, how to replace XPath or CSS, or to audit selectors. Not for page class structure (page-object-authoring), repairing locators broken across a run (test-healing), or diagnosing a whole failing run (failure-rca), or exceptions to the rules (waiver-registry).",
+      "useWhen": "someone asks which locator to use, why an element cannot be found, how to fix a strict mode violation, how to replace XPath or CSS, or to audit selectors.",
+      "notFor": "page class structure (page-object-authoring), repairing locators broken across a run (test-healing), or diagnosing a whole failing run (failure-rca), or exceptions to the rules (waiver-registry).",
+      "notForSkills": [
+        "failure-rca",
+        "page-object-authoring",
+        "test-healing",
+        "waiver-registry"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "mcp-server-vetting",
+      "path": ".agents/skills/mcp-server-vetting/SKILL.md",
+      "name": "mcp-server-vetting",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/mcp-pin.mjs:*)",
+      "description": "Vets an MCP server before it is allowed: authorization per the MCP spec for remote servers (OAuth 2.1, protected resource metadata, resource indicators, audience-bound tokens, no token passthrough), minimal scopes, and SHA-256 pins of every tool name, description and schema in mcp.lock.json so a changed description blocks the server. Use whenever a new MCP server is proposed, a server's tools change, or the pin check fails. Not for skill files (skill-scan), retrieved content (prompt-injection-defense), or runner egress (egress-policy).",
+      "useWhen": "a new MCP server is proposed, a server's tools change, or the pin check fails.",
+      "notFor": "skill files (skill-scan), retrieved content (prompt-injection-defense), or runner egress (egress-policy).",
+      "notForSkills": [
+        "egress-policy",
+        "prompt-injection-defense",
+        "skill-scan"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "merge-reports",
+      "path": ".agents/skills/merge-reports/SKILL.md",
+      "name": "merge-reports",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T2",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(npx playwright merge-reports:*) Bash(node scripts/scrub-artifacts.mjs:*)",
+      "description": "Downloads the scrubbed blob reports from every shard, merges them into one HTML and JUnit report with npx playwright merge-reports, scrubs the result again and publishes it with short retention. Use whenever a sharded run finishes, a single report is needed across browsers, or the merged report is missing results. Not for scrubbing raw artifacts before upload (artifact-redaction), summarising a task (evidence-report), or analysing failures (failure-rca), or a flaky test blocking merges (flake-quarantine), or whether a branch is ready to merge (governance-lint).",
+      "useWhen": "a sharded run finishes, a single report is needed across browsers, or the merged report is missing results.",
+      "notFor": "scrubbing raw artifacts before upload (artifact-redaction), summarising a task (evidence-report), or analysing failures (failure-rca), or a flaky test blocking merges (flake-quarantine), or whether a branch is ready to merge (governance-lint).",
+      "notForSkills": [
+        "artifact-redaction",
+        "evidence-report",
+        "failure-rca",
+        "flake-quarantine",
+        "governance-lint"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
@@ -689,557 +1063,622 @@
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Plans and performs migration of Robot Framework, Selenium (Java, Python, C#, JavaScript), Cypress and TestNG suites to Playwright TypeScript: reads the legacy code without running it, builds a backlog with complexity and migration waves, converts tests by intent rather than syntax, and proves behaviour with a parity comparison against the legacy run. Use whenever the user wants to migrate, convert, port or assess a legacy UI test suite, estimate migration effort, plan waves, or compare legacy and Playwright results. Not for writing brand-new tests (playwright-test-generation).",
-      "useWhen": "the user wants to migrate, convert, port or assess a legacy UI test suite, estimate migration effort, plan waves, or compare legacy and Playwright results.",
-      "notFor": "writing brand-new tests (playwright-test-generation).",
+      "tier": "T0",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Write(.agents/out/**)",
+      "description": "Analyses a Cypress, Selenium, WebdriverIO, TestCafe or Robot Framework suite read-only and maps its commands, waits, selectors, data and CI to Playwright idioms with effort, risks and an order of migration. Use whenever a team plans to move another framework's tests to Playwright or asks how much a migration costs. Not for writing the migrated specs (spec-authoring), selector conversion details (locator-selection), or CI design (ci-workflow-authoring).",
+      "useWhen": "a team plans to move another framework's tests to Playwright or asks how much a migration costs.",
+      "notFor": "writing the migrated specs (spec-authoring), selector conversion details (locator-selection), or CI design (ci-workflow-authoring).",
       "notForSkills": [
-        "playwright-test-generation"
+        "ci-workflow-authoring",
+        "locator-selection",
+        "spec-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Legacy ids",
+        "Inputs and outputs",
         "Procedure",
-        "Mapping",
-        "Robot Framework specifics",
-        "Selenium specifics",
-        "TestNG specifics",
-        "Maven and the Java toolchain",
-        "Cypress specifics",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
     },
     {
-      "folder": "mobile-testing",
-      "path": ".agents/skills/mobile-testing/SKILL.md",
-      "name": "mobile-testing",
+      "folder": "mobile-emulation",
+      "path": ".agents/skills/mobile-emulation/SKILL.md",
+      "name": "mobile-emulation",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Mobile-web testing with Playwright device emulation, for applications the team owns: emulated iOS/Android viewports and user agents, touch and tap gestures, responsive layout and breakpoint checks, orientation, and optional real-device cloud grids. Use whenever the user asks to test mobile web, responsive design, touch interactions, small-screen layouts, device-specific rendering, or to run the suite on emulated phones and tablets. Not for native app automation (out of Playwright's scope — use a device framework), desktop visual diffs (visual-testing), or Core Web Vitals budgets (performance-testing).",
-      "useWhen": "the user asks to test mobile web, responsive design, touch interactions, small-screen layouts, device-specific rendering, or to run the suite on emulated phones and tablets.",
-      "notFor": "native app automation (out of Playwright's scope — use a device framework), desktop visual diffs (visual-testing), or Core Web Vitals budgets (performance-testing).",
+      "tier": "T1",
+      "category": "Quality",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(playwright.config.ts) Edit(tests/**) Bash(npx playwright test --list)",
+      "description": "Adds device projects from Playwright's device registry and touch interactions for responsive layouts, viewports, orientation and mobile-only behaviour. Use whenever someone asks for mobile, tablet, responsive or touch tests. Not for real-device testing claims, visual baselines (visual-snapshot-authoring), or performance (performance-vitals).",
+      "useWhen": "someone asks for mobile, tablet, responsive or touch tests.",
+      "notFor": "real-device testing claims, visual baselines (visual-snapshot-authoring), or performance (performance-vitals).",
       "notForSkills": [
-        "performance-testing",
-        "visual-testing"
+        "performance-vitals",
+        "visual-snapshot-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "network-security-review",
-      "path": ".agents/skills/network-security-review/SKILL.md",
-      "name": "network-security-review",
+      "folder": "model-gateway-config",
+      "path": ".agents/skills/model-gateway-config/SKILL.md",
+      "name": "model-gateway-config",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Network security architecture and configuration review for environments the team owns: trust zones and segmentation, firewall/security-group rules and ingress exposure, TLS configuration and certificate hygiene, management-plane access, and egress controls, assessed from configuration and documentation against best practice. Use whenever the user asks for a network security review, segmentation or firewall-rule review, TLS/certificate configuration checks, exposure or attack-surface review, or zero-trust network design feedback. Not for cloud account posture (cloud-security-review / aws / azure), Kubernetes network policies (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration and design; active scanning or probing of hosts is out of scope and, where permitted at all, stays gated and authorised.",
-      "useWhen": "the user asks for a network security review, segmentation or firewall-rule review, TLS/certificate configuration checks, exposure or attack-surface review, or zero-trust network design feedback.",
-      "notFor": "cloud account posture (cloud-security-review / aws / azure), Kubernetes network policies (kubernetes-security-audit), or app-layer checks (web-app-security-assessment). This reviews configuration and design; active scanning or probing of hosts is out of scope and, where permitted at all, stays gated and authorised.",
+      "tier": "T1",
+      "category": "AIOps",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(gateway/routes.json) Bash(node scripts/check-gateway.mjs:*)",
+      "description": "Declares the repository's model routes for the OpenAI-compatible gateway — which pinned model serves each data class, external or self-hosted, with budgets — and validates that restricted data is blocked, confidential data never reaches an external route and no route uses a floating model alias. Use whenever a model is added, replaced or moved between routes, or a data class needs a new route. Not for classifying content (data-classification), budgets at run time (cost-budget-guard), or evaluation of the model (llm-eval-gating).",
+      "useWhen": "a model is added, replaced or moved between routes, or a data class needs a new route.",
+      "notFor": "classifying content (data-classification), budgets at run time (cost-budget-guard), or evaluation of the model (llm-eval-gating).",
       "notForSkills": [
-        "cloud-security-review",
-        "kubernetes-security-audit",
-        "web-app-security-assessment"
+        "cost-budget-guard",
+        "data-classification",
+        "llm-eval-gating"
       ],
       "sections": [
         "Non-negotiables",
-        "Review areas",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "observability-monitoring",
-      "path": ".agents/skills/observability-monitoring/SKILL.md",
-      "name": "observability-monitoring",
+      "folder": "module-authoring",
+      "path": ".agents/skills/module-authoring/SKILL.md",
+      "name": "module-authoring",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Observability validation and synthetic monitoring for services the team owns: assert that health and readiness endpoints behave, that structured logs, metrics (RED/USE) and OpenTelemetry traces are emitted for key flows, and stand up Playwright-based synthetic checks that run on a schedule against non-production (and, where authorised, production read-only) to catch regressions in availability and latency. Use whenever the user asks for observability, monitoring, synthetic checks, health/readiness probes, telemetry or trace validation, uptime checks, or dashboards and alert wiring. Not for in-browser Core Web Vitals (performance-testing), CI pipeline config (ci-cd-pipeline-config), or SLOs and error budgets (sre-reliability).",
-      "useWhen": "the user asks for observability, monitoring, synthetic checks, health/readiness probes, telemetry or trace validation, uptime checks, or dashboards and alert wiring.",
-      "notFor": "in-browser Core Web Vitals (performance-testing), CI pipeline config (ci-cd-pipeline-config), or SLOs and error budgets (sre-reliability).",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/modules/**) Write(src/modules/**) Bash(npx tsc --noEmit)",
+      "description": "Composes page objects into a reusable multi-page journey under src/modules — sign-in, checkout, onboarding — that returns domain results and is injected through fixtures. Use whenever the same multi-step flow appears in three or more specs, or a journey spans several pages and keeps being copied. Not for a single page (page-object-authoring), fixture scope and teardown (fixture-authoring), or test data (data-factory-authoring).",
+      "useWhen": "the same multi-step flow appears in three or more specs, or a journey spans several pages and keeps being copied.",
+      "notFor": "a single page (page-object-authoring), fixture scope and teardown (fixture-authoring), or test data (data-factory-authoring).",
       "notForSkills": [
-        "ci-cd-pipeline-config",
-        "performance-testing",
-        "sre-reliability"
+        "data-factory-authoring",
+        "fixture-authoring",
+        "page-object-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "page-object-engineering",
-      "path": ".agents/skills/page-object-engineering/SKILL.md",
-      "name": "page-object-engineering",
+      "folder": "multi-role-auth",
+      "path": ".agents/skills/multi-role-auth/SKILL.md",
+      "name": "multi-role-auth",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Designs and maintains the page object architecture for a Playwright TypeScript framework: page classes that encapsulate locators and atomic actions, modules that hold business workflows, shared components, and the fixtures that inject them. Use whenever the user asks to create, refactor, split, merge or review page objects, page classes, components or modules, add locators to a page, or reduce duplication between pages. Not for choosing a specific selector (locator-strategy), writing the test itself (playwright-test-generation) or governance audits (framework-governance).",
-      "useWhen": "the user asks to create, refactor, split, merge or review page objects, page classes, components or modules, add locators to a page, or reduce duplication between pages.",
-      "notFor": "choosing a specific selector (locator-strategy), writing the test itself (playwright-test-generation) or governance audits (framework-governance).",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/**) Write(tests/**) Bash(npx tsc --noEmit)",
+      "description": "Generates a role-by-action matrix of allow and deny tests across the configured roles, asserting both that the UI hides what a role may not do and that the API refuses it. Use whenever a feature has permissions, roles or ownership rules, or someone asks who can do what, or someone asks to test that only admins or certain roles can do something, or for a permission matrix. Not for signing in and storing state (auth-setup-project), attacking authorisation with tampered requests (authz-session-testing), or designing scenarios (scenario-design).",
+      "useWhen": "a feature has permissions, roles or ownership rules, or someone asks who can do what, or someone asks to test that only admins or certain roles can do something, or for a permission matrix.",
+      "notFor": "signing in and storing state (auth-setup-project), attacking authorisation with tampered requests (authz-session-testing), or designing scenarios (scenario-design).",
       "notForSkills": [
-        "framework-governance",
-        "locator-strategy",
-        "playwright-test-generation"
+        "auth-setup-project",
+        "authz-session-testing",
+        "scenario-design"
       ],
       "sections": [
         "Non-negotiables",
-        "Layer map",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 3
+      "templates": 0
     },
     {
-      "folder": "pentest-report-generator",
-      "path": ".agents/skills/pentest-report-generator/SKILL.md",
-      "name": "pentest-report-generator",
+      "folder": "network-mocking",
+      "path": ".agents/skills/network-mocking/SKILL.md",
+      "name": "network-mocking",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Turns classified security findings from the review skills into an enterprise security assessment report: executive summary, scope and authorisation, findings each with CVSS severity, evidence, impact and remediation, a prioritised roadmap, and a retest/closure section — written for mixed audiences and handled with restricted visibility. Use whenever the user asks to generate a penetration test or security assessment report, write up findings, produce an executive security summary, score findings with CVSS, or create a remediation plan. Not for finding the issues (web-app-security-assessment and the focused review skills), general dashboards (reporting-analytics), or tracking findings to closure (security-posture-management). Consolidates and communicates findings; it performs no testing.",
-      "useWhen": "the user asks to generate a penetration test or security assessment report, write up findings, produce an executive security summary, score findings with CVSS, or create a remediation plan.",
-      "notFor": "finding the issues (web-app-security-assessment and the focused review skills), general dashboards (reporting-analytics), or tracking findings to closure (security-posture-management). Consolidates and communicates findings; it performs no testing.",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/**) Edit(src/mocks/**) Write(src/mocks/**) Bash(node scripts/scrub-artifacts.mjs:*)",
+      "description": "Stubs third-party or unstable dependencies with page.route or HAR replay, scoped per test, with recorded HAR files scrubbed before commit. Use whenever a test depends on a payment provider, maps, analytics or another third party, an upstream is unstable in test environments, or an error path must be forced, or a test must force an error such as a 500 from an API. Not for testing the API itself (api-test-authoring), contract drift (contract-testing), or time control (clock-time-control).",
+      "useWhen": "a test depends on a payment provider, maps, analytics or another third party, an upstream is unstable in test environments, or an error path must be forced, or a test must force an error such as a 500 from an API.",
+      "notFor": "testing the API itself (api-test-authoring), contract drift (contract-testing), or time control (clock-time-control).",
       "notForSkills": [
-        "reporting-analytics",
-        "security-posture-management",
-        "web-app-security-assessment"
+        "api-test-authoring",
+        "clock-time-control",
+        "contract-testing"
       ],
       "sections": [
         "Non-negotiables",
-        "Severity (CVSS)",
-        "Report template",
-        "Document control",
-        "1. Executive summary",
-        "2. Scope & methodology",
-        "3. Findings summary",
-        "4. Detailed findings  (repeat per finding)",
-        "5. Remediation roadmap",
-        "6. Retest / closure",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "performance-testing",
-      "path": ".agents/skills/performance-testing/SKILL.md",
-      "name": "performance-testing",
+      "folder": "page-object-authoring",
+      "path": ".agents/skills/page-object-authoring/SKILL.md",
+      "name": "page-object-authoring",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Core Web Vitals and UI performance validation with Playwright: LCP, CLS, INP and TTFB in the browser, Chromium DevTools Protocol metrics, network and CPU throttling, performance budgets as assertions, and k6 load scripts with thresholds for the APIs behind the UI. Use whenever the user asks about page speed, Core Web Vitals, performance budgets, slow pages, load or stress testing, latency SLAs, throughput or how the app behaves under concurrent users. Not for functional API checks (api-testing) or debugging a single failing test (defect-analysis).",
-      "useWhen": "the user asks about page speed, Core Web Vitals, performance budgets, slow pages, load or stress testing, latency SLAs, throughput or how the app behaves under concurrent users.",
-      "notFor": "functional API checks (api-testing) or debugging a single failing test (defect-analysis).",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/pages/**) Write(src/pages/**) Bash(npx eslint:*) Bash(npx tsc --noEmit)",
+      "description": "Creates or extends exactly one page object per route under src/pages — a readonly path, locators initialised in the constructor, intent-revealing methods and no assertions — after checking that no class or path already covers the route. Use whenever a page or screen has no page object, an existing one needs new elements or actions, or duplicate page objects must be consolidated, or a field, button or element must be added to a page object such as CartPage. Not for choosing one locator (locator-selection), multi-page journeys (module-authoring), or fixture wiring (fixture-authoring).",
+      "useWhen": "a page or screen has no page object, an existing one needs new elements or actions, or duplicate page objects must be consolidated, or a field, button or element must be added to a page object such as CartPage.",
+      "notFor": "choosing one locator (locator-selection), multi-page journeys (module-authoring), or fixture wiring (fixture-authoring).",
       "notForSkills": [
-        "api-testing",
-        "defect-analysis"
+        "fixture-authoring",
+        "locator-selection",
+        "module-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "Browser: Core Web Vitals",
-        "Backend: k6 load",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 3
+      "templates": 0
     },
     {
-      "folder": "playwright-test-generation",
-      "path": ".agents/skills/playwright-test-generation/SKILL.md",
-      "name": "playwright-test-generation",
+      "folder": "performance-vitals",
+      "path": ".agents/skills/performance-vitals/SKILL.md",
+      "name": "performance-vitals",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Primary code-generation skill for Playwright TypeScript tests: feature, smoke, regression, functional and end-to-end flows. Turns a requirement, ticket, user story, acceptance criteria or plain description into a test plan, test cases and specs that use the repository's fixtures, page objects and modules, grounding the plan in past test knowledge when a knowledge MCP server is configured. Use whenever the user asks to write, add, generate, automate or extend UI or E2E tests, cover a story or ticket, or turn test cases into automation. Not for selectors alone (locator-strategy), page object design (page-object-engineering), API-only tests (api-testing) or fixing a failing test (defect-analysis).",
-      "useWhen": "the user asks to write, add, generate, automate or extend UI or E2E tests, cover a story or ticket, or turn test cases into automation.",
-      "notFor": "selectors alone (locator-strategy), page object design (page-object-engineering), API-only tests (api-testing) or fixing a failing test (defect-analysis).",
+      "tier": "T2",
+      "category": "Quality",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/perf/**) Write(tests/perf/**) Bash(npx playwright test --grep @perf:*)",
+      "description": "Measures LCP, CLS and INP in lab conditions with a fixed throttling profile on allowlisted non-production environments and compares the median of five runs to the budgets in qa.config.json. Use whenever someone asks how fast a page is, wants Core Web Vitals budgets enforced, or a change may have slowed a page, or someone asks to enforce LCP budgets or whether a page became slower. Not for load or stress testing a service, network mocking (network-mocking), or time control (clock-time-control).",
+      "useWhen": "someone asks how fast a page is, wants Core Web Vitals budgets enforced, or a change may have slowed a page, or someone asks to enforce LCP budgets or whether a page became slower.",
+      "notFor": "load or stress testing a service, network mocking (network-mocking), or time control (clock-time-control).",
       "notForSkills": [
-        "api-testing",
-        "defect-analysis",
-        "locator-strategy",
-        "page-object-engineering"
+        "clock-time-control",
+        "network-mocking"
       ],
       "sections": [
         "Non-negotiables",
+        "Inputs and outputs",
         "Procedure",
-        "Spec template",
-        "Test types",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "project-setup",
-      "path": ".agents/skills/project-setup/SKILL.md",
-      "name": "project-setup",
+      "folder": "prompt-injection-defense",
+      "path": ".agents/skills/prompt-injection-defense/SKILL.md",
+      "name": "prompt-injection-defense",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Reads an unfamiliar repository and sets the pack up in it, generically. First it discovers the stack read-only (package manager, Node, any existing Playwright config and tests, ESLint/tsconfig, the test-id attribute, base URL and environments, CI platform, app type, existing page objects and fixtures, and any legacy suites), writes the project-specific values into .agents/qa.config.json, and then scaffolds only what is missing so that `npm run verify` and the layered Playwright projects actually run. Use whenever the user installs or onboards the pack, points it at a new or existing repository, asks to bootstrap, initialise or set up the framework, or says \"make this work in my project\". Not for ongoing rule enforcement (framework-governance), converting a legacy suite (migration-analysis), or writing feature tests (playwright-test-generation). Discovery is read-only and nothing is overwritten without confirmation.",
-      "useWhen": "the user installs or onboards the pack, points it at a new or existing repository, asks to bootstrap, initialise or set up the framework, or says \"make this work in my project\".",
-      "notFor": "ongoing rule enforcement (framework-governance), converting a legacy suite (migration-analysis), or writing feature tests (playwright-test-generation). Discovery is read-only and nothing is overwritten without confirmation.",
+      "tier": "T0",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs guard:*)",
+      "description": "Keeps untrusted text from steering the agent: sanitises hidden characters, scans DOM text, tickets, logs, stack traces, retrieved documents and tool output with the injection tripwire, wraps them in untrusted blocks with source and digest, and requires confirmation for state-changing tools while such content is in context. Use whenever external content enters the context, the context firewall flags tool output, or someone asks how the agent resists prompt injection, or ticket text tells the agent to do something, or the firewall flagged output. Not for scanning skill files (skill-scan), MCP tool descriptions (mcp-server-vetting), or redacting artifacts (artifact-redaction).",
+      "useWhen": "external content enters the context, the context firewall flags tool output, or someone asks how the agent resists prompt injection, or ticket text tells the agent to do something, or the firewall flagged output.",
+      "notFor": "scanning skill files (skill-scan), MCP tool descriptions (mcp-server-vetting), or redacting artifacts (artifact-redaction).",
       "notForSkills": [
-        "framework-governance",
+        "artifact-redaction",
+        "mcp-server-vetting",
+        "skill-scan"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "release-signing-verify",
+      "path": ".agents/skills/release-signing-verify/SKILL.md",
+      "name": "release-signing-verify",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(cosign verify-blob:*) Bash(gh attestation verify:*) Bash(node scripts/verify-lock.mjs:*)",
+      "description": "Verifies a pack release before install and in CI: the cosign keyless bundle over skills.lock.json against the expected signer identity and issuer, the GitHub build-provenance attestation of the release archive, the revoked-digest list, and every file hash in the lock. Use whenever the pack is installed or updated, CI starts, or someone asks whether the skills are genuine. Not for generating the SBOM (sbom-generation), pin audits (dependency-pin-audit), or approvals (approval-attestation).",
+      "useWhen": "the pack is installed or updated, CI starts, or someone asks whether the skills are genuine.",
+      "notFor": "generating the SBOM (sbom-generation), pin audits (dependency-pin-audit), or approvals (approval-attestation).",
+      "notForSkills": [
+        "approval-attestation",
+        "dependency-pin-audit",
+        "sbom-generation"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "repo-discovery",
+      "path": ".agents/skills/repo-discovery/SKILL.md",
+      "name": "repo-discovery",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(git ls-files:*) Bash(git log:*) Write(.agents/out/**)",
+      "description": "Read-only scan of the repository estate — product purpose, stack, Playwright layout, page objects, fixtures, CI, candidate environments, knowledge sources, auth flows and risk hot spots — written to a discovery report that cites the file behind every fact. Use whenever the pack is installed into an unfamiliar repository, qa.config.json is unconfigured, or someone asks what the test estate looks like. Not for writing the configuration (config-proposal), planning a framework migration (migration-analysis), or scanning for leaked secrets (secrets-scan), or filling in qa.config.json (config-proposal).",
+      "useWhen": "the pack is installed into an unfamiliar repository, qa.config.json is unconfigured, or someone asks what the test estate looks like.",
+      "notFor": "writing the configuration (config-proposal), planning a framework migration (migration-analysis), or scanning for leaked secrets (secrets-scan), or filling in qa.config.json (config-proposal).",
+      "notForSkills": [
+        "config-proposal",
         "migration-analysis",
-        "playwright-test-generation"
+        "secrets-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Phase 1 — Read the repo (discovery, read-only)",
-        "Phase 2 — Set up (create only what is missing)",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
-        "Definition of Done"
-      ],
-      "templates": 4
-    },
-    {
-      "folder": "regression-optimization",
-      "path": ".agents/skills/regression-optimization/SKILL.md",
-      "name": "regression-optimization",
-      "keys": [
-        "name",
-        "description",
-        "metadata"
-      ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Reduces flakiness and speeds up Playwright regression suites: proves and quarantines flaky tests, removes root causes of nondeterminism, tunes workers, sharding and retries, selects tests by change or risk, and reports suite health. Use whenever the user mentions flaky or intermittent tests, a slow suite, too many retries, long CI times, test selection or impact analysis, smoke suite selection, or quarantining tests. Not for one specific failure's root cause (defect-analysis) or writing pipeline files (ci-cd-pipeline-config).",
-      "useWhen": "the user mentions flaky or intermittent tests, a slow suite, too many retries, long CI times, test selection or impact analysis, smoke suite selection, or quarantining tests.",
-      "notFor": "one specific failure's root cause (defect-analysis) or writing pipeline files (ci-cd-pipeline-config).",
-      "notForSkills": [
-        "ci-cd-pipeline-config",
-        "defect-analysis"
-      ],
-      "sections": [
-        "Non-negotiables",
-        "Flakiness causes and fixes",
-        "Speed levers",
-        "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
     },
     {
-      "folder": "reporting-analytics",
-      "path": ".agents/skills/reporting-analytics/SKILL.md",
-      "name": "reporting-analytics",
+      "folder": "runner-image-pinning",
+      "path": ".agents/skills/runner-image-pinning/SKILL.md",
+      "name": "runner-image-pinning",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Test reporting and analytics for Playwright suites: configures reporters, normalises results from every layer into one result file, computes pass rate, flaky rate, duration and failure trends, measures requirement coverage from test annotations, and publishes dashboards or summaries. Use whenever the user asks for test reports, dashboards, trends, metrics, coverage of requirements or acceptance criteria, release readiness summaries, or pushing results to a dashboard or chat. Not for diagnosing individual failures (defect-analysis), configuring CI jobs (ci-cd-pipeline-config), or security risk posture (security-posture-management).",
-      "useWhen": "the user asks for test reports, dashboards, trends, metrics, coverage of requirements or acceptance criteria, release readiness summaries, or pushing results to a dashboard or chat.",
-      "notFor": "diagnosing individual failures (defect-analysis), configuring CI jobs (ci-cd-pipeline-config), or security risk posture (security-posture-management).",
+      "tier": "T1",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.github/workflows/**) Bash(node scripts/check-pins.mjs:*)",
+      "description": "Keeps the Playwright runner container pinned by digest and matched to the installed @playwright/test, updated only through reviewed Renovate pull requests. Use whenever the Playwright version changes, the runner image is updated, or CI and local browsers disagree. Not for workflow structure (ci-workflow-authoring), dependency audits (dependency-pin-audit), or SBOMs (sbom-generation).",
+      "useWhen": "the Playwright version changes, the runner image is updated, or CI and local browsers disagree.",
+      "notFor": "workflow structure (ci-workflow-authoring), dependency audits (dependency-pin-audit), or SBOMs (sbom-generation).",
       "notForSkills": [
-        "ci-cd-pipeline-config",
-        "defect-analysis",
-        "security-posture-management"
+        "ci-workflow-authoring",
+        "dependency-pin-audit",
+        "sbom-generation"
       ],
       "sections": [
         "Non-negotiables",
-        "Reporters",
-        "Normalised result file",
-        "Metrics",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
       "templates": 0
     },
     {
-      "folder": "secrets-detection",
-      "path": ".agents/skills/secrets-detection/SKILL.md",
-      "name": "secrets-detection",
+      "folder": "sbom-generation",
+      "path": ".agents/skills/sbom-generation/SKILL.md",
+      "name": "sbom-generation",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Detects hard-coded secrets (API keys, tokens, passwords, private keys, connection strings) in the repository and its git history and wires prevention into pre-commit and CI, for code the team owns: scanning with gitleaks / detect-secrets / trufflehog, reporting findings by location and type without ever printing the secret value, maintaining a reviewed baseline, and guiding rotation. Covers OWASP A05 and the leakage side of A02. Use whenever the user asks to find or scan for secrets, hard-coded credentials, leaked keys, pre-commit secret hooks, or history cleanup. Not for dependency CVEs (dependency-vulnerability-audit), runtime headers (security-headers-review), or cloud key policy (cloud-security-review). Never reads `.env*` to print its contents and never echoes a detected value.",
-      "useWhen": "the user asks to find or scan for secrets, hard-coded credentials, leaked keys, pre-commit secret hooks, or history cleanup.",
-      "notFor": "dependency CVEs (dependency-vulnerability-audit), runtime headers (security-headers-review), or cloud key policy (cloud-security-review). Never reads `.env*` to print its contents and never echoes a detected value.",
+      "tier": "T1",
+      "category": "Gov",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(npm sbom:*) Write(.agents/out/**)",
+      "description": "Generates a CycloneDX software bill of materials for the pack and the test project with npm sbom, and attaches it to the release as a signed attestation. Use whenever a release is prepared, a customer or auditor asks for an SBOM, or dependencies change significantly. Not for pin audits (dependency-pin-audit), signature verification (release-signing-verify), or vulnerability triage.",
+      "useWhen": "a release is prepared, a customer or auditor asks for an SBOM, or dependencies change significantly.",
+      "notFor": "pin audits (dependency-pin-audit), signature verification (release-signing-verify), or vulnerability triage.",
       "notForSkills": [
-        "cloud-security-review",
-        "dependency-vulnerability-audit",
-        "security-headers-review"
+        "dependency-pin-audit",
+        "release-signing-verify"
       ],
       "sections": [
         "Non-negotiables",
-        "What to scan and how",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "secure-code-review",
-      "path": ".agents/skills/secure-code-review/SKILL.md",
-      "name": "secure-code-review",
+      "folder": "scenario-design",
+      "path": ".agents/skills/scenario-design/SKILL.md",
+      "name": "scenario-design",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Source-level security review of code the team owns: spot vulnerable patterns across the OWASP / CWE classes (injection, XSS, access control, SSRF, deserialisation, secrets, crypto misuse) and give the concrete fix, backed by SAST (CodeQL / Semgrep) wired into CI. Use whenever the user asks for a secure code review, to review a diff or module for security, to find insecure patterns or anti-patterns, to add SAST/static security analysis, or for remediation guidance on a vulnerability class. Not for runtime behaviour checks (the focused *-review skills), dependency CVEs (dependency-vulnerability-audit), or design-level review (security-architecture-review). It identifies and fixes weaknesses in the team's own code; it does not produce exploits.",
-      "useWhen": "the user asks for a secure code review, to review a diff or module for security, to find insecure patterns or anti-patterns, to add SAST/static security analysis, or for remediation guidance on a vulnerability class.",
-      "notFor": "runtime behaviour checks (the focused *-review skills), dependency CVEs (dependency-vulnerability-audit), or design-level review (security-architecture-review). It identifies and fixes weaknesses in the team's own code; it does not produce exploits.",
+      "tier": "T0",
+      "category": "Design",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs scenarios:*) Bash(node rag/cli.mjs context:*) Write(.agents/out/**)",
+      "description": "Designs test scenarios from a requirement and the project's history — acceptance criteria, existing tests, executions, defects and RCA — marks what is already covered, adds positive, negative, boundary, permission, state and regression scenarios, and cites a context id for each. Use whenever someone asks for test scenarios, test cases, a test plan or test ideas for a ticket, feature or acceptance criteria. Not for writing spec code (spec-authoring), reviewing a Playwright planner plan (agent-plan-intake), or security test design (security-scope-verify).",
+      "useWhen": "someone asks for test scenarios, test cases, a test plan or test ideas for a ticket, feature or acceptance criteria.",
+      "notFor": "writing spec code (spec-authoring), reviewing a Playwright planner plan (agent-plan-intake), or security test design (security-scope-verify).",
       "notForSkills": [
-        "dependency-vulnerability-audit",
-        "security-architecture-review"
+        "agent-plan-intake",
+        "security-scope-verify",
+        "spec-authoring"
       ],
       "sections": [
         "Non-negotiables",
-        "What to look for → fix",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "security-architecture-review",
-      "path": ".agents/skills/security-architecture-review/SKILL.md",
-      "name": "security-architecture-review",
+      "folder": "secret-provider-fixture",
+      "path": ".agents/skills/secret-provider-fixture/SKILL.md",
+      "name": "secret-provider-fixture",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Design-level security review of a system or feature the team owns: evaluate the architecture against security principles (defence in depth, least privilege, zero trust, secure defaults, fail secure), check that identity, data protection, secrets, logging and trust boundaries are designed in, and map required controls to the skills that verify them. Covers OWASP A04 (insecure design). Use whenever the user asks for a security architecture review, a design or control-coverage review, a security design assessment, zero-trust or defence-in-depth feedback, or \"is this architecture secure\". Not for enumerating new threats from scratch (threat-modeling), source-level review (secure-code-review), or network topology specifics (network-security-review). It reviews design and documents; it touches no running system.",
-      "useWhen": "the user asks for a security architecture review, a design or control-coverage review, a security design assessment, zero-trust or defence-in-depth feedback, or \"is this architecture secure\".",
-      "notFor": "enumerating new threats from scratch (threat-modeling), source-level review (secure-code-review), or network topology specifics (network-security-review). It reviews design and documents; it touches no running system.",
+      "tier": "T1",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/fixtures/secret-providers.ts) Edit(src/fixtures/index.ts) Bash(npx tsc --noEmit)",
+      "description": "Wires the pluggable secretProvider worker fixture — CI-injected environment, Vault, a cloud secret manager or 1Password through their own CLIs — so tests resolve credentials by reference at run time and every resolved value is registered for redaction. Use whenever tests need credentials, a new secret store must be supported, or a literal password, token or key is found in test code, or a test has a hard-coded password. Not for detecting leaked secrets (secrets-scan), test data (data-factory-authoring), or authenticated state (auth-setup-project), or checking whether a secret was committed (secrets-scan).",
+      "useWhen": "tests need credentials, a new secret store must be supported, or a literal password, token or key is found in test code, or a test has a hard-coded password.",
+      "notFor": "detecting leaked secrets (secrets-scan), test data (data-factory-authoring), or authenticated state (auth-setup-project), or checking whether a secret was committed (secrets-scan).",
       "notForSkills": [
-        "network-security-review",
-        "secure-code-review",
-        "threat-modeling"
+        "auth-setup-project",
+        "data-factory-authoring",
+        "secrets-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Principles & what to confirm",
-        "Template",
-        "System: <name>   Authoriser: <name>   Inputs: <design docs/diagrams>   Date: <date>",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "security-headers-review",
-      "path": ".agents/skills/security-headers-review/SKILL.md",
-      "name": "security-headers-review",
+      "folder": "secrets-scan",
+      "path": ".agents/skills/secrets-scan/SKILL.md",
+      "name": "secrets-scan",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "HTTP security-header, CORS and transport checks with Playwright, for applications the team owns: assert CSP, HSTS, X-Content-Type-Options, frame protection, Referrer-Policy and Permissions-Policy are present and well-formed, that CORS rejects unknown origins, that HTTPS is enforced, and that server fingerprinting headers are absent. Covers OWASP A05 and the transport side of A02. Use whenever the user asks for security headers analysis, a CSP validator, CORS checks, HSTS/HTTPS enforcement, or clickjacking protection. Not for auth or cookies (auth-access-control-review), XSS payload handling (xss-output-encoding-review), or cloud posture (cloud-security-review). This reads and evaluates response headers; it does not test CSP bypasses.",
-      "useWhen": "the user asks for security headers analysis, a CSP validator, CORS checks, HSTS/HTTPS enforcement, or clickjacking protection.",
-      "notFor": "auth or cookies (auth-access-control-review), XSS payload handling (xss-output-encoding-review), or cloud posture (cloud-security-review). This reads and evaluates response headers; it does not test CSP bypasses.",
+      "tier": "T0",
+      "category": "Sec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/secrets-scan.mjs:*) Bash(git diff:*)",
+      "description": "Scans source, history diffs, HAR files, reports and other artifacts for secrets and personal data — keys, tokens, JWTs, URI credentials, cards, IBANs, emails, assigned passwords — with the knowledge layer's redaction rules, without ever printing a matched value. Use whenever code or fixtures are committed, before artifacts are uploaded, or someone asks whether a secret leaked, or someone asks did we commit a secret, or whether a branch holds credentials. Not for removing secrets from artifacts (artifact-redaction), resolving credentials (secret-provider-fixture), or skill files (skill-scan).",
+      "useWhen": "code or fixtures are committed, before artifacts are uploaded, or someone asks whether a secret leaked, or someone asks did we commit a secret, or whether a branch holds credentials.",
+      "notFor": "removing secrets from artifacts (artifact-redaction), resolving credentials (secret-provider-fixture), or skill files (skill-scan).",
       "notForSkills": [
-        "auth-access-control-review",
-        "cloud-security-review",
-        "xss-output-encoding-review"
+        "artifact-redaction",
+        "secret-provider-fixture",
+        "skill-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Expected headers",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "security-posture-management",
-      "path": ".agents/skills/security-posture-management/SKILL.md",
-      "name": "security-posture-management",
+      "folder": "security-findings-report",
+      "path": ".agents/skills/security-findings-report/SKILL.md",
+      "name": "security-findings-report",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Programme-level security risk management for the software the team ships and the vendors it relies on: an SBOM inventory (own and vendor-supplied, with VEX), the CVE lifecycle across every scanner (deduplicate, enrich with CISA KEV and EPSS, prioritise, set SLAs, track exceptions to expiry), vendor risk assessed from the evidence vendors supply, compliance mapping with audit-ready evidence, and security posture as trended metrics. Use whenever the user asks about vendor or third-party risk, SBOM intake or VEX, CVE triage, SLAs or exceptions, \"are we affected by CVE-…\", KEV or EPSS prioritisation, threat intelligence, compliance or audit evidence, a risk register, or posture metrics. Not for scanning dependencies (dependency-vulnerability-audit), images (docker-security-review) or cloud accounts (cloud-security-review), design-time threats (threat-modeling), one engagement's report (pentest-report-generator) or test dashboards (reporting-analytics). It never scans a vendor or exploits a CVE.",
-      "useWhen": "the user asks about vendor or third-party risk, SBOM intake or VEX, CVE triage, SLAs or exceptions, \"are we affected by CVE-…\", KEV or EPSS prioritisation, threat intelligence, compliance or audit evidence, a risk register, or posture metrics.",
-      "notFor": "scanning dependencies (dependency-vulnerability-audit), images (docker-security-review) or cloud accounts (cloud-security-review), design-time threats (threat-modeling), one engagement's report (pentest-report-generator) or test dashboards (reporting-analytics). It never scans a vendor or exploits a CVE.",
+      "tier": "T3",
+      "category": "SecTest",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Write(reports/security/**) Bash(gh workflow run approve.yml:*)",
+      "description": "Turns security test results into a CVSS-scored findings report that embeds the authorization record (scope id, digest, approver), with reproduction limited to what an owner needs and evidence redacted, and files findings to the tracker only with an approval attestation. Use whenever a scoped security run has finished or findings must be shared with owners. Not for running checks (security-headers-check, authz-session-testing, injection-testing, api-security-testing), verifying scope (security-scope-verify), or general evidence (evidence-report).",
+      "useWhen": "a scoped security run has finished or findings must be shared with owners.",
+      "notFor": "running checks (security-headers-check, authz-session-testing, injection-testing, api-security-testing), verifying scope (security-scope-verify), or general evidence (evidence-report).",
       "notForSkills": [
-        "cloud-security-review",
-        "dependency-vulnerability-audit",
-        "docker-security-review",
-        "pentest-report-generator",
-        "reporting-analytics",
-        "threat-modeling"
+        "api-security-testing",
+        "authz-session-testing",
+        "evidence-report",
+        "injection-testing",
+        "security-headers-check",
+        "security-scope-verify"
       ],
       "sections": [
+        "Gate",
         "Non-negotiables",
-        "Workstreams",
-        "Prioritise (first match wins)",
-        "Vendor tiers",
-        "Compliance map (examples; scope comes from `security.frameworks`)",
-        "Posture metrics",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 5
+      "templates": 0
     },
     {
-      "folder": "security-regression-suite",
-      "path": ".agents/skills/security-regression-suite/SKILL.md",
-      "name": "security-regression-suite",
+      "folder": "security-headers-check",
+      "path": ".agents/skills/security-headers-check/SKILL.md",
+      "name": "security-headers-check",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Assembles the focused security checks into a maintainable, non-destructive Playwright regression suite for an application the team owns: consistent `tests/security/` layout, `@security` tagging and the `security` project, a stable baseline so only new findings fail, and CI wiring that runs the deterministic checks on every pipeline and heavier passive scans on a schedule. Use whenever the user asks to generate a security regression suite, a \"Playwright security scanner/validator\" that runs repeatably, a security smoke/baseline for CI, or to organise existing security tests. Not for authoring a single category's checks (the focused *-review skills) or general CI structure (ci-cd-pipeline-config). It runs and organises the defensive checks; it adds no offensive scanning.",
-      "useWhen": "the user asks to generate a security regression suite, a \"Playwright security scanner/validator\" that runs repeatably, a security smoke/baseline for CI, or to organise existing security tests.",
-      "notFor": "authoring a single category's checks (the focused *-review skills) or general CI structure (ci-cd-pipeline-config). It runs and organises the defensive checks; it adds no offensive scanning.",
+      "tier": "T4",
+      "category": "SecTest",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(tests/sec/**) Write(tests/sec/**) Bash(npx playwright test --project=security:*) Write(reports/security/**)",
+      "description": "Passively checks in-scope responses for Content-Security-Policy, Strict-Transport-Security, frame protection, Referrer-Policy, Permissions-Policy, CORS and cookie attributes (Secure, HttpOnly, SameSite) with GET requests only, under a verified scope. Use whenever an approved scope covers response hardening or someone asks whether security headers are set correctly, or someone asks whether CSP and HSTS are configured. Not for authorisation tests (authz-session-testing), injection probes (injection-testing), or verifying the scope (security-scope-verify).",
+      "useWhen": "an approved scope covers response hardening or someone asks whether security headers are set correctly, or someone asks whether CSP and HSTS are configured.",
+      "notFor": "authorisation tests (authz-session-testing), injection probes (injection-testing), or verifying the scope (security-scope-verify).",
       "notForSkills": [
-        "ci-cd-pipeline-config"
+        "authz-session-testing",
+        "injection-testing",
+        "security-scope-verify"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "security-scope-verify",
+      "path": ".agents/skills/security-scope-verify/SKILL.md",
+      "name": "security-scope-verify",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T0",
+      "category": "SecTest",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node /opt/qa-pack/hooks/verify-scope.mjs --check:*)",
+      "description": "Validates the signed authorization scope for security testing before any T4 skill runs — signature against the managed security-approver identity, time window, targets within the environment allowlist, the skills and techniques allowed, rate limit and ticket — and stores the authorization record with the results. Use whenever someone asks for penetration testing, authorisation, injection, API or header security checks, or before any T4 skill starts, or someone asks for a security assessment or a pentest. Not for running the checks (security-headers-check, authz-session-testing, injection-testing, api-security-testing), or reporting findings (security-findings-report).",
+      "useWhen": "someone asks for penetration testing, authorisation, injection, API or header security checks, or before any T4 skill starts, or someone asks for a security assessment or a pentest.",
+      "notFor": "running the checks (security-headers-check, authz-session-testing, injection-testing, api-security-testing), or reporting findings (security-findings-report).",
+      "notForSkills": [
+        "api-security-testing",
+        "authz-session-testing",
+        "injection-testing",
+        "security-findings-report",
+        "security-headers-check"
       ],
       "sections": [
         "Non-negotiables",
-        "Suite layout",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
+    },
+    {
+      "folder": "sharding-config",
+      "path": ".agents/skills/sharding-config/SKILL.md",
+      "name": "sharding-config",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.github/workflows/ci.yml) Edit(playwright.config.ts)",
+      "description": "Sizes the browser-by-shard matrix and worker count from timing data so the pull request pipeline stays within its duration objective, using the blob reporter so shards merge into one report. Use whenever CI is slow, shards are unbalanced, or a new browser or project is added to the matrix. Not for choosing tests by impact (test-impact-selection), merging the reports (merge-reports), or editing other parts of workflows (ci-workflow-authoring).",
+      "useWhen": "CI is slow, shards are unbalanced, or a new browser or project is added to the matrix.",
+      "notFor": "choosing tests by impact (test-impact-selection), merging the reports (merge-reports), or editing other parts of workflows (ci-workflow-authoring).",
+      "notForSkills": [
+        "ci-workflow-authoring",
+        "merge-reports",
+        "test-impact-selection"
+      ],
+      "sections": [
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
     },
     {
       "folder": "skill-authoring",
@@ -1248,288 +1687,342 @@
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Meta-skill for extending this pack: create or revise a SKILL.md that matches the pack's exact conventions — spec-compliant frontmatter (name, description, metadata), the right tier, a clear single responsibility with \"Not for\" neighbours, non-negotiables, a coverage table, working templates, a procedure and a definition of done — and update the routing table and guide so the new skill is discoverable. Use whenever the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions. Not for enforcing code rules in test code (framework-governance) or writing tests (playwright-test-generation). New skills stay narrow, non-duplicative and, if security-related, defensive and authorised-only.",
-      "useWhen": "the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions.",
-      "notFor": "\" neighbours, non-negotiables, a coverage table, working templates, a procedure and a definition of done — and update the routing table and guide so the new skill is discoverable. Use whenever the user asks to add, author, scaffold, refactor or review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or check that a skill follows the conventions. Not for enforcing code rules in test code (framework-governance) or writing tests (playwright-test-generation). New skills stay narrow, non-duplicative and, if security-related, defensive and authorised-only.",
+      "tier": "T1",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(.agents/skills/**) Write(.agents/skills/**) Edit(.agents/skills-catalog.json) Edit(tests/skills/trigger-cases.json) Edit(AGENTS.md) Bash(node scripts/check-skills.mjs:*) Bash(node scripts/skill-scan.mjs:*) Bash(node scripts/check-allowed-tools.mjs:*)",
+      "description": "Writes one new narrow skill — kebab-case name, a description with Use whenever and Not for lines, least-privilege allowed-tools for its tier, the required sections and trigger cases — and registers it in the catalogue and the routing table. Use whenever a capability has no owning skill, a skill does two jobs and must be split, or a description must be reworded to stop routing overlap, or someone asks to create a new skill, split a skill or reword a skill description. Not for scanning skills for unsafe content (skill-scan), measuring routing accuracy (skill-routing-eval), or regenerating the guide (docs-generation).",
+      "useWhen": "and",
+      "notFor": "lines, least-privilege allowed-tools for its tier, the required sections and trigger cases — and registers it in the catalogue and the routing table. Use whenever a capability has no owning skill, a skill does two jobs and must be split, or a description must be reworded to stop routing overlap, or someone asks to create a new skill, split a skill or reword a skill description. Not for scanning skills for unsafe content (skill-scan), measuring routing accuracy (skill-routing-eval), or regenerating the guide (docs-generation).",
       "notForSkills": [
-        "framework-governance",
-        "playwright-test-generation"
+        "docs-generation",
+        "skill-routing-eval",
+        "skill-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Tier guide",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 3
+      "templates": 0
     },
     {
-      "folder": "skill-evaluation",
-      "path": ".agents/skills/skill-evaluation/SKILL.md",
-      "name": "skill-evaluation",
+      "folder": "skill-router",
+      "path": ".agents/skills/skill-router/SKILL.md",
+      "name": "skill-router",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "4",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Validates and measures the skill set itself: builds a machine-readable manifest from every SKILL.md, enforces the frontmatter schema, required sections and name/folder match, detects overlapping or duplicate skills (trigger collisions and missing \"Not for\" cross-references), verifies routing coverage (every skill routed, no orphan rows), checks tier/domain balance, and runs a trigger-accuracy eval against example requests — then gates CI on the results. Use whenever the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI. Not for enforcing test-code rules (framework-governance) or authoring a single skill (skill-authoring). It measures the pack; it runs deterministically and stores no secrets.",
-      "useWhen": "the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI.",
-      "notFor": "\" cross-references), verifies routing coverage (every skill routed, no orphan rows), checks tier/domain balance, and runs a trigger-accuracy eval against example requests — then gates CI on the results. Use whenever the user asks to evaluate, validate, lint or benchmark the skills, generate the manifest or routing table from the skills, detect skill overlap or routing drift, or add a skill-quality gate to CI. Not for enforcing test-code rules (framework-governance) or authoring a single skill (skill-authoring). It measures the pack; it runs deterministically and stores no secrets.",
+      "tier": "T0",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/verify-lock.mjs:*)",
+      "description": "Selects exactly one primary skill, plus at most two helpers, for a request by matching it against the routing table and the locked catalogue, and refuses skills that are unlisted, disabled or fail the lock check. Use whenever a new request arrives, a task changes direction, or it is unclear which skill owns the work, or someone asks which skill should handle a request or owns a task. Not for doing the work itself, measuring routing accuracy (skill-routing-eval), or writing a new skill (skill-authoring), or splitting a skill that does two jobs (skill-authoring).",
+      "useWhen": "a new request arrives, a task changes direction, or it is unclear which skill owns the work, or someone asks which skill should handle a request or owns a task.",
+      "notFor": "doing the work itself, measuring routing accuracy (skill-routing-eval), or writing a new skill (skill-authoring), or splitting a skill that does two jobs (skill-authoring).",
       "notForSkills": [
-        "framework-governance",
-        "skill-authoring"
+        "skill-authoring",
+        "skill-routing-eval"
       ],
       "sections": [
         "Non-negotiables",
-        "Checks",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 3
+      "templates": 0
     },
     {
-      "folder": "sre-reliability",
-      "path": ".agents/skills/sre-reliability/SKILL.md",
-      "name": "sre-reliability",
+      "folder": "skill-routing-eval",
+      "path": ".agents/skills/skill-routing-eval/SKILL.md",
+      "name": "skill-routing-eval",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "2",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Site-reliability engineering practices for services the team owns: define SLIs and SLOs, track an error budget, gate releases on it, run bounded resilience checks (timeout, retry, fallback and graceful-degradation behaviour under fault injection in non-production), and keep incident runbooks and postmortems. Use whenever the user asks about reliability, SLIs/SLOs, error budgets, availability targets, resilience or fault-injection/chaos checks, graceful degradation, incident response or postmortems, or release gating on reliability. Not for emitting telemetry and synthetic monitors (observability-monitoring), test flakiness (regression-optimization), or pipeline mechanics (ci-cd-pipeline-config). Resilience checks are authorised, non-production and bounded; this is not chaos engineering against live systems.",
-      "useWhen": "the user asks about reliability, SLIs/SLOs, error budgets, availability targets, resilience or fault-injection/chaos checks, graceful degradation, incident response or postmortems, or release gating on reliability.",
-      "notFor": "emitting telemetry and synthetic monitors (observability-monitoring), test flakiness (regression-optimization), or pipeline mechanics (ci-cd-pipeline-config). Resilience checks are authorised, non-production and bounded; this is not chaos engineering against live systems.",
+      "tier": "T0",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/check-skills.mjs:*)",
+      "description": "Measures whether requests reach the right skill: a deterministic lexical router over tests/skills/trigger-cases.json reports top-1 and top-3 accuracy, misroutes and trigger-term overlap between skills that do not exclude each other. Use whenever descriptions, the routing table or the catalogue change, or a request was misrouted, or a request went to the wrong skill. Not for writing or splitting the skill (skill-authoring), scanning for unsafe content (skill-scan), or judging model answers (llm-eval-gating), or rewording a skill description (skill-authoring).",
+      "useWhen": "descriptions, the routing table or the catalogue change, or a request was misrouted, or a request went to the wrong skill.",
+      "notFor": "writing or splitting the skill (skill-authoring), scanning for unsafe content (skill-scan), or judging model answers (llm-eval-gating), or rewording a skill description (skill-authoring).",
       "notForSkills": [
-        "ci-cd-pipeline-config",
-        "observability-monitoring",
-        "regression-optimization"
+        "llm-eval-gating",
+        "skill-authoring",
+        "skill-scan"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 2
+      "templates": 0
     },
     {
-      "folder": "ssrf-defence-review",
-      "path": ".agents/skills/ssrf-defence-review/SKILL.md",
-      "name": "ssrf-defence-review",
+      "folder": "skill-scan",
+      "path": ".agents/skills/skill-scan/SKILL.md",
+      "name": "skill-scan",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Server-side request forgery defence checks with Playwright, for applications the team owns and may test: on features where the server fetches a user-supplied URL, assert that requests to internal, loopback, link-local and cloud-metadata targets are refused and only allow-listed destinations are reached. Covers OWASP A10. Use whenever the user asks for SSRF testing or assessment, URL-fetch / webhook / image-proxy security, or \"can the server be made to call internal hosts\". Not for other injection (injection-handling-review), outbound CORS/headers (security-headers-review), or cloud IAM posture (cloud-security-review). This asserts internal targets are blocked; it does not reach a metadata endpoint or exfiltrate anything.",
-      "useWhen": "the user asks for SSRF testing or assessment, URL-fetch / webhook / image-proxy security, or \"can the server be made to call internal hosts\".",
-      "notFor": "other injection (injection-handling-review), outbound CORS/headers (security-headers-review), or cloud IAM posture (cloud-security-review). This asserts internal targets are blocked; it does not reach a metadata endpoint or exfiltrate anything.",
+      "tier": "T0",
+      "category": "Meta",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(node scripts/skill-scan.mjs:*)",
+      "description": "Statically scans skills, AGENTS.md, CLAUDE.md, prompts and agent definitions for hidden or obfuscated characters, instruction overrides, remote-fetch or pipe-to-shell instructions, credential paths, unknown URLs and over-broad tools, and fails on any high finding. Use whenever files under .agents/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters. Not for routing accuracy (skill-routing-eval), secrets in application code (secrets-scan), or MCP tool descriptions (mcp-server-vetting).",
+      "useWhen": "files under .agents/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters.",
+      "notFor": "routing accuracy (skill-routing-eval), secrets in application code (secrets-scan), or MCP tool descriptions (mcp-server-vetting).",
       "notForSkills": [
-        "cloud-security-review",
-        "injection-handling-review",
-        "security-headers-review"
+        "mcp-server-vetting",
+        "secrets-scan",
+        "skill-routing-eval"
       ],
       "sections": [
         "Non-negotiables",
-        "Target set and expectations",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "test-data-management",
-      "path": ".agents/skills/test-data-management/SKILL.md",
-      "name": "test-data-management",
+      "folder": "spec-authoring",
+      "path": ".agents/skills/spec-authoring/SKILL.md",
+      "name": "spec-authoring",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "1",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Dynamic, factory-driven test data for Playwright: data factories, API-based seeding, unique data per worker, cleanup in fixture teardown, environment configuration validated at start, and secrets kept out of code. Use whenever the user asks to create test data, users, orders or accounts for tests, remove hard-coded data, make tests parallel-safe, seed state before a UI test, clean up after tests, or manage environment variables and credentials for tests. Not for API contract testing (api-testing) or selector work (locator-strategy).",
-      "useWhen": "the user asks to create test data, users, orders or accounts for tests, remove hard-coded data, make tests parallel-safe, seed state before a UI test, clean up after tests, or manage environment variables and credentials for tests.",
-      "notFor": "API contract testing (api-testing) or selector work (locator-strategy).",
+      "tier": "T1",
+      "category": "Author",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/**) Write(tests/**) Bash(npx eslint:*) Bash(npx tsc --noEmit) Bash(npx playwright test --list)",
+      "description": "Writes or extends Playwright specs from approved scenarios — importing test and expect from @fixtures, receiving page objects and modules by injection, using web-first assertions, relative navigation and exactly one priority and one feature tag per test. Use whenever someone asks to write, generate, add or extend a Playwright test or spec, or to implement approved scenarios as code, or someone asks to add a smoke, regression or end-to-end test. Not for designing scenarios (scenario-design), creating page objects (page-object-authoring), API-only tests (api-test-authoring), or repairing a failing test (test-healing).",
+      "useWhen": "someone asks to write, generate, add or extend a Playwright test or spec, or to implement approved scenarios as code, or someone asks to add a smoke, regression or end-to-end test.",
+      "notFor": "designing scenarios (scenario-design), creating page objects (page-object-authoring), API-only tests (api-test-authoring), or repairing a failing test (test-healing).",
       "notForSkills": [
-        "api-testing",
-        "locator-strategy"
+        "api-test-authoring",
+        "page-object-authoring",
+        "scenario-design",
+        "test-healing"
       ],
       "sections": [
         "Non-negotiables",
-        "Structure",
-        "Templates",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 3
+      "templates": 0
     },
     {
-      "folder": "threat-modeling",
-      "path": ".agents/skills/threat-modeling/SKILL.md",
-      "name": "threat-modeling",
+      "folder": "telemetry-instrumentation",
+      "path": ".agents/skills/telemetry-instrumentation/SKILL.md",
+      "name": "telemetry-instrumentation",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Structured threat modelling for a feature or system the team is building: draw the data-flow and trust boundaries, enumerate threats with STRIDE, rate them, and propose mitigations and the tests that verify them. Covers OWASP A04 (insecure design). Use whenever the user asks for a threat model, STRIDE analysis, attack tree, data-flow or trust-boundary diagram, abuse/misuse cases, or \"what could go wrong with this design\", or wants a Playwright threat-modelling assistant to turn threats into checks. Not for reviewing an existing architecture's controls (security-architecture-review), running the checks (auth-access-control-review, injection-handling-review), or external threat intelligence (security-posture-management). Design-stage analysis; it touches no running system.",
-      "useWhen": "the user asks for a threat model, STRIDE analysis, attack tree, data-flow or trust-boundary diagram, abuse/misuse cases, or \"what could go wrong with this design\", or wants a Playwright threat-modelling assistant to turn threats into checks.",
-      "notFor": "reviewing an existing architecture's controls (security-architecture-review), running the checks (auth-access-control-review, injection-handling-review), or external threat intelligence (security-posture-management). Design-stage analysis; it touches no running system.",
+      "tier": "T1",
+      "category": "AIOps",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(telemetry/**) Bash(node scripts/check-telemetry-contract.mjs:*)",
+      "description": "Configures OpenTelemetry for the agent, the knowledge layer and CI — invoke_agent, chat and execute_tool spans with the GenAI semantic-convention attributes plus the pack's skill name, skill hash, data class and budget, exported over OTLP to any backend — with message content never captured. Use whenever telemetry is set up or changed, spans are missing, or someone asks how agent activity is observed, or someone asks to set up OpenTelemetry or how to observe agent activity. Not for budgets (cost-budget-guard), the local AI Ops dashboard (llm-eval-gating), or model routes (model-gateway-config).",
+      "useWhen": "telemetry is set up or changed, spans are missing, or someone asks how agent activity is observed, or someone asks to set up OpenTelemetry or how to observe agent activity.",
+      "notFor": "budgets (cost-budget-guard), the local AI Ops dashboard (llm-eval-gating), or model routes (model-gateway-config).",
       "notForSkills": [
-        "auth-access-control-review",
-        "injection-handling-review",
-        "security-architecture-review",
-        "security-posture-management"
+        "cost-budget-guard",
+        "llm-eval-gating",
+        "model-gateway-config"
       ],
       "sections": [
         "Non-negotiables",
-        "Method",
-        "Template",
-        "System: <feature>        Authoriser: <name>        Date: <date>",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "visual-testing",
-      "path": ".agents/skills/visual-testing/SKILL.md",
-      "name": "visual-testing",
+      "folder": "test-healing",
+      "path": ".agents/skills/test-healing/SKILL.md",
+      "name": "test-healing",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Visual regression and screenshot comparison testing with Playwright: toHaveScreenshot on pages and components, masking dynamic content, disabling animations, stable baselines generated in the pinned Playwright container, per-platform snapshot handling, and a reviewed update process. Use whenever the user asks for visual tests, screenshot comparison, pixel diffs, layout or style regression checks, updating or reviewing baselines, or fixing flaky screenshots. Not for functional assertions (playwright-test-generation) or accessibility (accessibility-testing).",
-      "useWhen": "the user asks for visual tests, screenshot comparison, pixel diffs, layout or style regression checks, updating or reviewing baselines, or fixing flaky screenshots.",
-      "notFor": "functional assertions (playwright-test-generation) or accessibility (accessibility-testing).",
+      "tier": "T1",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(src/pages/**) Bash(node scripts/self-healing/heal.mjs:*)",
+      "description": "Repairs locator and flow drift through scripts/self-healing/heal.mjs and the Playwright healer agent under governance: proposals first, page objects only, applied after review, never test.fixme or skip, never weaker assertions, and the healed test must pass three times. Use whenever locators broke after a UI change, the healer agent proposes fixes, or many tests fail on the same changed element, or the healer's proposals must be reviewed. Not for diagnosing the cause of a failure (failure-rca), choosing a locator by hand (locator-selection), or flaky timing (flake-triage).",
+      "useWhen": "locators broke after a UI change, the healer agent proposes fixes, or many tests fail on the same changed element, or the healer's proposals must be reviewed.",
+      "notFor": "diagnosing the cause of a failure (failure-rca), choosing a locator by hand (locator-selection), or flaky timing (flake-triage).",
       "notForSkills": [
-        "accessibility-testing",
-        "playwright-test-generation"
+        "failure-rca",
+        "flake-triage",
+        "locator-selection"
       ],
       "sections": [
         "Non-negotiables",
-        "Template",
-        "Choosing scope",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "web-app-security-assessment",
-      "path": ".agents/skills/web-app-security-assessment/SKILL.md",
-      "name": "web-app-security-assessment",
+      "folder": "test-impact-selection",
+      "path": ".agents/skills/test-impact-selection/SKILL.md",
+      "name": "test-impact-selection",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Plans and runs an authorised, defensive web-application security assessment with Playwright: agrees scope and authorisation, maps the feature to the OWASP Top 10, selects the focused security review skills, runs them as non-destructive checks against an owned non-production environment, and consolidates findings for the report. Use whenever the user asks for a web app security assessment, a penetration test of an app they own, OWASP Top 10 coverage, a security review of a feature or release, or a plan for security testing. Not for the single-category checks themselves (auth-access-control-review, injection-handling-review, xss-output-encoding-review, security-headers-review), API-only scope (api-security-review), cloud or infra posture (cloud-security-review), or the write-up (pentest-report-generator).",
-      "useWhen": "the user asks for a web app security assessment, a penetration test of an app they own, OWASP Top 10 coverage, a security review of a feature or release, or a plan for security testing.",
-      "notFor": "the single-category checks themselves (auth-access-control-review, injection-handling-review, xss-output-encoding-review, security-headers-review), API-only scope (api-security-review), cloud or infra posture (cloud-security-review), or the write-up (pentest-report-generator).",
+      "tier": "T0",
+      "category": "Exec",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Bash(git diff --name-only:*) Bash(node rag/cli.mjs impact:*) Bash(npx playwright test --list:*)",
+      "description": "Selects the narrowest set of tests a change needs — changed files to page objects and modules to specs to requirements through the knowledge graph, or Playwright's --only-changed — and always keeps the @P0 smoke set. Use whenever a pull request needs a targeted run, someone asks which tests to run for a change, or CI is slow because it runs everything on every change. Not for sharding the full suite (sharding-config), confirming flakiness (flake-triage), or quarantining tests (flake-quarantine).",
+      "useWhen": "a pull request needs a targeted run, someone asks which tests to run for a change, or CI is slow because it runs everything on every change.",
+      "notFor": "sharding the full suite (sharding-config), confirming flakiness (flake-triage), or quarantining tests (flake-quarantine).",
       "notForSkills": [
-        "api-security-review",
-        "auth-access-control-review",
-        "cloud-security-review",
-        "injection-handling-review",
-        "pentest-report-generator",
-        "security-headers-review",
-        "xss-output-encoding-review"
+        "flake-quarantine",
+        "flake-triage",
+        "sharding-config"
       ],
       "sections": [
         "Non-negotiables",
-        "OWASP Top 10 → skill map",
-        "Scope sheet",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
     },
     {
-      "folder": "xss-output-encoding-review",
-      "path": ".agents/skills/xss-output-encoding-review/SKILL.md",
-      "name": "xss-output-encoding-review",
+      "folder": "visual-baseline-approval",
+      "path": ".agents/skills/visual-baseline-approval/SKILL.md",
+      "name": "visual-baseline-approval",
       "keys": [
         "name",
         "description",
-        "metadata"
+        "allowed-tools"
       ],
-      "tier": "3",
-      "pack": "enterprise-playwright-ai-skill-pack",
-      "metadataKeys": [
-        "tier",
-        "pack"
-      ],
-      "description": "Cross-site scripting handling checks with Playwright, for applications the team owns and may test: submit a small set of benign XSS markers and assert they are stored and rendered as inert, escaped text (never executed), that a Content-Security-Policy is present, and that no script dialog fires. Covers the XSS part of OWASP A03. Use whenever the user asks for XSS detection or testing, output-encoding checks, stored/reflected/DOM XSS handling, or a \"Playwright CSP/XSS tester\". Not for other injection (injection-handling-review), full header coverage (security-headers-review), or source review (secure-code-review). This proves payloads are neutralised; it does not craft working exploits or steal sessions.",
-      "useWhen": "the user asks for XSS detection or testing, output-encoding checks, stored/reflected/DOM XSS handling, or a \"Playwright CSP/XSS tester\".",
-      "notFor": "other injection (injection-handling-review), full header coverage (security-headers-review), or source review (secure-code-review). This proves payloads are neutralised; it does not craft working exploits or steal sessions.",
+      "tier": "T3",
+      "category": "Quality",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Bash(gh workflow run update-baselines.yml:*) Bash(gh workflow run approve.yml:*) Bash(gh pr create:*)",
+      "description": "Prepares a baseline-update pull request with before, after and diff images regenerated in the pinned runner image, and requires an identity-bound approval from the design QA owners before the new baselines merge. Use whenever a visual diff reflects an intended UI change and the baselines must be accepted, or the visual diff is intended and the snapshots must be updated. Not for writing visual assertions (visual-snapshot-authoring), investigating an unexpected diff (failure-rca), or approving waivers (waiver-registry).",
+      "useWhen": "a visual diff reflects an intended UI change and the baselines must be accepted, or the visual diff is intended and the snapshots must be updated.",
+      "notFor": "writing visual assertions (visual-snapshot-authoring), investigating an unexpected diff (failure-rca), or approving waivers (waiver-registry).",
       "notForSkills": [
-        "injection-handling-review",
-        "secure-code-review",
-        "security-headers-review"
+        "failure-rca",
+        "visual-snapshot-authoring",
+        "waiver-registry"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
+    },
+    {
+      "folder": "visual-snapshot-authoring",
+      "path": ".agents/skills/visual-snapshot-authoring/SKILL.md",
+      "name": "visual-snapshot-authoring",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T1",
+      "category": "Quality",
+      "default": "on",
+      "allowedTools": "Read Grep Glob Edit(tests/visual/**) Write(tests/visual/**) Bash(npx tsc --noEmit)",
+      "description": "Adds toHaveScreenshot assertions for pages and components with masks for dynamic regions and animations disabled, with baselines generated only inside the pinned runner image so they are reproducible. Use whenever someone asks for visual regression tests, pixel comparisons or screenshot checks of a page or component. Not for accepting changed baselines (visual-baseline-approval), structural checks without pixels (aria-snapshot-testing), or accessibility (accessibility-audit), or updating snapshots after an intended change (visual-baseline-approval).",
+      "useWhen": "someone asks for visual regression tests, pixel comparisons or screenshot checks of a page or component.",
+      "notFor": "accepting changed baselines (visual-baseline-approval), structural checks without pixels (aria-snapshot-testing), or accessibility (accessibility-audit), or updating snapshots after an intended change (visual-baseline-approval).",
+      "notForSkills": [
+        "accessibility-audit",
+        "aria-snapshot-testing",
+        "visual-baseline-approval"
       ],
       "sections": [
         "Non-negotiables",
-        "Coverage map",
-        "Spec template",
+        "Inputs and outputs",
         "Procedure",
+        "Verify",
+        "Evidence",
         "Definition of Done"
       ],
-      "templates": 1
+      "templates": 0
+    },
+    {
+      "folder": "waiver-registry",
+      "path": ".agents/skills/waiver-registry/SKILL.md",
+      "name": "waiver-registry",
+      "keys": [
+        "name",
+        "description",
+        "allowed-tools"
+      ],
+      "tier": "T3",
+      "category": "Gov",
+      "default": "off",
+      "allowedTools": "Read Grep Glob Edit(governance/waivers.yaml) Bash(gh workflow run approve.yml:*)",
+      "description": "Requests a governance waiver as one entry in governance/waivers.yaml — one rule, one path, a reason, ticket, owner, a different approver, creation date and expiry of at most 90 days — backed by an identity-bound approval attestation. Use whenever a governance rule cannot be met for a justified reason, such as a third-party widget without an accessible name, or someone needs an exception to a rule. Not for flaky tests (flake-quarantine), fixing the violation (governance-lint), or security scope (security-scope-verify), or how to approve it (approval-attestation).",
+      "useWhen": "a governance rule cannot be met for a justified reason, such as a third-party widget without an accessible name, or someone needs an exception to a rule.",
+      "notFor": "flaky tests (flake-quarantine), fixing the violation (governance-lint), or security scope (security-scope-verify), or how to approve it (approval-attestation).",
+      "notForSkills": [
+        "approval-attestation",
+        "flake-quarantine",
+        "governance-lint",
+        "security-scope-verify"
+      ],
+      "sections": [
+        "Gate",
+        "Non-negotiables",
+        "Inputs and outputs",
+        "Procedure",
+        "Verify",
+        "Evidence",
+        "Definition of Done"
+      ],
+      "templates": 0
     }
   ]
 }

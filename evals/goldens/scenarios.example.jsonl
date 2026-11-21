@@ -1,0 +1,3 @@
+{"requirement":"PROJ-101","expect":{"uncoveredAcs":["AC3","AC4","AC5"],"coveredAcs":["AC1"],"regressionFor":["DEF-201"],"categories":["boundary","negative","regression"],"handoffs":["performance-vitals"],"minQuestions":1}}
+{"requirement":"PROJ-102","expect":{"uncoveredAcs":["AC3","AC4"],"coveredAcs":["AC1"],"regressionFor":["DEF-202"],"categories":["boundary","state"]}}
+{"requirement":"PROJ-103","expect":{"uncoveredAcs":["AC1","AC3"],"categories":["permission","security"],"handoffs":["security-scope-verify"]}}

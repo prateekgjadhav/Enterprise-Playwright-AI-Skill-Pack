@@ -1,0 +1,22 @@
+{
+  "servers": {
+    "qa-knowledge": {
+      "tools": {
+        "coverage_report": "2846cfbac9a4945d1b002bc1ed00d25fcef9b4579eb9fff6ce55542bf5a40e4a",
+        "impact_analysis": "12179848a680652503dafdf86408cbde143d9c7dd0ef45abd1dc3c502f4611ce",
+        "index_status": "f42efdf51851db6428bbcef52b6f4afc445bdf8a17ed3bd365c73306a39cb75b",
+        "ingest": "5e25c5be15d13335152fbcc1f15f7b9b2c5a96700a1c44502908ad3dd41cf716",
+        "kg_trace": "91bd9cfe041536d2d3969084e93dfcbdd2e8c9f6ec2f4ffcf98f2f6df1378bac",
+        "memory_feedback": "f4dd4268e7f5884ac15edc7c64b015513fa7c3e8e7b65e0ac65745a7f9ffe17d",
+        "memory_read": "50d368cd0022407d1312c4d74b0c40b018bd48e57f71d178014f7a39b1002a34",
+        "memory_write": "a48681878c18c4a53fb0d52a96084bb9ac7e39839e8b920fa19427ff4c760e74",
+        "plan_query": "4073f15d83f818ed77a460dc8f039d1034ea24914c77b72f4edddad6e11eb28f",
+        "rag_context": "7a8f53c8d1b6a3cb2eb5deaae93acb8bbc4a97cdd7b7eb1df8a92e20ce4a4241",
+        "rag_search": "bab1fddd425985da560feb33dfc1dc71d7bab1350c7c32cf7cd2bac48122de2f",
+        "scenario_brief": "e4c46a93373633667e52b13f51290ed217326a96fdea92ef583c2a8c35899cc4",
+        "score_spec": "beec23d594d346055e0cf05cf02af0fae4ed23a2ef9f074bebcb9264857b3206",
+        "validate_output": "00b6a4862d49be11517a0abc82130273195f2d7c7be2282fe335ce4138e9668e"
+      }
+    }
+  }
+}

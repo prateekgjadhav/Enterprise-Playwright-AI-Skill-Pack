@@ -1,0 +1,8 @@
+{"id":"r01","query":"generate playwright tests for checkout coupons","intent":"generate_tests","relevant":["PROJ-101","spec:tests/e2e/checkout/coupons.spec.ts","RCA-201","DEF-201"]}
+{"id":"r02","query":"why does the sign in test fail with TimeoutError waiting for getByRole('button', { name: 'Sign in' })","intent":"analyse_failure","relevant":["DEF-202","PAT-overlay","spec:tests/e2e/auth/login.spec.ts"]}
+{"id":"r03","query":"PROJ-102 account lockout after failed attempts","relevant":["PROJ-102"]}
+{"id":"r04","query":"which requirements have coverage gaps","intent":"coverage","relevant":["PROJ-103","PROJ-101","PROJ-102"]}
+{"id":"r05","query":"discount calculated on the wrong price root cause","intent":"analyse_failure","relevant":["RCA-201","DEF-201"]}
+{"id":"r06","query":"can a customer see another user's order? IDOR security finding","intent":"security","relevant":["FIND-7","PROJ-103"]}
+{"id":"r07","query":"how should we seed the cart state for coupon tests","relevant":["mem-team-seed-data","TP-checkout"]}
+{"id":"r08","query":"assert the cart total without flakiness","relevant":["PAT-web-first","page:CartPage"]}

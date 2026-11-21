@@ -1,0 +1,9 @@
+import { test, expect } from '@fixtures';
+
+test.describe('Order history', () => {
+  test('PROJ-103 AC2 each order row links to its detail page', { tag: ['@P1', '@orders', '@regression'] }, async ({ page, ordersPage }) => {
+    await ordersPage.open();
+    await ordersPage.openOrder(0);
+    await expect(page).toHaveURL(/orders\/\d+/);
+  });
+});

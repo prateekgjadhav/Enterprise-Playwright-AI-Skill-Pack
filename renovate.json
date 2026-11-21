@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices", ":semanticCommits"],
+  "rangeStrategy": "pin",
+  "minimumReleaseAge": "14 days",
+  "labels": ["dependencies"],
+  "packageRules": [
+    { "matchManagers": ["github-actions"], "groupName": "github-actions" },
+    { "matchPackageNames": ["@playwright/test", "mcr.microsoft.com/playwright"], "groupName": "playwright", "automerge": false },
+    { "matchFileNames": [".agents/skills/**", "hooks/**", "policy/**", "managed/**"], "automerge": false, "reviewers": ["team:appsec"] }
+  ],
+  "pip_requirements": { "fileMatch": ["^evals/requirements\\.txt$"] }
+}

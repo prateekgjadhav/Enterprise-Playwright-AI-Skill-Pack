@@ -1,53 +1,718 @@
 [
-  { "request": "set up the skill pack in this existing repo and make npm run verify work", "expect": "project-setup" },
-  { "request": "write a smoke test for the login page", "expect": "playwright-test-generation" },
-  { "request": "automate the acceptance criteria from ticket PROJ-123 as e2e regression tests", "expect": "playwright-test-generation" },
-  { "request": "refactor the checkout page object and pull the payment form into a component", "expect": "page-object-engineering" },
-  { "request": "this selector hits a strict mode violation; which locator should replace the XPath?", "expect": "locator-strategy" },
-  { "request": "stop hard-coding users in tests: seed unique data per worker with factories and clean it up", "expect": "test-data-management" },
-  { "request": "validate the orders REST endpoint response against its JSON schema and contract", "expect": "api-testing" },
-  { "request": "add a GitHub Actions pipeline that shards the tests and publishes the HTML report", "expect": "ci-cd-pipeline-config" },
-  { "request": "the regression suite is flaky and slow; quarantine the flaky tests and speed it up", "expect": "regression-optimization" },
-  { "request": "migrate our Selenium TestNG suite to Playwright and prove parity", "expect": "migration-analysis" },
-  { "request": "analyse this failed test trace and screenshot and draft a bug report", "expect": "defect-analysis" },
-  { "request": "add synthetic monitoring for the health and readiness endpoints", "expect": "observability-monitoring" },
-  { "request": "define SLOs and an error budget for checkout and gate the release on it", "expect": "sre-reliability" },
-  { "request": "add screenshot comparison tests and review the visual baselines", "expect": "visual-testing" },
-  { "request": "scan checkout for WCAG violations with axe and test keyboard navigation", "expect": "accessibility-testing" },
-  { "request": "measure Core Web Vitals on the home page and load test the search API with k6", "expect": "performance-testing" },
-  { "request": "test checkout on a phone with touch, responsive layout and orientation changes", "expect": "mobile-testing" },
-  { "request": "run an OWASP Top 10 security assessment of our web app before release", "expect": "web-app-security-assessment" },
-  { "request": "check that one user cannot read another user's orders (IDOR) and sessions end at logout", "expect": "auth-access-control-review" },
-  { "request": "test our API for broken object level authorization, mass assignment and rate limits", "expect": "api-security-review" },
-  { "request": "confirm SQL injection and command injection input is rejected or escaped in search", "expect": "injection-handling-review" },
-  { "request": "make sure stored XSS payloads in comments come back escaped and CSP is present", "expect": "xss-output-encoding-review" },
-  { "request": "verify the URL preview refuses internal and cloud metadata addresses (SSRF)", "expect": "ssrf-defence-review" },
-  { "request": "check that state-changing requests require a valid CSRF token", "expect": "csrf-protection-review" },
-  { "request": "test that the file upload rejects dangerous file types and path traversal filenames", "expect": "file-upload-security-review" },
-  { "request": "confirm the server rejects an alg:none JWT", "expect": "jwt-validation-review" },
-  { "request": "check our security headers: CSP, HSTS, nosniff, frame protection and CORS", "expect": "security-headers-review" },
-  { "request": "review this diff for insecure code patterns and run SAST", "expect": "secure-code-review" },
-  { "request": "scan dependencies for known CVEs", "expect": "dependency-vulnerability-audit" },
-  { "request": "scan the repo for leaked API keys and add a pre-commit secrets check", "expect": "secrets-detection" },
-  { "request": "harden our CI pipeline: pin actions to SHAs and scope the GITHUB_TOKEN", "expect": "ci-cd-security-validation" },
-  { "request": "assemble our security checks into a security regression suite that runs in CI", "expect": "security-regression-suite" },
-  { "request": "do a multi-cloud security posture review against the CIS benchmarks", "expect": "cloud-security-review" },
-  { "request": "review our AWS account for public S3 buckets, open security groups and CloudTrail", "expect": "aws-security-review" },
-  { "request": "review our Azure subscription: Entra ID roles, storage accounts, NSGs and Key Vault", "expect": "azure-security-review" },
-  { "request": "audit our Kubernetes cluster RBAC, Pod Security and network policies", "expect": "kubernetes-security-audit" },
-  { "request": "harden our Dockerfile: non-root user, minimal base image, and scan the image", "expect": "docker-security-review" },
-  { "request": "review our network segmentation, firewall rules and TLS configuration", "expect": "network-security-review" },
-  { "request": "build a STRIDE threat model with trust boundaries for the new payments feature", "expect": "threat-modeling" },
-  { "request": "review the security architecture of this design for defence in depth", "expect": "security-architecture-review" },
-  { "request": "write up the penetration test findings as a report with CVSS scores", "expect": "pentest-report-generator" },
-  { "request": "which open CVEs are on the KEV list and past their SLA?", "expect": "security-posture-management" },
-  { "request": "assess the third-party risk of our new payments vendor from its SOC 2 report", "expect": "security-posture-management" },
-  { "request": "ingest the vendor SBOM with VEX and tell us whether we are affected by the new CVE", "expect": "security-posture-management" },
-  { "request": "prepare compliance audit evidence for vulnerability management and keep the risk register", "expect": "security-posture-management" },
-  { "request": "build a dashboard of pass rate, flaky rate and requirement coverage trends", "expect": "reporting-analytics" },
-  { "request": "audit these test changes against the framework rules and lint config", "expect": "framework-governance" },
-  { "request": "trace why the agent picked that skill and how many tokens the LLM calls cost", "expect": "agent-telemetry" },
-  { "request": "validate the skills, regenerate the manifest and check for routing drift", "expect": "skill-evaluation" },
-  { "request": "add a new skill to the pack for contract testing", "expect": "skill-authoring" },
-  { "request": "evaluate the quality of the generated tests against golden datasets with an LLM judge", "expect": "deepeval" }
+  {
+    "request": "which skill should handle adding a test for the coupon field?",
+    "expect": "skill-router"
+  },
+  {
+    "request": "which skill should take this request?",
+    "expect": "skill-router"
+  },
+  {
+    "request": "which skill owns this task?",
+    "expect": "skill-router"
+  },
+  {
+    "request": "set up the skill pack in this repository",
+    "expect": "repo-discovery"
+  },
+  {
+    "request": "what does our test estate look like?",
+    "expect": "repo-discovery"
+  },
+  {
+    "request": "scan this repo before we configure anything",
+    "expect": "repo-discovery"
+  },
+  {
+    "request": "propose the qa config from the discovery report",
+    "expect": "config-proposal"
+  },
+  {
+    "request": "fill in qa.config.json for this repo",
+    "expect": "config-proposal"
+  },
+  {
+    "request": "our qa.config.json fails validation, fix the proposal",
+    "expect": "config-proposal"
+  },
+  {
+    "request": "create a new skill for GraphQL contract tests",
+    "expect": "skill-authoring"
+  },
+  {
+    "request": "this skill does two jobs, split it",
+    "expect": "skill-authoring"
+  },
+  {
+    "request": "reword the skill description that overlaps another skill",
+    "expect": "skill-authoring"
+  },
+  {
+    "request": "scan our skills for prompt injection",
+    "expect": "skill-scan"
+  },
+  {
+    "request": "is this third-party SKILL.md safe to adopt?",
+    "expect": "skill-scan"
+  },
+  {
+    "request": "check the prompts folder for hidden characters",
+    "expect": "skill-scan"
+  },
+  {
+    "request": "why did my request go to the wrong skill?",
+    "expect": "skill-routing-eval"
+  },
+  {
+    "request": "measure routing accuracy after the description changes",
+    "expect": "skill-routing-eval"
+  },
+  {
+    "request": "check trigger overlap between skills",
+    "expect": "skill-routing-eval"
+  },
+  {
+    "request": "regenerate the setup guide",
+    "expect": "docs-generation"
+  },
+  {
+    "request": "CI says the guide is stale",
+    "expect": "docs-generation"
+  },
+  {
+    "request": "update the documentation after adding a skill",
+    "expect": "docs-generation"
+  },
+  {
+    "request": "write the evidence block for this change",
+    "expect": "evidence-report"
+  },
+  {
+    "request": "summarise what was done and how it was verified",
+    "expect": "evidence-report"
+  },
+  {
+    "request": "produce the evidence for the CI run",
+    "expect": "evidence-report"
+  },
+  {
+    "request": "design test scenarios for PROJ-123",
+    "expect": "scenario-design"
+  },
+  {
+    "request": "what test cases do we need for the coupon feature?",
+    "expect": "scenario-design"
+  },
+  {
+    "request": "write a test plan for the new checkout acceptance criteria",
+    "expect": "scenario-design"
+  },
+  {
+    "request": "review the plan the Playwright planner wrote",
+    "expect": "agent-plan-intake"
+  },
+  {
+    "request": "is this generated test plan safe to use?",
+    "expect": "agent-plan-intake"
+  },
+  {
+    "request": "check specs/checkout.md before generation",
+    "expect": "agent-plan-intake"
+  },
+  {
+    "request": "write a Playwright test for the login page",
+    "expect": "spec-authoring"
+  },
+  {
+    "request": "implement these approved scenarios as specs",
+    "expect": "spec-authoring"
+  },
+  {
+    "request": "add a smoke test for search",
+    "expect": "spec-authoring"
+  },
+  {
+    "request": "create a page object for the orders page",
+    "expect": "page-object-authoring"
+  },
+  {
+    "request": "add the voucher field to CartPage",
+    "expect": "page-object-authoring"
+  },
+  {
+    "request": "we have two page objects for /login, merge them",
+    "expect": "page-object-authoring"
+  },
+  {
+    "request": "which locator should I use for the save button?",
+    "expect": "locator-selection"
+  },
+  {
+    "request": "fix this strict mode violation",
+    "expect": "locator-selection"
+  },
+  {
+    "request": "replace the XPath selectors in CartPage",
+    "expect": "locator-selection"
+  },
+  {
+    "request": "create a checkout module, every spec repeats the steps",
+    "expect": "module-authoring"
+  },
+  {
+    "request": "extract the sign-in flow into a module",
+    "expect": "module-authoring"
+  },
+  {
+    "request": "tests collide on the same user when run in parallel",
+    "expect": "data-factory-authoring"
+  },
+  {
+    "request": "create a factory for orders",
+    "expect": "data-factory-authoring"
+  },
+  {
+    "request": "remove the hard-coded emails from the specs",
+    "expect": "data-factory-authoring"
+  },
+  {
+    "request": "add a fixture for the orders API client",
+    "expect": "fixture-authoring"
+  },
+  {
+    "request": "this fixture leaks state between tests",
+    "expect": "fixture-authoring"
+  },
+  {
+    "request": "inject CartPage into the specs",
+    "expect": "fixture-authoring"
+  },
+  {
+    "request": "tests log in through the UI every time, speed this up",
+    "expect": "auth-setup-project"
+  },
+  {
+    "request": "add a setup project for admin and customer roles",
+    "expect": "auth-setup-project"
+  },
+  {
+    "request": "store authenticated state per role",
+    "expect": "auth-setup-project"
+  },
+  {
+    "request": "test that only admins can refund orders",
+    "expect": "multi-role-auth"
+  },
+  {
+    "request": "build a permission matrix test for projects",
+    "expect": "multi-role-auth"
+  },
+  {
+    "request": "check what each role can do on the settings page",
+    "expect": "multi-role-auth"
+  },
+  {
+    "request": "write API tests for the orders endpoint",
+    "expect": "api-test-authoring"
+  },
+  {
+    "request": "test the POST /coupons validation errors",
+    "expect": "api-test-authoring"
+  },
+  {
+    "request": "use the API to set up data for UI tests",
+    "expect": "api-test-authoring"
+  },
+  {
+    "request": "detect breaking changes in the orders API schema",
+    "expect": "contract-testing"
+  },
+  {
+    "request": "add contract tests against our OpenAPI file",
+    "expect": "contract-testing"
+  },
+  {
+    "request": "mock the payment provider in checkout tests",
+    "expect": "network-mocking"
+  },
+  {
+    "request": "force a 500 from the recommendations API",
+    "expect": "network-mocking"
+  },
+  {
+    "request": "replay a HAR for the maps widget",
+    "expect": "network-mocking"
+  },
+  {
+    "request": "test that the session expires after 30 minutes",
+    "expect": "clock-time-control"
+  },
+  {
+    "request": "the countdown banner test waits 60 seconds, fix it",
+    "expect": "clock-time-control"
+  },
+  {
+    "request": "test behaviour at midnight in another timezone",
+    "expect": "clock-time-control"
+  },
+  {
+    "request": "add visual regression tests for the pricing page",
+    "expect": "visual-snapshot-authoring"
+  },
+  {
+    "request": "screenshot-compare the header component",
+    "expect": "visual-snapshot-authoring"
+  },
+  {
+    "request": "accept the new baselines for the redesigned header",
+    "expect": "visual-baseline-approval"
+  },
+  {
+    "request": "the visual diff is intended, update the snapshots",
+    "expect": "visual-baseline-approval"
+  },
+  {
+    "request": "lock down the navigation menu structure",
+    "expect": "aria-snapshot-testing"
+  },
+  {
+    "request": "assert the heading hierarchy on the article page",
+    "expect": "aria-snapshot-testing"
+  },
+  {
+    "request": "check the checkout flow for accessibility issues",
+    "expect": "accessibility-audit"
+  },
+  {
+    "request": "add WCAG checks to CI",
+    "expect": "accessibility-audit"
+  },
+  {
+    "request": "is the signup form usable with a screen reader?",
+    "expect": "accessibility-audit"
+  },
+  {
+    "request": "how fast does the product page load?",
+    "expect": "performance-vitals"
+  },
+  {
+    "request": "enforce LCP budgets in CI",
+    "expect": "performance-vitals"
+  },
+  {
+    "request": "did this change make the homepage slower?",
+    "expect": "performance-vitals"
+  },
+  {
+    "request": "add mobile tests for the menu",
+    "expect": "mobile-emulation"
+  },
+  {
+    "request": "test the checkout on an iPhone viewport",
+    "expect": "mobile-emulation"
+  },
+  {
+    "request": "check the tablet layout",
+    "expect": "mobile-emulation"
+  },
+  {
+    "request": "which tests should I run for this change?",
+    "expect": "test-impact-selection"
+  },
+  {
+    "request": "only run the tests affected by my PR",
+    "expect": "test-impact-selection"
+  },
+  {
+    "request": "CI runs everything on every change, select the impacted tests",
+    "expect": "test-impact-selection"
+  },
+  {
+    "request": "our e2e job takes 40 minutes, shard it",
+    "expect": "sharding-config"
+  },
+  {
+    "request": "the shards are unbalanced",
+    "expect": "sharding-config"
+  },
+  {
+    "request": "add webkit to the CI matrix",
+    "expect": "sharding-config"
+  },
+  {
+    "request": "merge the shard reports into one",
+    "expect": "merge-reports"
+  },
+  {
+    "request": "the merged report is missing webkit results",
+    "expect": "merge-reports"
+  },
+  {
+    "request": "add a nightly regression job",
+    "expect": "ci-workflow-authoring"
+  },
+  {
+    "request": "our workflow uses actions by tag, harden it",
+    "expect": "ci-workflow-authoring"
+  },
+  {
+    "request": "set up the tests in another CI pipeline",
+    "expect": "ci-workflow-authoring"
+  },
+  {
+    "request": "update the Playwright docker image",
+    "expect": "runner-image-pinning"
+  },
+  {
+    "request": "CI browsers differ from local ones",
+    "expect": "runner-image-pinning"
+  },
+  {
+    "request": "pin the runner image by digest",
+    "expect": "runner-image-pinning"
+  },
+  {
+    "request": "the checkout test is flaky, find out why",
+    "expect": "flake-triage"
+  },
+  {
+    "request": "this test fails one run in ten",
+    "expect": "flake-triage"
+  },
+  {
+    "request": "retries are hiding a failure",
+    "expect": "flake-triage"
+  },
+  {
+    "request": "quarantine the flaky voucher test for now",
+    "expect": "flake-quarantine"
+  },
+  {
+    "request": "this flaky test blocks every merge",
+    "expect": "flake-quarantine"
+  },
+  {
+    "request": "why did the login test fail?",
+    "expect": "failure-rca"
+  },
+  {
+    "request": "CI is red, explain the failure",
+    "expect": "failure-rca"
+  },
+  {
+    "request": "analyse this trace",
+    "expect": "failure-rca"
+  },
+  {
+    "request": "the UI changed and twenty locators broke",
+    "expect": "test-healing"
+  },
+  {
+    "request": "review the healer's proposals",
+    "expect": "test-healing"
+  },
+  {
+    "request": "heal the broken selectors in CartPage",
+    "expect": "test-healing"
+  },
+  {
+    "request": "how hard is it to migrate our Cypress tests to Playwright?",
+    "expect": "migration-analysis"
+  },
+  {
+    "request": "plan the Selenium migration",
+    "expect": "migration-analysis"
+  },
+  {
+    "request": "map our Robot Framework keywords to Playwright",
+    "expect": "migration-analysis"
+  },
+  {
+    "request": "run the governance checks",
+    "expect": "governance-lint"
+  },
+  {
+    "request": "CI says no-xpath failed",
+    "expect": "governance-lint"
+  },
+  {
+    "request": "is this branch ready to merge?",
+    "expect": "governance-lint"
+  },
+  {
+    "request": "I need an exception to the CSS locator rule for a vendor widget",
+    "expect": "waiver-registry"
+  },
+  {
+    "request": "register a waiver for this hard wait",
+    "expect": "waiver-registry"
+  },
+  {
+    "request": "get identity-bound sign-off for a gated action",
+    "expect": "approval-attestation"
+  },
+  {
+    "request": "how do I approve the waiver?",
+    "expect": "approval-attestation"
+  },
+  {
+    "request": "request sign-off for enabling a security skill",
+    "expect": "approval-attestation"
+  },
+  {
+    "request": "are all our dependencies pinned?",
+    "expect": "dependency-pin-audit"
+  },
+  {
+    "request": "audit the workflow actions for tag references",
+    "expect": "dependency-pin-audit"
+  },
+  {
+    "request": "check npm signatures",
+    "expect": "dependency-pin-audit"
+  },
+  {
+    "request": "generate an SBOM for the release",
+    "expect": "sbom-generation"
+  },
+  {
+    "request": "an auditor wants our software bill of materials",
+    "expect": "sbom-generation"
+  },
+  {
+    "request": "verify the skill pack signature",
+    "expect": "release-signing-verify"
+  },
+  {
+    "request": "are these skills genuine?",
+    "expect": "release-signing-verify"
+  },
+  {
+    "request": "check the release before installing",
+    "expect": "release-signing-verify"
+  },
+  {
+    "request": "add the new uat environment",
+    "expect": "environment-allowlist"
+  },
+  {
+    "request": "renew the staging environment review date",
+    "expect": "environment-allowlist"
+  },
+  {
+    "request": "remove the retired qa2 host",
+    "expect": "environment-allowlist"
+  },
+  {
+    "request": "the e2e job is blocked by harden-runner",
+    "expect": "egress-policy"
+  },
+  {
+    "request": "update the egress lists for the new environment",
+    "expect": "egress-policy"
+  },
+  {
+    "request": "the login test has a hard-coded password",
+    "expect": "secret-provider-fixture"
+  },
+  {
+    "request": "read test credentials from Vault",
+    "expect": "secret-provider-fixture"
+  },
+  {
+    "request": "support 1Password for test secrets",
+    "expect": "secret-provider-fixture"
+  },
+  {
+    "request": "did we commit a secret?",
+    "expect": "secrets-scan"
+  },
+  {
+    "request": "scan the HAR files for tokens",
+    "expect": "secrets-scan"
+  },
+  {
+    "request": "check this branch for credentials",
+    "expect": "secrets-scan"
+  },
+  {
+    "request": "scrub the traces before upload",
+    "expect": "artifact-redaction"
+  },
+  {
+    "request": "a token showed up in the HTML report",
+    "expect": "artifact-redaction"
+  },
+  {
+    "request": "make the HAR safe to share",
+    "expect": "artifact-redaction"
+  },
+  {
+    "request": "the ticket text tells the agent to delete files",
+    "expect": "prompt-injection-defense"
+  },
+  {
+    "request": "how do we stop prompt injection from web pages?",
+    "expect": "prompt-injection-defense"
+  },
+  {
+    "request": "the firewall flagged MCP output",
+    "expect": "prompt-injection-defense"
+  },
+  {
+    "request": "can we send these RCA notes to the external model?",
+    "expect": "data-classification"
+  },
+  {
+    "request": "classify this context before calling the model",
+    "expect": "data-classification"
+  },
+  {
+    "request": "can we add this MCP server?",
+    "expect": "mcp-server-vetting"
+  },
+  {
+    "request": "the MCP pin check failed",
+    "expect": "mcp-server-vetting"
+  },
+  {
+    "request": "vet the playwright MCP server tools",
+    "expect": "mcp-server-vetting"
+  },
+  {
+    "request": "remember this fix pattern for the team",
+    "expect": "knowledge-provenance"
+  },
+  {
+    "request": "approve the pending memory entries",
+    "expect": "knowledge-provenance"
+  },
+  {
+    "request": "revoke the poisoned RCA note",
+    "expect": "knowledge-provenance"
+  },
+  {
+    "request": "what do we already know about checkout defects?",
+    "expect": "knowledge-retrieval"
+  },
+  {
+    "request": "show coverage for PROJ-101",
+    "expect": "knowledge-retrieval"
+  },
+  {
+    "request": "trace this requirement to its tests",
+    "expect": "knowledge-retrieval"
+  },
+  {
+    "request": "run a security assessment of the checkout",
+    "expect": "security-scope-verify"
+  },
+  {
+    "request": "can we pentest the staging API?",
+    "expect": "security-scope-verify"
+  },
+  {
+    "request": "check the scope before the security tests",
+    "expect": "security-scope-verify"
+  },
+  {
+    "request": "check the security headers on staging",
+    "expect": "security-headers-check"
+  },
+  {
+    "request": "is our CSP and HSTS configured?",
+    "expect": "security-headers-check"
+  },
+  {
+    "request": "can one customer see another customer's orders?",
+    "expect": "authz-session-testing"
+  },
+  {
+    "request": "test JWT validation on the API",
+    "expect": "authz-session-testing"
+  },
+  {
+    "request": "check CSRF protection on the profile form",
+    "expect": "authz-session-testing"
+  },
+  {
+    "request": "test the search box for XSS",
+    "expect": "injection-testing"
+  },
+  {
+    "request": "check the filters for SQL injection",
+    "expect": "injection-testing"
+  },
+  {
+    "request": "add a regression guard for the injection finding",
+    "expect": "injection-testing"
+  },
+  {
+    "request": "test the orders API for broken object level authorization",
+    "expect": "api-security-testing"
+  },
+  {
+    "request": "check the upload endpoint validation",
+    "expect": "api-security-testing"
+  },
+  {
+    "request": "test SSRF protection on the webhook URL field",
+    "expect": "api-security-testing"
+  },
+  {
+    "request": "write up the security findings",
+    "expect": "security-findings-report"
+  },
+  {
+    "request": "report the pentest results to the owners",
+    "expect": "security-findings-report"
+  },
+  {
+    "request": "set up OpenTelemetry for the agent",
+    "expect": "telemetry-instrumentation"
+  },
+  {
+    "request": "spans from the knowledge server are missing",
+    "expect": "telemetry-instrumentation"
+  },
+  {
+    "request": "how do we observe what the agent did?",
+    "expect": "telemetry-instrumentation"
+  },
+  {
+    "request": "how much has the agent spent today?",
+    "expect": "cost-budget-guard"
+  },
+  {
+    "request": "the gateway returned 429",
+    "expect": "cost-budget-guard"
+  },
+  {
+    "request": "check the token budget",
+    "expect": "cost-budget-guard"
+  },
+  {
+    "request": "did the prompt change make test generation worse?",
+    "expect": "llm-eval-gating"
+  },
+  {
+    "request": "run the AI release gate",
+    "expect": "llm-eval-gating"
+  },
+  {
+    "request": "evaluate retrieval quality before release",
+    "expect": "llm-eval-gating"
+  },
+  {
+    "request": "switch the internal route to the new model",
+    "expect": "model-gateway-config"
+  },
+  {
+    "request": "add a self-hosted route for confidential data",
+    "expect": "model-gateway-config"
+  },
+  {
+    "request": "which model serves confidential requests?",
+    "expect": "model-gateway-config"
+  }
 ]

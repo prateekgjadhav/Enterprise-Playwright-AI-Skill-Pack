@@ -1,0 +1,23 @@
+{
+  "project": { "name": "sample-shop", "owners": ["team:shop-qa"] },
+  "environments": [
+    { "name": "staging", "owner": "team:shop-qa", "ticket": "QA-1", "dataClass": "internal", "hosts": ["staging.shop.example.test"], "reviewBy": "2026-12-31" }
+  ],
+  "defaultEnvironment": "staging",
+  "productionHosts": ["shop.example.com"],
+  "framework": {
+    "root": ".", "testIdAttribute": "data-testid", "fixturesImport": "@fixtures",
+    "pagesDir": "src/pages", "modulesDir": "src/modules", "dataDir": "src/data",
+    "priorityTags": ["@P0", "@P1", "@P2"], "suiteTags": ["@smoke", "@regression"], "roles": ["customer"]
+  },
+  "gates": { "knowledgeWrite": "ask" },
+  "rag": {
+    "security": {
+      "acl": {
+        "defaultPrincipals": ["role:qa", "role:security"],
+        "principalsEnv": "QA_RAG_PRINCIPALS",
+        "rules": [ { "match": "security/**", "allow": ["role:security"] } ]
+      }
+    }
+  }
+}

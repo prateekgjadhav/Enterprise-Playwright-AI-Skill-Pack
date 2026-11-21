@@ -1,0 +1,8 @@
+{
+  "note": "Deployed by MDM to /opt/qa-pack/trust.json (root-owned). Hooks, the installer and CI read the expected signers from here or from organisation CI variables \u2014 never from the repository, which an agent could edit. Every value must be set; an empty value makes verification fail closed.",
+  "oidcIssuer": "https://token.actions.githubusercontent.com",
+  "releaseIdentity": "",
+  "approvalIdentity": "",
+  "securityApproverIdentityRegexp": "",
+  "securityApproverIssuer": ""
+}

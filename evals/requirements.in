@@ -1,0 +1,8 @@
+# Evaluation sidecars (DeepEval and RAGAS). Compile a hash-locked file before first use and commit it:
+#   pip-compile --generate-hashes --output-file evals/requirements.txt evals/requirements.in
+# CI installs with `pip install --require-hashes -r evals/requirements.txt` and fails without hashes.
+deepeval
+ragas
+openai
+datasets
+pytest

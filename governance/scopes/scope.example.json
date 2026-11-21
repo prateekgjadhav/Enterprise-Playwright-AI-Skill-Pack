@@ -1,0 +1,12 @@
+{
+  "scope_id": "SCOPE-EXAMPLE",
+  "system": "checkout-staging",
+  "targets": ["staging.shop.example.test"],
+  "skills": ["security-headers-check", "authz-session-testing", "api-security-testing"],
+  "techniques_excluded": ["denial-of-service", "social-engineering", "data-exfiltration"],
+  "window": { "start": "2026-11-20T08:00:00Z", "end": "2026-11-27T18:00:00Z" },
+  "rate_limit_rps": 5,
+  "authorized_by": "system-owner@example.test",
+  "appsec_contact": "appsec@example.test",
+  "ticket": "SEC-771"
+}

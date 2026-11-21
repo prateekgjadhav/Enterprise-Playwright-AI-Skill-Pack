@@ -1,0 +1,29 @@
+import type { Locator, Page } from '@playwright/test';
+
+export class CartPage {
+  readonly path = '/cart';
+  readonly total: Locator;
+  readonly discountRow: Locator;
+  readonly couponInput: Locator;
+  readonly couponError: Locator;
+
+  constructor(private readonly page: Page) {
+    this.total = page.getByTestId('cart-total');
+    this.discountRow = page.getByTestId('discount-row');
+    this.couponInput = page.getByLabel('Coupon code');
+    this.couponError = page.getByRole('alert');
+  }
+
+  async open() {
+    await this.page.goto(this.path);
+  }
+
+  async applyCoupon(code: string) {
+    await this.couponInput.fill(code);
+    await this.page.getByRole('button', { name: 'Apply' }).click();
+  }
+
+  async removeCoupon() {
+    await this.page.getByRole('button', { name: 'Remove coupon' }).click();
+  }
+}

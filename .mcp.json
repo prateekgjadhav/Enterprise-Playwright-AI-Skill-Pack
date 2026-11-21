@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "qa-knowledge": {
+      "command": "node",
+      "args": ["rag/mcp/server.mjs"],
+      "env": { "QA_RAG_PRINCIPALS": "role:qa" }
+    },
+    "playwright-test": {
+      "command": "npx",
+      "args": ["--no-install", "playwright", "run-test-mcp-server"]
+    }
+  }
+}

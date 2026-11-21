@@ -1,20 +1,28 @@
 {
-  "name": "enterprise-playwright-suite",
-  "version": "1.0.0",
+  "name": "enterprise-playwright-ai-skill-pack",
   "private": true,
   "type": "module",
+  "description": "Governed Playwright skill pack for AI coding agents: 64 narrow skills, signed and hash-locked, enforced by managed settings, hooks, policy and CI.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
-    "verify": "eslint . --max-warnings=0 && tsc --noEmit && node scripts/governance-check-all.mjs",
-    "test": "playwright test",
-    "test:smoke": "playwright test --grep @smoke",
-    "test:regression": "playwright test --grep @regression"
+    "verify": "npm run verify:pack && npm run verify:code",
+    "verify:pack": "node scripts/verify-lock.mjs --quiet && node scripts/check-skills.mjs && node scripts/check-allowed-tools.mjs && node scripts/skill-scan.mjs && node scripts/check-prompts.mjs && node scripts/gen-docs.mjs --check",
+    "verify:code": "node scripts/validate-config.mjs && tsc --noEmit && eslint --no-inline-config --max-warnings=0 . && playwright test --list",
+    "test:pack": "node --test rag/test/*.test.mjs scripts/test/*.test.mjs scripts/self-healing/heal.test.mjs",
+    "lock": "node scripts/build-lock.mjs",
+    "docs": "node scripts/gen-docs.mjs",
+    "pins": "node scripts/check-pins.mjs",
+    "scrub": "node scripts/scrub-artifacts.mjs blob-report test-results playwright-report"
   },
   "devDependencies": {
-    "@playwright/test": "1.49.1",
-    "@types/node": "^22.9.0",
-    "eslint": "^9.15.0",
-    "eslint-plugin-playwright": "^2.1.0",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.72.1"
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.65.0",
+    "@types/node": "24.5.2",
+    "eslint": "9.36.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.44.1"
   }
 }

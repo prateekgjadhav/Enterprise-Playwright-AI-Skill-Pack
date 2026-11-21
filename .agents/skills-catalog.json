@@ -1,0 +1,342 @@
+{
+  "tiers": {
+    "T0": "Read-only: reads the repository and writes only to .agents/out/",
+    "T1": "Writes repository code or configuration on a branch",
+    "T2": "Runs tests or evaluations against allowlisted environments",
+    "T3": "External side effects; needs an identity-bound approval attestation; disabled by default",
+    "T4": "Offensive-capable security testing; needs a signed, unexpired scope; disabled by default"
+  },
+  "categories": {
+    "Meta": "Meta and routing",
+    "Design": "Test design",
+    "Author": "Authoring",
+    "Quality": "Quality engineering",
+    "Exec": "Execution and operations",
+    "Gov": "Governance and supply chain",
+    "Sec": "Security and privacy",
+    "SecTest": "Authorised security testing",
+    "AIOps": "AI operations"
+  },
+  "skills": {
+    "skill-router": {
+      "category": "Meta",
+      "tier": "T0",
+      "default": "on"
+    },
+    "repo-discovery": {
+      "category": "Meta",
+      "tier": "T0",
+      "default": "on"
+    },
+    "config-proposal": {
+      "category": "Meta",
+      "tier": "T1",
+      "default": "on"
+    },
+    "skill-authoring": {
+      "category": "Meta",
+      "tier": "T1",
+      "default": "on"
+    },
+    "skill-scan": {
+      "category": "Meta",
+      "tier": "T0",
+      "default": "on"
+    },
+    "skill-routing-eval": {
+      "category": "Meta",
+      "tier": "T0",
+      "default": "on"
+    },
+    "docs-generation": {
+      "category": "Meta",
+      "tier": "T1",
+      "default": "on"
+    },
+    "evidence-report": {
+      "category": "Meta",
+      "tier": "T0",
+      "default": "on"
+    },
+    "scenario-design": {
+      "category": "Design",
+      "tier": "T0",
+      "default": "on"
+    },
+    "agent-plan-intake": {
+      "category": "Design",
+      "tier": "T0",
+      "default": "on"
+    },
+    "spec-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "page-object-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "locator-selection": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "module-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "data-factory-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "fixture-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "auth-setup-project": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "multi-role-auth": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "api-test-authoring": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "contract-testing": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "network-mocking": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "clock-time-control": {
+      "category": "Author",
+      "tier": "T1",
+      "default": "on"
+    },
+    "visual-snapshot-authoring": {
+      "category": "Quality",
+      "tier": "T1",
+      "default": "on"
+    },
+    "visual-baseline-approval": {
+      "category": "Quality",
+      "tier": "T3",
+      "default": "off"
+    },
+    "aria-snapshot-testing": {
+      "category": "Quality",
+      "tier": "T1",
+      "default": "on"
+    },
+    "accessibility-audit": {
+      "category": "Quality",
+      "tier": "T2",
+      "default": "on"
+    },
+    "performance-vitals": {
+      "category": "Quality",
+      "tier": "T2",
+      "default": "on"
+    },
+    "mobile-emulation": {
+      "category": "Quality",
+      "tier": "T1",
+      "default": "on"
+    },
+    "test-impact-selection": {
+      "category": "Exec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "sharding-config": {
+      "category": "Exec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "merge-reports": {
+      "category": "Exec",
+      "tier": "T2",
+      "default": "on"
+    },
+    "ci-workflow-authoring": {
+      "category": "Exec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "runner-image-pinning": {
+      "category": "Exec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "flake-triage": {
+      "category": "Exec",
+      "tier": "T2",
+      "default": "on"
+    },
+    "flake-quarantine": {
+      "category": "Exec",
+      "tier": "T3",
+      "default": "off"
+    },
+    "failure-rca": {
+      "category": "Exec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "test-healing": {
+      "category": "Exec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "migration-analysis": {
+      "category": "Exec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "governance-lint": {
+      "category": "Gov",
+      "tier": "T0",
+      "default": "on"
+    },
+    "waiver-registry": {
+      "category": "Gov",
+      "tier": "T3",
+      "default": "off"
+    },
+    "approval-attestation": {
+      "category": "Gov",
+      "tier": "T3",
+      "default": "off"
+    },
+    "dependency-pin-audit": {
+      "category": "Gov",
+      "tier": "T0",
+      "default": "on"
+    },
+    "sbom-generation": {
+      "category": "Gov",
+      "tier": "T1",
+      "default": "on"
+    },
+    "release-signing-verify": {
+      "category": "Gov",
+      "tier": "T0",
+      "default": "on"
+    },
+    "environment-allowlist": {
+      "category": "Gov",
+      "tier": "T1",
+      "default": "on"
+    },
+    "egress-policy": {
+      "category": "Gov",
+      "tier": "T1",
+      "default": "on"
+    },
+    "secret-provider-fixture": {
+      "category": "Sec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "secrets-scan": {
+      "category": "Sec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "artifact-redaction": {
+      "category": "Sec",
+      "tier": "T1",
+      "default": "on"
+    },
+    "prompt-injection-defense": {
+      "category": "Sec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "data-classification": {
+      "category": "Sec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "mcp-server-vetting": {
+      "category": "Sec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "knowledge-provenance": {
+      "category": "Sec",
+      "tier": "T3",
+      "default": "off"
+    },
+    "knowledge-retrieval": {
+      "category": "Sec",
+      "tier": "T0",
+      "default": "on"
+    },
+    "security-scope-verify": {
+      "category": "SecTest",
+      "tier": "T0",
+      "default": "on"
+    },
+    "security-headers-check": {
+      "category": "SecTest",
+      "tier": "T4",
+      "default": "off"
+    },
+    "authz-session-testing": {
+      "category": "SecTest",
+      "tier": "T4",
+      "default": "off"
+    },
+    "injection-testing": {
+      "category": "SecTest",
+      "tier": "T4",
+      "default": "off"
+    },
+    "api-security-testing": {
+      "category": "SecTest",
+      "tier": "T4",
+      "default": "off"
+    },
+    "security-findings-report": {
+      "category": "SecTest",
+      "tier": "T3",
+      "default": "off"
+    },
+    "telemetry-instrumentation": {
+      "category": "AIOps",
+      "tier": "T1",
+      "default": "on"
+    },
+    "cost-budget-guard": {
+      "category": "AIOps",
+      "tier": "T0",
+      "default": "on"
+    },
+    "llm-eval-gating": {
+      "category": "AIOps",
+      "tier": "T2",
+      "default": "on"
+    },
+    "model-gateway-config": {
+      "category": "AIOps",
+      "tier": "T1",
+      "default": "on"
+    }
+  }
+}

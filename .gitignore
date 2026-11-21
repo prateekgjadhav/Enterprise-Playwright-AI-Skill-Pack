@@ -1,9 +1,22 @@
 node_modules/
-playwright-report/
-test-results/
-.skill-pack-backup/
+# authenticated state and secrets never enter git
+.auth/
+.env
+.env.*
+!.env.example
+secrets/
+# derived data: indexes, telemetry, results, scratch output, reports
 .agents/rag-index/
-llm-validation/reports/
-.env*
-!*.example
-
+.agents/telemetry/
+.agents/memory/pending/
+.agents/out/
+.agents/discovery/
+evals/results/
+reports/
+test-results/
+blob-report/
+playwright-report/
+scrubbed/
+specs/*.generated.md
+# installer preview
+.skill-pack.patch

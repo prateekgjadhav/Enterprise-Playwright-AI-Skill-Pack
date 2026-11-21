@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 // Build the skill manifest from every .agents/skills/<name>/SKILL.md. Node built-ins only. The output is
-// deterministic (no timestamps), so the committed manifest changes only when a skill does.
+// deterministic (no timestamps, no metadata), so the committed manifest changes only when a skill does.
+// Frontmatter holds name, description and allowed-tools only; tier, category and default live in the catalogue.
 // Usage: node scripts/build-skill-manifest.mjs [.agents/skills] > .agents/skills-manifest.json
 import { readFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const PACK = 'enterprise-playwright-ai-skill-pack';
+/** The catalogue, in one place: .agents/skills-catalog.json holds each skill's category, risk tier and default. */
+const CATALOG_PATH = process.env.QA_SKILLS_CATALOG ?? '.agents/skills-catalog.json';
+export const CATALOG = existsSync(CATALOG_PATH) ? JSON.parse(readFileSync(CATALOG_PATH, 'utf8')) : { tiers: {}, categories: {}, skills: {} };
+export const TIERS = CATALOG.tiers;
+export const CATEGORIES = CATALOG.categories;
+export const tierOf = (name) => CATALOG.skills[name]?.tier ?? null;
 
 /** Parse the YAML subset the pack's frontmatter uses: scalars, >- and | blocks, and one nested map. */
 export function parseFrontmatter(text) {
@@ -56,7 +62,6 @@ export function readSkill(skillsDir, folder) {
   try {
     const { data, body } = parseFrontmatter(readFileSync(file, 'utf8'));
     const description = typeof data.description === 'string' ? data.description : '';
-    const meta = data.metadata && typeof data.metadata === 'object' ? data.metadata : {};
     const useWhen = (/\bUse (?:it )?whenever\b\s*(.*?)(?=\s*\bNot for\b|$)/s.exec(description)?.[1] ?? '').trim();
     const notFor = (/\bNot for\b\s*(.*)$/s.exec(description)?.[1] ?? '').trim();
     const refs = [...notFor.matchAll(/\(([^)]*)\)/g)].flatMap((g) => g[1].match(/\b[a-z0-9]+(?:-[a-z0-9]+)+\b/g) ?? []);
@@ -64,9 +69,10 @@ export function readSkill(skillsDir, folder) {
       ...entry,
       name: data.name ?? null,
       keys: Object.keys(data),
-      tier: meta.tier ?? null,
-      pack: meta.pack ?? null,
-      metadataKeys: Object.keys(meta),
+      tier: tierOf(data.name ?? folder),
+      category: CATALOG.skills[data.name ?? folder]?.category ?? null,
+      default: CATALOG.skills[data.name ?? folder]?.default ?? null,
+      allowedTools: typeof data['allowed-tools'] === 'string' ? data['allowed-tools'] : null,
       description,
       useWhen,
       notFor,
@@ -84,14 +90,13 @@ export function buildManifest(skillsDir = '.agents/skills') {
     ? readdirSync(skillsDir).filter((f) => !f.startsWith('.') && statSync(join(skillsDir, f)).isDirectory()).sort()
     : [];
   const skills = folders.map((f) => readSkill(skillsDir, f));
-  const tiers = {};
-  for (const s of skills) if (s.tier) tiers[s.tier] = (tiers[s.tier] ?? 0) + 1;
+  const tiers = {}; const categories = {};
+  for (const s of skills) { if (s.tier) tiers[s.tier] = (tiers[s.tier] ?? 0) + 1; if (s.category) categories[s.category] = (categories[s.category] ?? 0) + 1; }
   return {
-    generatedBy: 'scripts/build-skill-manifest.mjs',
-    pack: PACK,
     skillsDir: posix(skillsDir),
     count: skills.length,
     tiers: Object.fromEntries(Object.entries(tiers).sort()),
+    categories: Object.fromEntries(Object.entries(categories).sort()),
     skills,
   };
 }

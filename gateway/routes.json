@@ -1,0 +1,9 @@
+{
+  "note": "Repository declaration of model routes for the organisation's OpenAI-compatible gateway. The gateway enforces it; scripts/check-gateway.mjs validates it. Fill model ids with exact, pinned identifiers.",
+  "routes": {
+    "public":       { "external": true,  "models": [], "budgetShare": 0.2 },
+    "internal":     { "external": true,  "models": [], "budgetShare": 0.6 },
+    "confidential": { "external": false, "models": [], "budgetShare": 0.2 },
+    "restricted":   "BLOCK"
+  }
+}

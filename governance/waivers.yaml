@@ -1,0 +1,16 @@
+# Governance waivers. One rule and one path per entry; approver differs from owner; expires at most 90 days after
+# created; attestation is the signed approval from approve.yml. The ESLint plugin honours only approved, unexpired
+# entries, and the OPA policy fails CI on expired, over-long or self-approved ones.
+#
+# waivers:
+#   - id: WV-0001
+#     rule: qa/no-hard-wait
+#     path: tests/e2e/legacy-upload.spec.ts
+#     reason: Third-party upload widget exposes no ready signal
+#     ticket: QA-2211
+#     owner: alice@example.test
+#     approver: bob@example.test
+#     created: 2026-11-01T00:00:00Z
+#     expires: 2027-01-30T00:00:00Z
+#     attestation: governance/approvals/WV-0001.sigstore.json
+waivers: []

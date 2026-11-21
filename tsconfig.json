@@ -1,27 +1,26 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
-    "esModuleInterop": true,
+    "noEmit": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
+    "allowJs": false,
+    "useDefineForClassFields": true,
+    "types": [
+      "node"
+    ],
     "paths": {
-      "@fixtures": ["src/fixtures/index.ts"],
-      "@pages/*": ["src/pages/*"]
+      "@fixtures": [
+        "src/fixtures/index.ts"
+      ]
     }
   },
   "include": [
     "src/**/*.ts",
     "tests/**/*.ts",
-    "playwright.config.ts"
-  ],
-  "exclude": [
-    "node_modules"
+    "playwright.config.ts",
+    "scripts/lib/*.d.mts"
   ]
 }
-

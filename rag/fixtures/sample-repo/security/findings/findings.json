@@ -1,0 +1,7 @@
+{ "findings": [
+  { "id": "FIND-7", "title": "IDOR on the order detail endpoint", "status": "open", "severity": "high", "owasp": "A01", "cwe": "CWE-639",
+    "requirement": "PROJ-103", "route": "/orders", "description": "A signed-in customer can open another customer's order by changing the order id.",
+    "recommendation": "Check order ownership on the server for every order detail request." },
+  { "id": "FIND-8", "title": "Missing HSTS header on the storefront", "status": "open", "severity": "low", "owasp": "A05",
+    "description": "Responses do not set Strict-Transport-Security.", "recommendation": "Set HSTS with a long max-age." }
+] }

@@ -1,0 +1,18 @@
+import type { Locator, Page } from '@playwright/test';
+
+export class OrdersPage {
+  readonly path = '/orders';
+  readonly rows: Locator;
+
+  constructor(private readonly page: Page) {
+    this.rows = page.getByTestId('order-row');
+  }
+
+  async open() {
+    await this.page.goto(this.path);
+  }
+
+  async openOrder(index: number) {
+    await this.rows.nth(index).getByRole('link').click();
+  }
+}

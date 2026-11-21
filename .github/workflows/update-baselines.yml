@@ -1,0 +1,32 @@
+# Regenerates visual baselines in the pinned runner image only, on a dedicated branch, and opens a pull request that
+# needs design QA review and an approval attestation (visual-baseline-approval). Never mixed with code changes.
+name: update-baselines
+on:
+  workflow_dispatch:
+    inputs:
+      grep: { description: "tests to update, e.g. @visual", required: true, default: "@visual" }
+      ticket: { description: "ticket for the intended UI change", required: true }
+permissions: { contents: read }
+jobs:
+  baselines:
+    runs-on: ubuntu-24.04
+    environment: e2e
+    permissions: { contents: write, pull-requests: write, id-token: write }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.0-noble" } # pin: renovate adds @sha256 digest
+    steps:
+      - uses: step-security/harden-runner@v2 # pin: renovate
+        with: { egress-policy: block, allowed-endpoints: "github.com:443 api.github.com:443 registry.npmjs.org:443" }
+      - uses: actions/checkout@v5 # pin: renovate
+      - run: npm ci --ignore-scripts
+      - run: npx playwright test --project="chromium-*" --grep "${{ inputs.grep }}" --update-snapshots
+        env: { CI: "true", QA_ENV: "${{ vars.QA_ENV }}" }
+      - name: Open the baseline pull request
+        env: { GH_TOKEN: "${{ github.token }}", TICKET: "${{ inputs.ticket }}" }
+        run: |
+          branch="visual-baseline/$GITHUB_RUN_ID"
+          git config user.name "qa-baselines[bot]"; git config user.email "qa-baselines@users.noreply.github.com"
+          git switch -c "$branch"; git add tests/visual
+          git diff --cached --quiet && { echo "no baseline changes"; exit 0; }
+          git commit -m "test(visual): update baselines for $TICKET" -m "Agent-Authored: false"
+          git push origin "$branch"
+          gh pr create --title "Visual baselines: $TICKET" --body "Regenerated in the pinned image. Needs @org/design-qa review and an approval attestation." --label visual-baseline

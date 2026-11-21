@@ -1,0 +1,24 @@
+import type { Locator, Page } from '@playwright/test';
+
+export class LoginPage {
+  readonly path = '/login';
+  readonly email: Locator;
+  readonly password: Locator;
+  readonly signInButton: Locator;
+
+  constructor(private readonly page: Page) {
+    this.email = page.getByLabel('Email');
+    this.password = page.getByLabel('Password');
+    this.signInButton = page.getByRole('button', { name: 'Sign in' });
+  }
+
+  async open() {
+    await this.page.goto(this.path);
+  }
+
+  async signIn(email: string, password: string) {
+    await this.email.fill(email);
+    await this.password.fill(password);
+    await this.signInButton.click();
+  }
+}

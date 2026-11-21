@@ -1,0 +1,11 @@
+import type { Page } from '@playwright/test';
+import { CartPage } from '../pages/CartPage';
+
+export class CheckoutModule {
+  constructor(private readonly page: Page, private readonly cart = new CartPage(page)) {}
+
+  async seedCartAndOpen(items: number) {
+    await this.page.request.post('/api/cart', { data: { items } });
+    await this.cart.open();
+  }
+}

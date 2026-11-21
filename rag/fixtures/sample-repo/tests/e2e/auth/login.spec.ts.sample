@@ -1,0 +1,14 @@
+import { test, expect } from '@fixtures';
+
+test.describe('Sign in', () => {
+  test('PROJ-102 AC1 signing in with valid credentials lands on the dashboard', { tag: ['@P0', '@auth', '@smoke'] }, async ({ page, loginPage }) => {
+    await loginPage.open();
+    await loginPage.signIn('qa.user@example.com', 'from-the-secret-store');
+    await expect(page).toHaveURL(/dashboard/);
+  });
+
+  test('PROJ-102 AC2 signing out returns to the sign in page', { tag: ['@P1', '@auth', '@regression'] }, async ({ page, loginPage }) => {
+    await loginPage.open();
+    await expect(page).toHaveURL(/login/);
+  });
+});

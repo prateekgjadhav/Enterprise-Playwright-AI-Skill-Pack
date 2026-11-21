@@ -1,0 +1,14 @@
+# Quarantined flaky tests. Never @P0; owner and ticket required; expires at most 14 days after added; quarantined
+# tests run in the non-blocking quarantine job and still report.
+#
+# quarantine:
+#   - id: QT-0001
+#     test: "checkout > applies voucher @P1 @checkout"
+#     tags: ["@P1"]
+#     owner: carol@example.test
+#     ticket: QA-2290
+#     added: 2026-11-15T00:00:00Z
+#     expires: 2026-11-29T00:00:00Z
+#     evidence: "flake-triage: repeat-each=20 gave 3 failures"
+#     attestation: governance/approvals/QT-0001.sigstore.json
+quarantine: []
