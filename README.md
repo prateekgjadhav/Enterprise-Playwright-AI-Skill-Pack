@@ -9,11 +9,6 @@ deterministically.
 The full guide is `Enterprise_Playwright_AI_Skill_Pack__Setup_and_Implementation_Guide.html`, generated from this
 repository by `node scripts/gen-docs.mjs` (CI fails when it is stale).
 
-## No version numbers
-Nothing in the pack carries a version, changelog or release history. A release *is* its content: the sha256 of
-`skills.lock.json` (every file's hash), signed keylessly by `release.yml` and published as `pack-<digest12>`.
-Third-party dependencies are still pinned exactly (actions to commit SHAs, images to digests, npm to exact versions,
-Python by hash): those pins are integrity controls, not pack versions.
 
 ## Install into a repository
 1. Platform team: `node scripts/package-hooks.mjs dist/qa-pack`, fill `dist/qa-pack/trust.json`, deploy it root-owned
