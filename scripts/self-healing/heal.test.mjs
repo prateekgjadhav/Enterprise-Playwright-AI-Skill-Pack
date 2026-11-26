@@ -36,13 +36,13 @@ test('only true drift is healed', () => {
 
 test('proposes a diff, applies only with --apply, never touches specs', async () => {
   const root = mkdtempSync(join(tmpdir(), 'qa-heal-'));
-  mkdirSync(join(root, '.agents/discovery/pages'), { recursive: true });
+  mkdirSync(join(root, '.claude/discovery/pages'), { recursive: true });
   mkdirSync(join(root, 'src/pages'), { recursive: true });
   mkdirSync(join(root, 'reports'), { recursive: true });
-  writeFileSync(join(root, '.agents/qa.config.json'), JSON.stringify({ framework: { pagesDir: 'src/pages' } }));
+  writeFileSync(join(root, '.claude/qa.config.json'), JSON.stringify({ framework: { pagesDir: 'src/pages' } }));
   const po = `import type { Locator, Page } from '@playwright/test';\nexport class LoginPage {\n  readonly path = '/login';\n  readonly signInButton: Locator;\n  readonly total: Locator;\n  constructor(private readonly page: Page) {\n    this.signInButton = page.getByRole('button', { name: 'Sign in' });\n    this.total = page.getByTestId('cart-total');\n  }\n}\n`;
   writeFileSync(join(root, 'src/pages/LoginPage.ts'), po);
-  writeFileSync(join(root, '.agents/discovery/pages/login.md'), '---\nid: route:/login\n---\n# Sign in\n\n## Test ids\n`cart-total-amount`, `help`\n\n## Accessibility tree (aria snapshot)\n```yaml\n- button "Log in"\n- textbox "Email"\n```\n');
+  writeFileSync(join(root, '.claude/discovery/pages/login.md'), '---\nid: route:/login\n---\n# Sign in\n\n## Test ids\n`cart-total-amount`, `help`\n\n## Accessibility tree (aria snapshot)\n```yaml\n- button "Log in"\n- textbox "Email"\n```\n');
   writeFileSync(join(root, 'reports/results.json'), JSON.stringify(report([
     ['signs in', "Error: locator.click: Timeout 5000ms exceeded.\n  - waiting for getByRole('button', { name: 'Sign in' })"],
     ['total', "Error: expect(locator).toHaveText(expected) failed\nLocator: getByTestId('cart-total')\n  - waiting for getByTestId('cart-total')"],

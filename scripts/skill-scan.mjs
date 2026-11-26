@@ -35,7 +35,7 @@ export function scanText(file, text) {
 function defaultFiles(root) {
   const out = ['AGENTS.md', 'CLAUDE.md'].filter((f) => existsSync(join(root, f)));
   const add = (dir, pred) => { if (!existsSync(join(root, dir))) return; for (const f of readdirSync(join(root, dir))) { const p = join(dir, f); if (statSync(join(root, p)).isDirectory()) add(p, pred); else if (pred(p)) out.push(p); } };
-  add('.agents/skills', (p) => p.endsWith('.md'));
+  add('.claude/skills', (p) => p.endsWith('.md'));
   add('prompts', (p) => p.endsWith('.md'));
   add('.claude/agents', (p) => p.endsWith('.md'));
   add('.claude/commands', (p) => p.endsWith('.md'));

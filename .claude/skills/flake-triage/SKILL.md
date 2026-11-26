@@ -7,7 +7,7 @@ description: >-
   someone asks why a test is flaky, or a test is flaky, fails one run in ten, or retries hide a
   failure. Not for quarantining it (flake-quarantine), choosing tests for a change
   (test-impact-selection), or a single deterministic failure (failure-rca).
-allowed-tools: Read Grep Glob Bash(npx playwright test:*) Write(.agents/out/**)
+allowed-tools: Read Grep Glob Bash(npx playwright test:*) Write(.claude/out/**)
 ---
 
 # Flake triage

@@ -5,7 +5,7 @@ description: >-
   and attaches it to the release as a signed attestation. Use whenever a release is prepared, a
   customer or auditor asks for an SBOM, or dependencies change significantly. Not for pin audits
   (dependency-pin-audit), signature verification (release-signing-verify), or vulnerability triage.
-allowed-tools: Read Grep Glob Bash(npm sbom:*) Write(.agents/out/**)
+allowed-tools: Read Grep Glob Bash(npm sbom:*) Write(.claude/out/**)
 ---
 
 # SBOM generation
@@ -21,7 +21,7 @@ Ship the list of what you ship.
 - **Out:** `sbom.cdx.json`
 
 ## Procedure
-1. `npm sbom --sbom-format cyclonedx --omit dev=false > .agents/out/sbom.cdx.json`.
+1. `npm sbom --sbom-format cyclonedx --omit dev=false > .claude/out/sbom.cdx.json`.
 2. Check the component count against the lock file.
 3. The release workflow attests and attaches it.
 

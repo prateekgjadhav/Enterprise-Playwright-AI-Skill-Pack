@@ -1,7 +1,7 @@
 # At least two teams own every control path, so no single maintainer can change the rules.
 *                                  @org/qa-platform
-/.agents/skills/                   @org/qa-platform @org/appsec
-/.agents/skills-catalog.json       @org/qa-platform @org/appsec
+/.claude/skills/                   @org/qa-platform @org/appsec
+/.claude/skills-catalog.json       @org/qa-platform @org/appsec
 /AGENTS.md                         @org/qa-platform @org/appsec
 /CLAUDE.md                         @org/qa-platform @org/appsec
 /policy/                           @org/appsec @org/platform-security

@@ -6,7 +6,7 @@ description: >-
   healing or security checks. Use whenever a new test environment is onboarded, a host changes, or an
   environment's review date passes. Not for the first full configuration (config-proposal), runner and
   sandbox egress lists (egress-policy), or model routes (model-gateway-config).
-allowed-tools: Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*)
+allowed-tools: Read Grep Glob Edit(.claude/qa.config.json) Bash(node scripts/validate-config.mjs:*)
 ---
 
 # Environment allowlist

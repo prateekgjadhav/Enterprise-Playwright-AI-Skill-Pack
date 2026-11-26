@@ -19,7 +19,7 @@ export function checkGateway(routes, qa = {}) {
 }
 import { pathToFileURL } from 'node:url';
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
-  const p = checkGateway(JSON.parse(readFileSync('gateway/routes.json', 'utf8')), JSON.parse(readFileSync('.agents/qa.config.json', 'utf8')));
+  const p = checkGateway(JSON.parse(readFileSync('gateway/routes.json', 'utf8')), JSON.parse(readFileSync('.claude/qa.config.json', 'utf8')));
   for (const x of p) console.log(`  - ${x}`);
   console.log(p.length ? `check-gateway: ${p.length} problem(s)` : 'check-gateway: routes follow the data-class policy');
   process.exit(p.length ? 1 : 0);

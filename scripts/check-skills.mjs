@@ -6,7 +6,7 @@
 //   soft: category balance, trigger-term overlap without a mutual "Not for"
 // Usage, from the repository root:
 //   node scripts/check-skills.mjs [tests/skills/trigger-cases.json] [--fail-on-soft]   (the manifest is rebuilt and written)
-// Thresholds may be set in .agents/qa.config.json under "skillEvaluation":
+// Thresholds may be set in .claude/qa.config.json under "skillEvaluation":
 //   { "maxCategoryShare": 0.3, "overlapThreshold": 0.5, "minTriggerAccuracy": 0.95, "failOnSoft": false }
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { buildManifest, TIERS, CATALOG } from './build-skill-manifest.mjs';
@@ -15,8 +15,8 @@ const readJson = (p) => { try { return JSON.parse(readFileSync(p, 'utf8')); } ca
 const readText = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
 const argv = process.argv.slice(2);
 const [casesPath = 'tests/skills/trigger-cases.json'] = argv.filter((a) => !a.startsWith('--'));
-const manifestPath = '.agents/skills-manifest.json';
-const T = { maxCategoryShare: 0.3, overlapThreshold: 0.5, minTriggerAccuracy: 0.95, failOnSoft: false, ...(readJson('.agents/qa.config.json')?.skillEvaluation ?? {}) };
+const manifestPath = '.claude/skills-manifest.json';
+const T = { maxCategoryShare: 0.3, overlapThreshold: 0.5, minTriggerAccuracy: 0.95, failOnSoft: false, ...(readJson('.claude/qa.config.json')?.skillEvaluation ?? {}) };
 if (argv.includes('--fail-on-soft')) T.failOnSoft = true;
 
 const hard = [], soft = [], info = [];
@@ -24,7 +24,7 @@ const fail = (check, msg) => hard.push(`${check}: ${msg}`);
 const warn = (check, msg) => soft.push(`${check}: ${msg}`);
 const pct = (x) => `${Math.round(x * 100)}%`;
 
-const fresh = buildManifest('.agents/skills');
+const fresh = buildManifest('.claude/skills');
 writeFileSync(manifestPath, JSON.stringify(fresh, null, 2) + '\n');   // derived (git-ignored); the knowledge graph reads it
 const skills = fresh.skills;
 const names = new Set(skills.map((s) => s.name).filter(Boolean));
@@ -36,14 +36,14 @@ for (const s of skills) {
   const id = s.folder;
   if (s.error) { fail('schema', `${id}: ${s.error}`); continue; }
   for (const k of ['name', 'description']) if (!s.keys.includes(k)) fail('schema', `${id}: frontmatter is missing "${k}"`);
-  if (s.keys.includes('metadata')) fail('schema', `${id}: skills carry no metadata block; tier, category and default live in .agents/skills-catalog.json`);
+  if (s.keys.includes('metadata')) fail('schema', `${id}: skills carry no metadata block; tier, category and default live in .claude/skills-catalog.json`);
   if (!s.allowedTools) fail('schema', `${id}: frontmatter is missing "allowed-tools"`);
   const cat = CATALOG.skills[id];
   if (cat && ['T3', 'T4'].includes(cat.tier) && cat.default !== 'off') fail('catalogue', `${id}: ${cat.tier} skills must be default "off"`);
   if (cat && ['T3', 'T4'].includes(cat.tier) && !s.sections.includes('Gate')) fail('sections', `${id}: ${cat.tier} skills need a "## Gate" section`);
   if (s.keys.some((k) => /version/i.test(k))) fail('schema', `${id}: skills carry no version field; git history is the record`);
   for (const k of s.keys) if (!ALLOWED_KEYS.has(k) && k !== 'metadata' && !/version/i.test(k)) fail('schema', `${id}: unexpected frontmatter key "${k}"`);
-  if (!Object.keys(TIERS).includes(String(s.tier))) fail('catalogue', `${id}: not listed in .agents/skills-catalog.json`);
+  if (!Object.keys(TIERS).includes(String(s.tier))) fail('catalogue', `${id}: not listed in .claude/skills-catalog.json`);
   if (s.name !== id) fail('schema', `${id}: name "${s.name}" does not match its folder`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s.name ?? '') || String(s.name).length > 64) fail('schema', `${id}: name must be kebab-case and at most 64 characters`);
   if (!s.description) fail('schema', `${id}: description is empty`);
@@ -56,7 +56,7 @@ for (const s of skills) {
 
 // Hard: the catalogue names only real skills, each once, with a known tier and category
 for (const [n, e] of Object.entries(CATALOG.skills)) {
-  if (!skills.some((s) => s.folder === n)) fail('catalogue', `the catalogue lists "${n}", which has no .agents/skills/${n}/SKILL.md`);
+  if (!skills.some((s) => s.folder === n)) fail('catalogue', `the catalogue lists "${n}", which has no .claude/skills/${n}/SKILL.md`);
   if (!TIERS[e.tier]) fail('catalogue', `${n}: unknown tier "${e.tier}"`);
   if (!CATALOG.categories[e.category]) fail('catalogue', `${n}: unknown category "${e.category}"`);
   if (!['on', 'off'].includes(e.default)) fail('catalogue', `${n}: default must be "on" or "off"`);

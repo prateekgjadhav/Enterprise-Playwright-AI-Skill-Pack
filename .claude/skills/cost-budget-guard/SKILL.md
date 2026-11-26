@@ -19,7 +19,7 @@ A budget is a stop, not a suggestion.
 - Never downgrade the model silently to stay under budget.
 
 ## Inputs and outputs
-- **In:** `ai.budgets`; `.agents/telemetry/ai-ops.jsonl`
+- **In:** `ai.budgets`; `.claude/telemetry/ai-ops.jsonl`
 - **Out:** budget status
 
 ## Procedure

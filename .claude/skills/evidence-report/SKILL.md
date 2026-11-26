@@ -7,7 +7,7 @@ description: >-
   leaks. Use whenever a task ends, a CI run needs a summary, or someone asks what was done and how it
   was proven. Not for merging test reports (merge-reports), explaining a failure (failure-rca), or
   security findings (security-findings-report).
-allowed-tools: Read Grep Glob Bash(node rag/cli.mjs guard:*) Write(.agents/out/**)
+allowed-tools: Read Grep Glob Bash(node rag/cli.mjs guard:*) Write(.claude/out/**)
 ---
 
 # Evidence report
@@ -21,12 +21,12 @@ A claim without a command, an exit code and a digest is not evidence.
 
 ## Inputs and outputs
 - **In:** the task record: commands run, files changed, context ids, artifacts
-- **Out:** the evidence block (below), also written to `.agents/out/evidence.md`
+- **Out:** the evidence block (below), also written to `.claude/out/evidence.md`
 
 ## Procedure
 1. Collect commands, exit codes, changed files and artifact digests.
 2. Write the block in the format below.
-3. Run `node rag/cli.mjs guard check-output .agents/out/evidence.md --context <ids>`; fix anything it blocks.
+3. Run `node rag/cli.mjs guard check-output .claude/out/evidence.md --context <ids>`; fix anything it blocks.
 4. Return the block as the last part of the reply.
 
 ## Verify

@@ -24,7 +24,7 @@ Python by hash): those pins are integrity controls, not pack versions.
    The installer verifies the signature and every hash, never writes `.claude/settings*.json`, never edits an existing
    `CLAUDE.md`, keeps no backups (git is the rollback) and leaves your own scaffold files alone.
 4. In the repository: `node scripts/link-skills.mjs`, then ask the agent to set up the pack (or paste
-   `BOOTSTRAP_PROMPT.md`): `repo-discovery` → `config-proposal` → review and merge `.agents/qa.config.json`.
+   `BOOTSTRAP_PROMPT.md`): `repo-discovery` → `config-proposal` → review and merge `.claude/qa.config.json`.
 
 ## First commit checklist (things that need network access or your organisation)
 - `npm install` once and commit `package-lock.json` (CI uses `npm ci --ignore-scripts` and `npm audit signatures`).
@@ -47,8 +47,8 @@ opa test policy/         # policy unit tests
 ## Layout
 ```
 AGENTS.md  CLAUDE.md               orchestrator (host-neutral) and the Claude Code shim
-.agents/skills/<64>/SKILL.md       the skills; .agents/skills-catalog.json holds tier, category and default
-.agents/qa.config.json             empty on purpose: the loader fails closed until an environment is approved
+.claude/skills/<64>/SKILL.md       the skills; .claude/skills-catalog.json holds tier, category and default
+.claude/qa.config.json             empty on purpose: the loader fails closed until an environment is approved
 hooks/  managed/                   managed hooks (Node, fail closed) and the MDM payload
 policy/  governance/               OPA policy and tests; waivers, quarantine, approvals, scopes, revoked digests
 eslint/                            AST governance rules

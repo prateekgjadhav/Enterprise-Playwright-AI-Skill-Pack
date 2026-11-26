@@ -24,7 +24,7 @@ Rules are tools, not memory: if a rule matters, a check fails.
 
 ## Procedure
 1. `npm run verify`.
-2. `node scripts/policy-input.mjs > .agents/out/policy-input.json` then `opa eval -d policy -i .agents/out/policy-input.json 'data.qa.deny'`.
+2. `node scripts/policy-input.mjs > .claude/out/policy-input.json` then `opa eval -d policy -i .claude/out/policy-input.json 'data.qa.deny'`.
 3. Fix each violation at its source; request a waiver only for a justified exception.
 
 ## Verify

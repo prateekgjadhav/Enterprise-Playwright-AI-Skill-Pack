@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import { loadQaConfig } from './src/config/load';
 
-// Fails closed: throws until .agents/qa.config.json has an approved environment, roles and a secret provider.
+// Fails closed: throws until .claude/qa.config.json has an approved environment, roles and a secret provider.
 const qa = loadQaConfig();
 const browsers = { chromium: devices['Desktop Chrome'], firefox: devices['Desktop Firefox'], webkit: devices['Desktop Safari'] } as const;
 const roles = qa.framework.roles;

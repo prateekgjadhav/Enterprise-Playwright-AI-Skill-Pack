@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// Token budget status from ai.budgets and the AI-Ops log (.agents/telemetry/ai-ops.jsonl): today's tokens by skill.
+// Token budget status from ai.budgets and the AI-Ops log (.claude/telemetry/ai-ops.jsonl): today's tokens by skill.
 // Exit 0 under 80 %, 0 with a warning from 80 %, 1 at or over 100 %, 2 when budgets are not configured (fail closed).
 import { readFileSync, existsSync } from 'node:fs';
-const qa = JSON.parse(readFileSync('.agents/qa.config.json', 'utf8'));
+const qa = JSON.parse(readFileSync('.claude/qa.config.json', 'utf8'));
 const b = qa.ai?.budgets ?? {};
 if (!(b.dailyTokens > 0) || !(b.sessionTokens > 0)) { console.log('budget-status: ai.budgets.dailyTokens and sessionTokens are not configured (fail closed)'); process.exit(2); }
-const log = qa.rag?.telemetry?.aiOpsLog ?? '.agents/telemetry/ai-ops.jsonl';
+const log = qa.rag?.telemetry?.aiOpsLog ?? '.claude/telemetry/ai-ops.jsonl';
 const today = new Date().toISOString().slice(0, 10);
 const bySkill = {}; let total = 0;
 if (existsSync(log)) for (const line of readFileSync(log, 'utf8').split('\n')) {

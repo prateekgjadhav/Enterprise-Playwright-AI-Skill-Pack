@@ -15,5 +15,5 @@ jobs:
       - uses: actions/setup-node@v5 # pin: renovate
         with: { node-version-file: .nvmrc }
       - uses: actions/cache@v4 # pin: renovate
-        with: { path: .agents/rag-index/embedding-cache.json, key: "rag-embeddings-${{ github.run_id }}", restore-keys: rag-embeddings- }
+        with: { path: .claude/rag-index/embedding-cache.json, key: "rag-embeddings-${{ github.run_id }}", restore-keys: rag-embeddings- }
       - run: node rag/cli.mjs ingest && node rag/cli.mjs status

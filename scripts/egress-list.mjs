@@ -7,7 +7,7 @@ import { join } from 'node:path';
 export const INFRA = ['github.com:443', 'api.github.com:443', 'codeload.github.com:443', 'objects.githubusercontent.com:443', 'pipelines.actions.githubusercontent.com:443',
   'results-receiver.actions.githubusercontent.com:443', 'productionresultssa0.blob.core.windows.net:443', 'registry.npmjs.org:443', 'pypi.org:443', 'files.pythonhosted.org:443',
   'tuf-repo-cdn.sigstore.dev:443', 'fulcio.sigstore.dev:443', 'rekor.sigstore.dev:443', 'token.actions.githubusercontent.com:443', 'mcr.microsoft.com:443', 'uploads.github.com:443'];
-const qa = JSON.parse(readFileSync('.agents/qa.config.json', 'utf8'));
+const qa = JSON.parse(readFileSync('.claude/qa.config.json', 'utf8'));
 const extra = [qa.ai?.gateway?.baseUrl, qa.knowledge?.endpoint, qa.telemetry?.otlpEndpoint].filter(Boolean).map((u) => `${new URL(u).hostname}:443`);
 const envHosts = [...new Set((qa.environments ?? []).flatMap((e) => e.hosts).map((h) => `${h}:443`))];
 const allowed = new Set([...INFRA, ...extra, ...envHosts]);

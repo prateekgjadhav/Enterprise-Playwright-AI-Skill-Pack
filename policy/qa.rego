@@ -1,5 +1,5 @@
 # The pack's policy, evaluated in CI and by the governance-check hook on the input built by scripts/policy-input.mjs:
-#   opa eval --format raw --data policy --input .agents/out/policy-input.json 'data.qa.deny'
+#   opa eval --format raw --data policy --input .claude/out/policy-input.json 'data.qa.deny'
 # Every rule adds a message to deny; an empty set means the repository complies. Unparsable dates deny too.
 package qa
 

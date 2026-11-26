@@ -11,7 +11,7 @@
 // the product changed (failure-rca). Those are reported, never patched.
 //
 // Usage, from the repository root:
-//   node scripts/self-healing/heal.mjs [--results reports/results.json] [--snapshots .agents/discovery/pages]
+//   node scripts/self-healing/heal.mjs [--results reports/results.json] [--snapshots .claude/discovery/pages]
 //        [--live <non-production base URL>] [--apply] [--min-confidence 0.8] [--out reports/healing]
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve, relative, dirname } from 'node:path';
@@ -21,7 +21,7 @@ import { findFiles } from '../../rag/lib/util.mjs';
 import { checkTarget } from '../../rag/lib/targets.mjs';
 import { parseClass } from '../../rag/ingestion/loaders.mjs';
 
-export const DEFAULTS = { results: 'reports/results.json', snapshots: '.agents/discovery/pages', out: 'reports/healing', minConfidence: 0.8, proposeFrom: 0.5 };
+export const DEFAULTS = { results: 'reports/results.json', snapshots: '.claude/discovery/pages', out: 'reports/healing', minConfidence: 0.8, proposeFrom: 0.5 };
 const ANSI = /\u001b\[[0-9;]*m/g;
 
 // ----------------------------------------------------------------------------------------- failures

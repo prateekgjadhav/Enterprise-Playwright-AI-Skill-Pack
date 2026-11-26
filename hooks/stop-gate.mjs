@@ -14,7 +14,7 @@ guarded(async () => {
   if (p.stop_hook_active) return;   // already blocked once in this turn: let the agent report instead of looping
   const root = projectDir(p);
   let configured = false;
-  try { configured = (JSON.parse(readFileSync(join(root, '.agents', 'qa.config.json'), 'utf8')).environments ?? []).length > 0; } catch { /* unreadable: treat as unconfigured, verify:pack still runs */ }
+  try { configured = (JSON.parse(readFileSync(join(root, '.claude', 'qa.config.json'), 'utf8')).environments ?? []).length > 0; } catch { /* unreadable: treat as unconfigured, verify:pack still runs */ }
   const script = configured ? 'verify' : 'verify:pack';
   const r = spawnSync('npm', ['run', '--silent', script], { cwd: root, encoding: 'utf8', timeout: 900000 });
   if (r.error) block(`npm is not available (${r.error.code ?? r.error.message}) — cannot verify (fail closed)`);

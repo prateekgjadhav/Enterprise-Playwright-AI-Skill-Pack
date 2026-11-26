@@ -3,7 +3,7 @@
 // managed permission rules and hooks are. This check keeps the two consistent and narrow:
 //   * no bare Bash, Edit, Write or MultiEdit, no Bash(*), no network tools (WebFetch, WebSearch)
 //   * every entry is covered by a managed allow or ask rule and by no managed deny rule
-//   * every entry fits its tier (T0 read-only except .agents/out/, T0/T1 run no tests, T4 only the security project)
+//   * every entry fits its tier (T0 read-only except .claude/out/, T0/T1 run no tests, T4 only the security project)
 // Usage: node scripts/check-allowed-tools.mjs [--settings managed/managed-settings.json]
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -43,7 +43,7 @@ const TEST_RUN = /^Bash\(npx playwright test(?! --list)/;
 export function tierProblems(tier, entry) {
   const { tool, spec } = parse(entry) ?? {};
   const p = [];
-  if (['Edit', 'Write', 'MultiEdit'].includes(tool) && tier === 'T0' && !(tool === 'Write' && normPath(spec ?? '').startsWith('.agents/out/'))) p.push(`${entry}: T0 skills are read-only (only Write(.agents/out/**))`);
+  if (['Edit', 'Write', 'MultiEdit'].includes(tool) && tier === 'T0' && !(tool === 'Write' && normPath(spec ?? '').startsWith('.claude/out/'))) p.push(`${entry}: T0 skills are read-only (only Write(.claude/out/**))`);
   if (TEST_RUN.test(entry) && ['T0', 'T1'].includes(tier)) p.push(`${entry}: ${tier} skills do not run tests`);
   if (tier === 'T4' && tool === 'Bash' && !/^npx playwright test --project=security:\*$/.test(spec ?? '')) p.push(`${entry}: T4 skills run only the security project`);
   if (tier !== 'T4' && /--project=security/.test(spec ?? '')) p.push(`${entry}: only T4 skills run the security project`);
@@ -54,10 +54,10 @@ export function tierProblems(tier, entry) {
 export function checkAll(root = process.cwd(), settingsPath = 'managed/managed-settings.json') {
   const settings = JSON.parse(readFileSync(join(root, settingsPath), 'utf8'));
   const { allow = [], ask = [], deny = [] } = settings.permissions ?? {};
-  const catalog = JSON.parse(readFileSync(join(root, '.agents/skills-catalog.json'), 'utf8')).skills;
+  const catalog = JSON.parse(readFileSync(join(root, '.claude/skills-catalog.json'), 'utf8')).skills;
   const problems = [];
-  for (const name of readdirSync(join(root, '.agents/skills')).sort()) {
-    const { data } = parseFrontmatter(readFileSync(join(root, '.agents/skills', name, 'SKILL.md'), 'utf8'));
+  for (const name of readdirSync(join(root, '.claude/skills')).sort()) {
+    const { data } = parseFrontmatter(readFileSync(join(root, '.claude/skills', name, 'SKILL.md'), 'utf8'));
     const tier = catalog[name]?.tier;
     const entries = splitTools(data['allowed-tools']);
     if (!entries.length) problems.push(`${name}: allowed-tools is empty`);

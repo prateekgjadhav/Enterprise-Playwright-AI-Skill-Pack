@@ -11,10 +11,10 @@ const gate = join(dirname(fileURLToPath(import.meta.url)), '..', 'ai-release-gat
 const aiGates = { required: ['retrieval', 'kpis'], retrieval: { 'recall@5': 0.8, mrr: 0.6 }, kpis: { hallucination_rate: { max: 0.05 }, assertion_quality: 0.7 } };
 function repo({ goldens = false, retrieval = null, kpis = null } = {}) {
   const root = mkdtempSync(join(tmpdir(), 'qa-gate-'));
-  mkdirSync(join(root, '.agents'), { recursive: true });
+  mkdirSync(join(root, '.claude'), { recursive: true });
   mkdirSync(join(root, 'evals/results'), { recursive: true });
   mkdirSync(join(root, 'evals/goldens'), { recursive: true });
-  writeFileSync(join(root, '.agents/qa.config.json'), JSON.stringify({ aiGates }));
+  writeFileSync(join(root, '.claude/qa.config.json'), JSON.stringify({ aiGates }));
   if (goldens) writeFileSync(join(root, 'evals/goldens/retrieval.jsonl'), '{}\n');
   if (retrieval) writeFileSync(join(root, 'evals/results/retrieval.json'), JSON.stringify(retrieval));
   if (kpis) writeFileSync(join(root, 'evals/results/kpis.json'), JSON.stringify(kpis));

@@ -11,8 +11,8 @@ const approvals = existsSync('governance/approvals') ? readdirSync('governance/a
   .map((f) => ({ file: `governance/approvals/${f}`, bundle: existsSync(`governance/approvals/${f.replace(/\.json$/, '.sigstore.json')}`), ...JSON.parse(readFileSync(`governance/approvals/${f}`, 'utf8')) })) : [];
 const input = {
   now: opt('--now') ?? new Date().toISOString(),
-  config: JSON.parse(readFileSync('.agents/qa.config.json', 'utf8')),
-  catalog: JSON.parse(readFileSync('.agents/skills-catalog.json', 'utf8')).skills,
+  config: JSON.parse(readFileSync('.claude/qa.config.json', 'utf8')),
+  catalog: JSON.parse(readFileSync('.claude/skills-catalog.json', 'utf8')).skills,
   waivers: yaml('governance/waivers.yaml', 'waivers'),
   quarantine: yaml('governance/quarantine.yaml', 'quarantine'),
   approvals,

@@ -2,7 +2,7 @@
 // Verifies the working tree against skills.lock.json.
 //   pack mode (install.sh present): every locked file matches, no unlocked file exists, the digest is consistent
 //   repository mode (installed copy): every managed file matches; scaffold files belong to the repository and
-//     pack-only files are absent by design; no unlocked file may appear under .agents/skills, policy or rag
+//     pack-only files are absent by design; no unlocked file may appear under .claude/skills, policy or rag
 //   both: the lock digest is not in governance/revoked-digests.txt
 // It does not check the signature: that is release-signing-verify (cosign) in CI and at install.
 // Usage: node scripts/verify-lock.mjs [--root <dir>] [--quiet]
@@ -32,7 +32,7 @@ export function verifyLock(root) {
   const present = walk(root).filter((r) => !NOT_LOCKED.includes(r));
   for (const rel of present) {
     if (lock.files[rel]) continue;
-    if (pack || /^(\.agents\/skills|policy|rag)\//.test(rel)) problems.push(`not in the lock: ${rel}`);
+    if (pack || /^(\.claude\/skills|policy|rag)\//.test(rel)) problems.push(`not in the lock: ${rel}`);
   }
   if (pack) { const fresh = computeLock(root); if (fresh.digest !== digest && !problems.length) problems.push('the lock is stale: run node scripts/build-lock.mjs'); }
   return { ok: !problems.length, problems, digest, mode: pack ? 'pack' : 'repository' };

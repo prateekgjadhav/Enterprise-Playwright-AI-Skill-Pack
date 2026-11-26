@@ -16,7 +16,7 @@ import { join, resolve } from 'node:path';
 const argv = process.argv.slice(2);
 const root = resolve(argv.includes('--root') ? argv[argv.indexOf('--root') + 1] : '.');
 const readJson = (p) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return null; } };
-const gates = readJson(join(root, '.agents/qa.config.json'))?.aiGates ?? {};
+const gates = readJson(join(root, '.claude/qa.config.json'))?.aiGates ?? {};
 const dir = join(root, 'evals/results');
 const required = new Set(gates.required ?? []);
 const strict = argv.includes('--strict');

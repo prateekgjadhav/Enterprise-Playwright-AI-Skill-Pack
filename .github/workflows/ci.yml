@@ -52,12 +52,12 @@ jobs:
       - name: Policy
         run: |
           opa test policy/ -v
-          node scripts/policy-input.mjs --out .agents/out/policy-input.json
-          test "$(opa eval --format raw --data policy --input .agents/out/policy-input.json 'data.qa.deny')" = "[]"
+          node scripts/policy-input.mjs --out .claude/out/policy-input.json
+          test "$(opa eval --format raw --data policy --input .claude/out/policy-input.json 'data.qa.deny')" = "[]"
       - name: Pack self-tests
         run: node --test rag/test/*.test.mjs scripts/test/*.test.mjs scripts/self-healing/heal.test.mjs
       - id: cfg
-        run: echo "configured=$(node -e "console.log((require('./.agents/qa.config.json').environments||[]).length>0)")" >> "$GITHUB_OUTPUT"
+        run: echo "configured=$(node -e "console.log((require('./.claude/qa.config.json').environments||[]).length>0)")" >> "$GITHUB_OUTPUT"
 
   verify-code:
     needs: pack-integrity
@@ -95,7 +95,7 @@ jobs:
         with: { persist-credentials: false }
       - run: npm ci --ignore-scripts
       - id: provider
-        run: echo "name=$(node -e "console.log(require('./.agents/qa.config.json').secrets.provider)")" >> "$GITHUB_OUTPUT"
+        run: echo "name=$(node -e "console.log(require('./.claude/qa.config.json').secrets.provider)")" >> "$GITHUB_OUTPUT"
       # Secret stores through OIDC federation: no long-lived credentials in the repository or the workflow.
       - if: steps.provider.outputs.name == 'vault'
         uses: hashicorp/vault-action@v3 # pin: renovate

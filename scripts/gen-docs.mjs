@@ -14,11 +14,11 @@ const read = (p) => readFileSync(p, 'utf8');
 
 export function build(root = process.cwd()) {
   const r = (p) => read(join(root, p));
-  const catalog = JSON.parse(r('.agents/skills-catalog.json'));
+  const catalog = JSON.parse(r('.claude/skills-catalog.json'));
   const lock = JSON.parse(r('skills.lock.json'));
   const cases = JSON.parse(r('tests/skills/trigger-cases.json'));
   const skills = Object.entries(catalog.skills).map(([name, c]) => {
-    const { data } = parseFrontmatter(r(`.agents/skills/${name}/SKILL.md`));
+    const { data } = parseFrontmatter(r(`.claude/skills/${name}/SKILL.md`));
     const when = (/\bUse whenever\b\s*(.*?)(?=\s*\bNot for\b|$)/s.exec(data.description)?.[1] ?? '').replace(/\.$/, '');
     return { name, ...c, when };
   });
@@ -33,8 +33,8 @@ export function build(root = process.cwd()) {
   }).join('\n');
 
   const GROUPS = [
-    ['Orchestrator and configuration', (p) => /^(AGENTS\.md|CLAUDE\.md|BOOTSTRAP_PROMPT\.md|README\.md|install-manifest\.json|package\.json|tsconfig\.json|renovate\.json|\.gitignore|\.nvmrc|\.mcp\.json)$/.test(p) || /^\.agents\/[^/]+\.json$/.test(p) || p.startsWith('.claude/') || p.startsWith('.agents/memory/') || p === 'knowledge/README.md'],
-    ...Object.entries(catalog.categories).map(([k, label]) => [`Skills — ${label}`, (p) => { const m = /^\.agents\/skills\/([^/]+)\//.exec(p); return m && catalog.skills[m[1]]?.category === k; }]),
+    ['Orchestrator and configuration', (p) => /^(AGENTS\.md|CLAUDE\.md|BOOTSTRAP_PROMPT\.md|README\.md|install-manifest\.json|package\.json|tsconfig\.json|renovate\.json|\.gitignore|\.nvmrc|\.mcp\.json)$/.test(p) || /^\.claude\/[^/]+\.json$/.test(p) || p.startsWith('.claude/') || p.startsWith('.claude/memory/') || p === 'knowledge/README.md'],
+    ...Object.entries(catalog.categories).map(([k, label]) => [`Skills — ${label}`, (p) => { const m = /^\.claude\/skills\/([^/]+)\//.exec(p); return m && catalog.skills[m[1]]?.category === k; }]),
     ['Managed settings and hooks', (p) => p.startsWith('managed/') || p.startsWith('hooks/')],
     ['Policy, governance and legal', (p) => p.startsWith('policy/') || p.startsWith('governance/') || ['.github/CODEOWNERS', 'SECURITY.md', 'LICENSE'].includes(p)],
     ['Release and integrity', (p) => /^(install\.sh|skills\.lock\.json|mcp\.lock\.json|scripts\/(install|build-lock|verify-lock|package-hooks|link-skills|check-pins)\.mjs|scripts\/lib\/files\.mjs)$/.test(p)],
@@ -51,7 +51,7 @@ export function build(root = process.cwd()) {
   const groups = GROUPS.map(([label]) => ({ label, files: [] }));
   for (const p of files) {
     const i = GROUPS.findIndex(([, test]) => test(p));
-    const m = /^\.agents\/skills\/([^/]+)\/SKILL\.md$/.exec(p);
+    const m = /^\.claude\/skills\/([^/]+)\/SKILL\.md$/.exec(p);
     groups[i].files.push({ title: m ? m[1] : p, path: p, content: r(p) });
   }
   const filesJson = JSON.stringify({ groups: groups.filter((g) => g.files.length) }).replace(/</g, '\\u003c');

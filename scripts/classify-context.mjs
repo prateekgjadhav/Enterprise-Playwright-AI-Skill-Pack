@@ -31,7 +31,7 @@ export function classify(files, qa = {}) {
 import { pathToFileURL } from 'node:url';
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   const files = process.argv.slice(2).filter((a) => !a.startsWith('--'));
-  let qa = {}; try { qa = JSON.parse(readFileSync('.agents/qa.config.json', 'utf8')); } catch { /* unconfigured: internal baseline */ }
+  let qa = {}; try { qa = JSON.parse(readFileSync('.claude/qa.config.json', 'utf8')); } catch { /* unconfigured: internal baseline */ }
   const r = classify(files, qa);
   if (process.argv.includes('--json')) console.log(JSON.stringify(r, null, 2));
   else { console.log(`${r.class}  (${r.header})`); for (const x of r.reasons) console.log(`  - ${x}`); }

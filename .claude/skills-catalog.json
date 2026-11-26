@@ -1,6 +1,6 @@
 {
   "tiers": {
-    "T0": "Read-only: reads the repository and writes only to .agents/out/",
+    "T0": "Read-only: reads the repository and writes only to .claude/out/",
     "T1": "Writes repository code or configuration on a branch",
     "T2": "Runs tests or evaluations against allowlisted environments",
     "T3": "External side effects; needs an identity-bound approval attestation; disabled by default",

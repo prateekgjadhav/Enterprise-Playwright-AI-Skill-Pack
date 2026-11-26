@@ -1,9 +1,9 @@
 // Memory architecture
 //   session     the current conversation: what was already retrieved, so context is not sent twice (in-process)
-//   project     .agents/memory/project/{patterns,defects,architectural-decisions}.jsonl — this repository's intelligence
-//   team        .agents/memory/team/{best-practices,migration-patterns,security-findings}.jsonl — shared across repos
+//   project     .claude/memory/project/{patterns,defects,architectural-decisions}.jsonl — this repository's intelligence
+//   team        .claude/memory/team/{best-practices,migration-patterns,security-findings}.jsonl — shared across repos
 // Writes are evidence-backed, redacted, injection-scanned and gated by gates.knowledgeWrite: with "ask" they
-// wait in .agents/memory/pending/ (excluded from retrieval) until a person runs
+// wait in .claude/memory/pending/ (excluded from retrieval) until a person runs
 //   node rag/cli.mjs memory approve <id> --by <identity> --attestation governance/approvals/<id>.sigstore.json
 // The attestation is the signed approval from approve.yml; its sha256 is recorded on the promoted entry and CI
 // verifies the signature (scripts/verify-attestation.mjs). Approval without an attestation is refused.

@@ -1,4 +1,4 @@
-// Loads .agents/qa.config.json and fills every RAG-layer setting with a safe default, so the engine runs
+// Loads .claude/qa.config.json and fills every RAG-layer setting with a safe default, so the engine runs
 // on a repository whose config has no "rag" block yet. Project values live in the config, never in code.
 import { join, resolve } from 'node:path';
 import { readJson } from './util.mjs';
@@ -23,7 +23,7 @@ export const DEFAULT_SOURCES = [
 
 export const DEFAULTS = {
   strategy: 'hybrid',                     // hybrid | vector | bm25
-  indexDir: '.agents/rag-index',
+  indexDir: '.claude/rag-index',
   sources: DEFAULT_SOURCES,
   exclude: ['**/*.min.js', '**/node_modules/**'],
   chunking: { strategy: 'semantic', maxTokens: 350, overlapTokens: 40, parentChild: true },
@@ -33,14 +33,14 @@ export const DEFAULTS = {
   reranker: { provider: 'lexical-cross', model: null, endpoint: null, apiKeyEnv: null, topN: 8 },
   compression: { enabled: true, budgetTokens: 2400, sentenceKeepRatio: 0.6, dedupeThreshold: 0.8 },
   graph: { enabled: true },
-  memory: { enabled: true, dir: '.agents/memory', staleAfterDays: 180 },
+  memory: { enabled: true, dir: '.claude/memory', staleAfterDays: 180 },
   security: {
     redactPII: true, allowDomains: ['example.com', 'example.org', 'example.net', 'test'],
     injectionScan: true, quarantineFlagged: true, minTrust: 0.35, freshnessHalfLifeDays: 365,
     encryption: { enabled: false, keyEnv: 'QA_RAG_INDEX_KEY' },
     acl: { defaultPrincipals: ['*'], principalsEnv: 'QA_RAG_PRINCIPALS', rules: [] },
   },
-  telemetry: { enabled: true, aiOpsLog: '.agents/telemetry/ai-ops.jsonl', maxBytes: 10485760, costPer1kTokensUsd: 0.003 },
+  telemetry: { enabled: true, aiOpsLog: '.claude/telemetry/ai-ops.jsonl', maxBytes: 10485760, costPer1kTokensUsd: 0.003 },
 };
 
 const isObj = (x) => x && typeof x === 'object' && !Array.isArray(x);
@@ -51,10 +51,10 @@ export function deepMerge(base, over) {
   return out;
 }
 
-/** The full effective config. `root` is the repository root (the folder holding .agents/). */
+/** The full effective config. `root` is the repository root (the folder holding .claude/). */
 export function loadConfig(root = process.cwd()) {
   const abs = resolve(root);
-  const qa = readJson(join(abs, '.agents/qa.config.json'), {}) ?? {};
+  const qa = readJson(join(abs, '.claude/qa.config.json'), {}) ?? {};
   const rag = deepMerge(DEFAULTS, qa.rag ?? {});
   return {
     root: abs,

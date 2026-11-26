@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // AI-Ops dashboard: a self-contained HTML page and a Prometheus text file built from what the pack records.
-//   .agents/telemetry/ai-ops.jsonl     retrieval, ingest and MCP tool events (rag/telemetry/aiops.mjs)
-//   .agents/telemetry/llm-calls.jsonl  LLM-call metadata from telemetry-instrumentation (model, tokens, cost, prompt, ok)
+//   .claude/telemetry/ai-ops.jsonl     retrieval, ingest and MCP tool events (rag/telemetry/aiops.mjs)
+//   .claude/telemetry/llm-calls.jsonl  LLM-call metadata from telemetry-instrumentation (model, tokens, cost, prompt, ok)
 //   evals/results/history.jsonl        retrieval benchmark, KPIs, DeepEval, RAGAS and gate decisions over time
 //   the knowledge index                documents, chunks, graph size, staleness, quarantine
 // Usage: node scripts/ai-ops-dashboard.mjs [--root <dir>] [--out reports/ai-ops]
@@ -15,8 +15,8 @@ const opt = (n, d) => (argv.includes(`--${n}`) ? argv[argv.indexOf(`--${n}`) + 1
 const root = resolve(opt('root', '.'));
 const outDir = join(root, opt('out', 'reports/ai-ops'));
 const jsonl = (p) => (existsSync(p) ? readFileSync(p, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : []);
-const events = jsonl(join(root, '.agents/telemetry/ai-ops.jsonl'));
-const llm = jsonl(join(root, '.agents/telemetry/llm-calls.jsonl'));
+const events = jsonl(join(root, '.claude/telemetry/ai-ops.jsonl'));
+const llm = jsonl(join(root, '.claude/telemetry/llm-calls.jsonl'));
 const history = jsonl(join(root, 'evals/results/history.jsonl'));
 let status = null;
 try { const { loadConfig } = await import(new URL('../rag/lib/config.mjs', import.meta.url)); const { status: st } = await import(new URL('../rag/ingestion/ingest.mjs', import.meta.url)); status = st(loadConfig(root)); } catch { status = null; }
@@ -72,7 +72,7 @@ th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule);f
 <h2>Knowledge index (vector store)</h2><div class="grid">${status?.docs !== undefined ? card('Documents / chunks', `${status.docs} / ${status.chunks}`) + card('Graph nodes / edges', `${status.nodes} / ${status.edges}`) + card('Embedder', status.embedder?.id ?? '—') + card('Index age', `${status.ageHours} h`, status.advice) + card('Stale sources', status.staleSources.length) + card('Quarantined', status.quarantined.length, status.quarantined.join(', ')) : card('Index', 'not built', 'node rag/cli.mjs ingest')}${card('Last ingest', ingests.length ? `${r2(ingests[ingests.length - 1].ms)} ms` : '—', ingests.length ? `${ingests[ingests.length - 1].reused ?? 0} embeddings reused` : '')}${card('ACL-filtered chunks', m.aclFiltered)}${card('Quarantine-filtered', m.quarantinedFiltered)}</div>
 <h2>Tools, prompts and cost</h2><div class="grid">${card('MCP tool success', m.toolSuccess === null ? '—' : `${Math.round(m.toolSuccess * 100)}%`)}${card('LLM calls', m.llmCalls)}${card('LLM tokens', m.llmTokens)}${card('LLM cost', `$${r2(m.llmCost)}`)}</div>
 <div class="wrap"><table><tr><th>MCP tool</th><th>Calls</th><th>Success</th><th>p95 ms</th></tr>${Object.entries(byTool).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v.calls}</td><td>${Math.round((v.ok / v.calls) * 100)}%</td><td>${r2(pct(v.ms, 95))}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">no tool calls recorded</td></tr>'}</table></div>
-<div class="wrap" style="margin-top:.75rem"><table><tr><th>Prompt / skill</th><th>Calls</th><th>Success</th><th>Tokens</th><th>Cost</th></tr>${Object.entries(byPrompt).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v.calls}</td><td>${Math.round((v.ok / v.calls) * 100)}%</td><td>${v.tokens}</td><td>$${r2(v.cost)}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">no LLM-call records (telemetry-instrumentation writes .agents/telemetry/llm-calls.jsonl)</td></tr>'}</table></div>
+<div class="wrap" style="margin-top:.75rem"><table><tr><th>Prompt / skill</th><th>Calls</th><th>Success</th><th>Tokens</th><th>Cost</th></tr>${Object.entries(byPrompt).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v.calls}</td><td>${Math.round((v.ok / v.calls) * 100)}%</td><td>${v.tokens}</td><td>$${r2(v.cost)}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">no LLM-call records (telemetry-instrumentation writes .claude/telemetry/llm-calls.jsonl)</td></tr>'}</table></div>
 <h2>Quality trends</h2><div class="wrap"><table><tr><th>Metric</th><th>Latest</th><th>Trend</th></tr>${trends.map(([n, xs]) => `<tr><td>${esc(n)}</td><td>${xs.length ? r2(xs[xs.length - 1]) : '—'}</td><td>${spark(xs)}</td></tr>`).join('')}</table></div>
 </body></html>`;
 

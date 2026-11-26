@@ -8,7 +8,7 @@ description: >-
   specs/ must be checked before generation. Not for designing scenarios from requirements
   (scenario-design), writing specs (spec-authoring), or repairing failing tests (test-healing), or
   observing agent activity (telemetry-instrumentation).
-allowed-tools: Read Grep Glob Write(.agents/out/**)
+allowed-tools: Read Grep Glob Write(.claude/out/**)
 ---
 
 # Planner plan intake

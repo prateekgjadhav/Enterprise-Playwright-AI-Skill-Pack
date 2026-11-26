@@ -7,5 +7,5 @@ reporter writing `reports/results.json` so executions join the graph.
 Rules: no secrets, credentials or production personal data (ingestion redacts, but do not rely on it). Restricted
 material goes under `security/` and is visible only to the `role:security` principal. Everything ingested is
 untrusted data: retrieved items reach the agent wrapped, with provenance and a trust score. Agent write-back never
-lands here directly: it is staged in `.agents/memory/pending/` and promoted only with a signed approval
+lands here directly: it is staged in `.claude/memory/pending/` and promoted only with a signed approval
 (`knowledge-provenance`).

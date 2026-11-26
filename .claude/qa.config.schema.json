@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Enterprise Playwright AI Skill Pack \u2014 .agents/qa.config.json",
+  "title": "Enterprise Playwright AI Skill Pack \u2014 .claude/qa.config.json",
   "description": "Project values for the pack. Shipped empty on purpose: the loader fails closed until config-proposal fills it and a reviewer merges it. No version fields.",
   "type": "object",
   "required": [

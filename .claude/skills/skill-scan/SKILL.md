@@ -4,7 +4,7 @@ description: >-
   Statically scans skills, AGENTS.md, CLAUDE.md, prompts and agent definitions for hidden or
   obfuscated characters, instruction overrides, remote-fetch or pipe-to-shell instructions, credential
   paths, unknown URLs and over-broad tools, and fails on any high finding. Use whenever files under
-  .agents/skills, prompts or .claude change, before a release is signed, or when a third-party skill
+  .claude/skills, prompts or .claude change, before a release is signed, or when a third-party skill
   is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden
   characters. Not for routing accuracy (skill-routing-eval), secrets in application code
   (secrets-scan), or MCP tool descriptions (mcp-server-vetting).

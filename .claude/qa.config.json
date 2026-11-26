@@ -127,7 +127,7 @@
   "healing": {
     "minConfidence": 0.8,
     "results": "reports/results.json",
-    "snapshots": ".agents/discovery/pages",
+    "snapshots": ".claude/discovery/pages",
     "out": "reports/healing"
   }
 }

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // PostToolUse (Edit|Write|MultiEdit): checks the file the agent just wrote.
 //   *.ts, *.tsx, *.mjs, *.js under src/, tests/, eslint/, scripts/ → ESLint with the pack's AST rules, inline config off
-//   governance/*.yaml, .agents/qa.config.json, .agents/skills-catalog.json → the OPA policy (and the config validator)
-//   .agents/skills/**, AGENTS.md, prompts/** → the skill scan
+//   governance/*.yaml, .claude/qa.config.json, .claude/skills-catalog.json → the OPA policy (and the config validator)
+//   .claude/skills/**, AGENTS.md, prompts/** → the skill scan
 // A missing linter, OPA or Node module is reported and blocks (fail closed); it is never skipped.
 import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -22,18 +22,18 @@ export function checkFile(root, abs) {
     const r = run('npx', ['--no-install', 'eslint', '--no-inline-config', '--max-warnings=0', rel], root);
     if (!r.ok) return `governance-lint failed for ${rel}:\n${r.out.slice(-3000)}`;
   }
-  if (/^governance\/[^/]+\.ya?ml$/.test(rel) || rel === '.agents/qa.config.json' || rel === '.agents/skills-catalog.json') {
-    const input = run('node', ['scripts/policy-input.mjs', '--out', '.agents/out/policy-input.json'], root);
+  if (/^governance\/[^/]+\.ya?ml$/.test(rel) || rel === '.claude/qa.config.json' || rel === '.claude/skills-catalog.json') {
+    const input = run('node', ['scripts/policy-input.mjs', '--out', '.claude/out/policy-input.json'], root);
     if (!input.ok) return `policy input failed: ${input.out}`;
-    const r = run('opa', ['eval', '--format', 'raw', '--data', 'policy', '--input', '.agents/out/policy-input.json', 'data.qa.deny'], root);
+    const r = run('opa', ['eval', '--format', 'raw', '--data', 'policy', '--input', '.claude/out/policy-input.json', 'data.qa.deny'], root);
     if (!r.ok) return `OPA policy could not run: ${r.out}`;
     if (r.out !== '[]') return `OPA policy denies:\n${r.out}`;
-    if (rel === '.agents/qa.config.json') {
+    if (rel === '.claude/qa.config.json') {
       const v = run('node', ['scripts/validate-config.mjs'], root);
       if (!v.ok) return v.out;
     }
   }
-  if (/^\.agents\/skills\//.test(rel) || rel === 'AGENTS.md' || /^prompts\//.test(rel)) {
+  if (/^\.claude\/skills\//.test(rel) || rel === 'AGENTS.md' || /^prompts\//.test(rel)) {
     const r = run('node', ['scripts/skill-scan.mjs', rel], root);
     if (!r.ok) return `skill-scan failed for ${rel}:\n${r.out}`;
   }

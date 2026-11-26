@@ -11,14 +11,14 @@ const hook = (name, payload, env = {}) => spawnSync('node', [join(root, 'hooks',
 
 function repo(environments = [{ name: 'staging', owner: 'o', ticket: 'T', dataClass: 'internal', hosts: ['staging.shop.example.test'], reviewBy: '2099-01-01' }]) {
   const dir = mkdtempSync(join(tmpdir(), 'qa-hook-'));
-  mkdirSync(join(dir, '.agents'), { recursive: true }); mkdirSync(join(dir, 'governance', 'scopes'), { recursive: true });
-  writeFileSync(join(dir, '.agents', 'qa.config.json'), JSON.stringify({ environments, productionHosts: ['shop.example.com'] }));
+  mkdirSync(join(dir, '.claude'), { recursive: true }); mkdirSync(join(dir, 'governance', 'scopes'), { recursive: true });
+  writeFileSync(join(dir, '.claude', 'qa.config.json'), JSON.stringify({ environments, productionHosts: ['shop.example.com'] }));
   return dir;
 }
 
 test('deny-secret-read blocks secret paths and environment dumps, allows ordinary files', () => {
   for (const input of [{ file_path: '/w/.env' }, { file_path: '/w/.env.production' }, { file_path: '/w/.auth/admin.json' }, { command: 'cat secrets/token.txt' },
-    { command: 'printenv' }, { command: 'grep -r KEY .env.local' }, { pattern: '**/*.pem' }, { command: 'ls ~/.ssh/' }, { command: 'cat .agents/rag-index/index.json' }]) {
+    { command: 'printenv' }, { command: 'grep -r KEY .env.local' }, { pattern: '**/*.pem' }, { command: 'ls ~/.ssh/' }, { command: 'cat .claude/rag-index/index.json' }]) {
     assert.equal(hook('deny-secret-read.mjs', { tool_name: 'Bash', tool_input: input }).status, 2, JSON.stringify(input));
   }
   for (const input of [{ file_path: '/w/src/pages/home.page.ts' }, { file_path: '/w/.env.example' }, { command: 'npx playwright test --list' }, { command: 'npm run verify' }]) {

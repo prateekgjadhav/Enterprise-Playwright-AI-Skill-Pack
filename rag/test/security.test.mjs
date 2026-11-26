@@ -57,8 +57,8 @@ test('target check: allowlist required, production-like and production hosts ref
 
 test('encryption: hex, base64 and passphrase keys round-trip; a wrong key fails; index and cache leave no plaintext', () => {
   const root = mkdtempSync(join(tmpdir(), 'qa-enc-'));
-  mkdirSync(join(root, '.agents'), { recursive: true });
-  writeFileSync(join(root, '.agents/qa.config.json'), JSON.stringify({ rag: { security: { encryption: { enabled: true, keyEnv: 'QA_TEST_KEY' } } } }));
+  mkdirSync(join(root, '.claude'), { recursive: true });
+  writeFileSync(join(root, '.claude/qa.config.json'), JSON.stringify({ rag: { security: { encryption: { enabled: true, keyEnv: 'QA_TEST_KEY' } } } }));
   const cfg = loadConfig(root);
   for (const key of ['ab'.repeat(32), Buffer.alloc(32, 7).toString('base64'), 'a long passphrase']) {
     process.env.QA_TEST_KEY = key;
@@ -79,8 +79,8 @@ test('encryption: hex, base64 and passphrase keys round-trip; a wrong key fails;
 
 test('memory approval rejects ids that are not memory ids (no path traversal)', () => {
   const root = mkdtempSync(join(tmpdir(), 'qa-mem-'));
-  mkdirSync(join(root, '.agents'), { recursive: true });
-  writeFileSync(join(root, '.agents/qa.config.json'), '{}');
+  mkdirSync(join(root, '.claude'), { recursive: true });
+  writeFileSync(join(root, '.claude/qa.config.json'), '{}');
   writeFileSync(join(root, 'package.json'), '{}');
   const cfg = loadConfig(root);
   assert.equal(approveMemory(cfg, '../../package', 'alice').ok, false);
@@ -91,6 +91,6 @@ test('memory approval rejects ids that are not memory ids (no path traversal)', 
 
 test('score_spec refuses paths outside the repository', () => {
   const root = mkdtempSync(join(tmpdir(), 'qa-kpi-'));
-  cpSync(join(here, '../fixtures/sample-repo/.agents'), join(root, '.agents'), { recursive: true });
+  cpSync(join(here, '../fixtures/sample-repo/.claude'), join(root, '.claude'), { recursive: true });
   assert.throws(() => scoreSpecs(loadConfig(root), ['../../etc/passwd']), /outside the repository/);
 });

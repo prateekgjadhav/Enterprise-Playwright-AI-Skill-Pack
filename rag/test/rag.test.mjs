@@ -210,6 +210,6 @@ test('MCP server speaks JSON-RPC over stdio', async () => {
 });
 
 test('the sample repository stays free of generated files', () => {
-  assert.ok(!existsSync(join(fixture, '.agents', 'rag-index')), 'run tests against a copy, never the fixture');
-  assert.ok(readFileSync(join(fixture, '.agents', 'qa.config.json'), 'utf8').includes('rag'));
+  assert.ok(!existsSync(join(fixture, '.claude', 'rag-index')), 'run tests against a copy, never the fixture');
+  assert.ok(readFileSync(join(fixture, '.claude', 'qa.config.json'), 'utf8').includes('rag'));
 });

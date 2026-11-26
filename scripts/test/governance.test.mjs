@@ -25,7 +25,7 @@ test('allowed-tools parsing, coverage and tier rules', () => {
   assert.ok(covers('Bash(npx playwright test:*)', 'Bash(npx playwright test --grep @a11y:*)'));
   assert.ok(!covers('Edit(./tests/**)', 'Edit(src/**)'));
   assert.ok(tierProblems('T0', 'Edit(src/**)').length);
-  assert.ok(!tierProblems('T0', 'Write(.agents/out/**)').length);
+  assert.ok(!tierProblems('T0', 'Write(.claude/out/**)').length);
   assert.ok(tierProblems('T1', 'Bash(npx playwright test:*)').length);
   assert.ok(tierProblems('T2', 'Bash(npx playwright test --project=security:*)').length);
 });

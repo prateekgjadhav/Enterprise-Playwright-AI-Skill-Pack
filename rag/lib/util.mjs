@@ -74,7 +74,7 @@ export function globToRegExp(glob) {
   }
   return new RegExp('^' + re + '$');
 }
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', 'playwright-report', 'blob-report', '.agents/rag-index']);
+const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'coverage', 'playwright-report', 'blob-report', '.claude/rag-index']);
 /** Files under root matching any include glob and no exclude glob. A trailing ".sample" is ignored for matching. */
 export function findFiles(root, include, exclude = []) {
   const inc = include.map(globToRegExp), exc = exclude.map(globToRegExp);
@@ -87,7 +87,7 @@ export function findFiles(root, include, exclude = []) {
       const rel = posix(relative(root, abs));
       if (e.isDirectory()) {
         if (SKIP_DIRS.has(e.name) || SKIP_DIRS.has(rel)) continue;
-        if (e.name.startsWith('.') && !['.github', '.agents'].includes(e.name)) continue;
+        if (e.name.startsWith('.') && !['.github', '.claude'].includes(e.name)) continue;
         visit(abs);
       } else {
         const key = rel.replace(/\.sample$/, '');

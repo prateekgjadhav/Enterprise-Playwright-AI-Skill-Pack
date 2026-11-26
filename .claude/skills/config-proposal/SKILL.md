@@ -1,14 +1,14 @@
 ---
 name: config-proposal
 description: >-
-  Turns an approved discovery report into a proposed .agents/qa.config.json — environments with owner,
+  Turns an approved discovery report into a proposed .claude/qa.config.json — environments with owner,
   ticket, data class, hosts and review date, roles, secret references, gateway and knowledge endpoints
   — validated and delivered on a branch for human review. Use whenever the discovery report is
   approved, qa.config.json is empty or invalid, or the first full configuration must be written, or
   someone asks to propose, fill in or fix the qa config. Not for adding one environment later
   (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself
   (repo-discovery), or healing proposals (test-healing).
-allowed-tools: Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*) Bash(git switch -c:*)
+allowed-tools: Read Grep Glob Edit(.claude/qa.config.json) Bash(node scripts/validate-config.mjs:*) Bash(git switch -c:*)
 ---
 
 # Configuration proposal
@@ -23,7 +23,7 @@ An empty field is safer than a guessed one; the loader fails closed until a pers
 
 ## Inputs and outputs
 - **In:** the approved discovery report; owner confirmations
-- **Out:** a diff to `.agents/qa.config.json` on branch `qa-config/<ticket>`
+- **Out:** a diff to `.claude/qa.config.json` on branch `qa-config/<ticket>`
 
 ## Procedure
 1. Fill `project.name` and `project.owners` from the report.

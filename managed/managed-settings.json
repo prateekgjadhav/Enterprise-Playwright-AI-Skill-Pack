@@ -20,7 +20,7 @@
       "Write(./src/**)",
       "Edit(./tests/**)",
       "Write(./tests/**)",
-      "Write(./.agents/out/**)",
+      "Write(./.claude/out/**)",
       "Bash(npm run verify)",
       "Bash(npm run verify:pack)",
       "Bash(npx tsc --noEmit)",
@@ -65,8 +65,8 @@
       "Bash(npm sbom:*)"
     ],
     "ask": [
-      "Edit(./.agents/**)",
-      "Write(./.agents/**)",
+      "Edit(./.claude/**)",
+      "Write(./.claude/**)",
       "Edit(./AGENTS.md)",
       "Edit(./.github/workflows/**)",
       "Edit(./playwright.config.ts)",
@@ -102,7 +102,7 @@
       "Read(./**/.env.*)",
       "Read(./.auth/**)",
       "Read(./secrets/**)",
-      "Read(./.agents/rag-index/**)",
+      "Read(./.claude/rag-index/**)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "Read(~/.config/gcloud/**)",

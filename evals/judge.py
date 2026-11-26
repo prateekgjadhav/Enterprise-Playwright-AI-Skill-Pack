@@ -8,7 +8,7 @@ ROOT = pathlib.Path(os.environ.get("QA_REPO_ROOT", pathlib.Path(__file__).resolv
 
 
 def judge_settings():
-    cfg = json.loads((ROOT / ".agents" / "qa.config.json").read_text())
+    cfg = json.loads((ROOT / ".claude" / "qa.config.json").read_text())
     ai = cfg.get("ai", {})
     base = (ai.get("gateway") or {}).get("baseUrl") or ""
     model = ai.get("judgeModel") or ""

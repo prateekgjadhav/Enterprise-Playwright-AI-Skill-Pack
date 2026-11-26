@@ -5,7 +5,7 @@
 import { readFileSync } from 'node:fs';
 import { toSpan } from '../rag/telemetry/otlp.mjs';
 const contract = JSON.parse(readFileSync('telemetry/span-contract.json', 'utf8'));
-const qa = JSON.parse(readFileSync('.agents/qa.config.json', 'utf8'));
+const qa = JSON.parse(readFileSync('.claude/qa.config.json', 'utf8'));
 const p = [];
 if (qa.telemetry?.captureContent !== false) p.push('telemetry.captureContent must be false');
 const c = contract.spans.execute_tool;

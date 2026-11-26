@@ -1,4 +1,4 @@
-// The one loader and validator for .agents/qa.config.json. Playwright (through src/config/load.ts), the
+// The one loader and validator for .claude/qa.config.json. Playwright (through src/config/load.ts), the
 // validate-config script, the policy input builder and the managed hooks all use it, so the rules cannot drift.
 // It fails closed: an unconfigured file (no environments) is an error, never a fallback to some default host.
 import { readFileSync } from 'node:fs';
@@ -10,7 +10,7 @@ const PROVIDERS = ['ci-env', 'vault', 'aws-sm', 'gcp-sm', 'azure-kv', '1password
 const DAY = 86400000;
 
 export function readQaConfig(root = process.cwd()) {
-  return JSON.parse(readFileSync(join(root, '.agents', 'qa.config.json'), 'utf8'));
+  return JSON.parse(readFileSync(join(root, '.claude', 'qa.config.json'), 'utf8'));
 }
 
 /** Every problem with the configuration, as strings. An empty list means the configuration is usable. */

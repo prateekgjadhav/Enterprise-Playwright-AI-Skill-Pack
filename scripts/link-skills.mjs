@@ -6,15 +6,15 @@ import { readFileSync, existsSync, mkdirSync, rmSync, symlinkSync, cpSync, readd
 import { join, relative, dirname } from 'node:path';
 const argv = process.argv.slice(2);
 const hostDir = argv.includes('--host-dir') ? argv[argv.indexOf('--host-dir') + 1] : '.claude/skills';
-const catalog = JSON.parse(readFileSync('.agents/skills-catalog.json', 'utf8')).skills;
-const qa = JSON.parse(readFileSync('.agents/qa.config.json', 'utf8'));
+const catalog = JSON.parse(readFileSync('.claude/skills-catalog.json', 'utf8')).skills;
+const qa = JSON.parse(readFileSync('.claude/qa.config.json', 'utf8'));
 const enabled = new Set((qa.skills?.enabled ?? []).filter((e) => e?.name && e?.attestation && existsSync(e.attestation)).map((e) => e.name));
 const want = Object.entries(catalog).filter(([n, c]) => c.default === 'on' || enabled.has(n)).map(([n]) => n);
 mkdirSync(hostDir, { recursive: true });
 for (const n of readdirSync(hostDir)) if (!want.includes(n)) rmSync(join(hostDir, n), { recursive: true, force: true });
 for (const n of want) {
   const to = join(hostDir, n); if (existsSync(to)) continue;
-  const from = join('.agents/skills', n);
+  const from = join('.claude/skills', n);
   try { symlinkSync(relative(dirname(to), from), to, 'dir'); } catch { cpSync(from, to, { recursive: true }); }
 }
 console.log(`link-skills: ${want.length} skills linked into ${hostDir} (${want.length - enabled.size} default-on, ${enabled.size} enabled by attestation)`);

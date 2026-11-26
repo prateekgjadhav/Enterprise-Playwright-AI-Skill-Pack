@@ -1,65 +1,44 @@
 ---
 name: skill-authoring
 description: >-
-  Meta-skill for extending this pack: create or revise a SKILL.md that matches the pack's exact
-  conventions — spec-compliant frontmatter (name, description, metadata), the right tier, a clear
-  single responsibility with "Not for" neighbours, non-negotiables, a coverage table, working
-  templates, a procedure and a definition of done — and update the routing table and guide so the
-  new skill is discoverable. Use whenever the user asks to add, author, scaffold, refactor or
-  review a skill, define a new capability for the pack, fix a skill's frontmatter or routing, or
-  check that a skill follows the conventions. Not for enforcing code rules in test code
-  (framework-governance) or writing tests (playwright-test-generation). New skills stay narrow,
-  non-duplicative and, if security-related, defensive and authorised-only.
-metadata:
-  tier: "4"
-  pack: "enterprise-playwright-ai-skill-pack"
+  Writes one new narrow skill — kebab-case name, a description with Use whenever and Not for lines,
+  least-privilege allowed-tools for its tier, the required sections and trigger cases — and registers
+  it in the catalogue and the routing table. Use whenever a capability has no owning skill, a skill
+  does two jobs and must be split, or a description must be reworded to stop routing overlap, or
+  someone asks to create a new skill, split a skill or reword a skill description. Not for scanning
+  skills for unsafe content (skill-scan), measuring routing accuracy (skill-routing-eval), or
+  regenerating the guide (docs-generation).
+allowed-tools: Read Grep Glob Edit(.claude/skills/**) Write(.claude/skills/**) Edit(.claude/skills-catalog.json) Edit(tests/skills/trigger-cases.json) Edit(AGENTS.md) Bash(node scripts/check-skills.mjs:*) Bash(node scripts/skill-scan.mjs:*) Bash(node scripts/check-allowed-tools.mjs:*)
 ---
 
 # Skill authoring
 
-How the pack grows without drifting. Every new skill looks and behaves like the existing ones,
-routes cleanly, and earns its place by covering a real gap rather than duplicating a neighbour.
+A skill does one job and says which jobs it is not for.
 
 ## Non-negotiables
-- **One job per skill.** Before authoring, check the inventory and routing table; if an existing skill covers it, enhance that skill instead of adding a duplicate.
-- Frontmatter is spec-compliant and complete: `name` (matches the folder, kebab-case), a folded `description` that states what it does, a `Use whenever…` trigger and a `Not for X (other-skill)` exclusion, and `metadata` with `tier` and `pack`.
-- Body follows the house shape: `# Title`, a one-line philosophy, `## Non-negotiables`, a coverage/rules table, templates marked `// @skill-example: fragment — <path>`, `## Procedure`, `## Definition of Done`. British spelling in prose.
-- Security-related skills inherit the security non-negotiables (authorised, non-production targets, non-destructive, no exploit output) and are defensive only.
-- Adding a skill is not done until the routing table (`CLAUDE.md`) and the guide are updated and `npm run verify` passes.
+- Frontmatter holds `name`, `description` and `allowed-tools` only: no version, owner or metadata fields. Tier and default live in `.claude/skills-catalog.json`.
+- `allowed-tools` is path- and command-scoped; never a bare `Bash`, `Edit`, `Write` or `Bash(*)`.
+- New T3 and T4 skills are `default: off`.
+- A skill never tells the agent to fetch instructions from the network.
 
-## Tier guide
-| Tier | Meaning | Examples |
-|---|---|---|
-| 1 | Core development primitives reused everywhere | test generation, page objects, locators, data, api |
-| 2 | Execution and operations | CI/CD, regression, migration, defect analysis, observability, SRE |
-| 3 | Specialised quality engineering domains | visual, accessibility, performance, security checks, mobile |
-| 4 | Governance and meta | framework governance, reporting, this skill |
-
-## Templates
-```yaml
-# @skill-example: fragment — .agents/skills/<new-skill>/SKILL.md (frontmatter)
----
-name: <new-skill>
-description: >-
-  <what it does, how>. Use whenever the user asks <triggers>. Not for <X> (<other-skill>).
-metadata:
-  tier: "<1-4>"
-  pack: "enterprise-playwright-ai-skill-pack"
----
-```
-```markdown
-# @skill-example: fragment — routing row to add in CLAUDE.md and the guide
-| <request phrase> | <new-skill> | <usually-with skills> |
-```
+## Inputs and outputs
+- **In:** the capability request; the catalogue and routing table
+- **Out:** `.claude/skills/<name>/SKILL.md`, a catalogue entry, a routing row, at least three trigger cases
 
 ## Procedure
-1. Confirm the gap: search the inventory and routing table; if it already exists, switch to enhancing that skill.
-2. Pick the tier using the guide; choose a kebab-case name that doesn't collide.
-3. Write the SKILL.md in the house shape with real templates and a definition of done.
-4. Add the routing row to `CLAUDE.md` and the guide; name neighbours in the description's "Not for" line.
-5. Validate: rebuild the manifest (`node scripts/build-skill-manifest.mjs .agents/skills > .agents/skills-manifest.json`), add a case to `tests/skills/trigger-cases.json`, run `node scripts/check-skills.mjs`, then `npm run verify`.
+1. Prove no skill owns it: read the routing table and run `node scripts/check-skills.mjs` for overlap.
+2. Pick the tier from the highest-impact action the skill takes.
+3. Write the sections: Non-negotiables, Inputs and outputs, Procedure, Verify, Evidence, Definition of Done.
+4. Add the catalogue entry, the routing row in `AGENTS.md` and trigger cases.
+5. Run `node scripts/check-skills.mjs`, `node scripts/skill-scan.mjs` and `node scripts/check-allowed-tools.mjs`.
+6. Open a pull request; the release workflow rebuilds and signs the lock after merge.
+
+## Verify
+- all three checks exit 0
+- the new skill wins top-1 on its own trigger cases
+
+## Evidence
+Add to the evidence block: skill name, tier, overlap report, trigger accuracy. Hashes, ids and counts only — never secrets, tokens, personal data or raw untrusted text.
 
 ## Definition of Done
-- New (or revised) SKILL.md matches the frontmatter schema and house shape; name matches folder; no duplicate capability.
-- Routing table and guide updated; neighbours cross-referenced.
-- `npm run verify` passes; security skills, if any, are defensive and authorised-only.
+- The skill is narrow, least-privilege, routed, tested and reviewed.

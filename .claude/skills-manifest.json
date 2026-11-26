@@ -1,5 +1,5 @@
 {
-  "skillsDir": ".agents/skills",
+  "skillsDir": ".claude/skills",
   "count": 64,
   "tiers": {
     "T0": 20,
@@ -22,7 +22,7 @@
   "skills": [
     {
       "folder": "accessibility-audit",
-      "path": ".agents/skills/accessibility-audit/SKILL.md",
+      "path": ".claude/skills/accessibility-audit/SKILL.md",
       "name": "accessibility-audit",
       "keys": [
         "name",
@@ -52,7 +52,7 @@
     },
     {
       "folder": "agent-plan-intake",
-      "path": ".agents/skills/agent-plan-intake/SKILL.md",
+      "path": ".claude/skills/agent-plan-intake/SKILL.md",
       "name": "agent-plan-intake",
       "keys": [
         "name",
@@ -62,7 +62,7 @@
       "tier": "T0",
       "category": "Design",
       "default": "on",
-      "allowedTools": "Read Grep Glob Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Write(.claude/out/**)",
       "description": "Reviews a Markdown test plan written by the Playwright planner agent against the environment allowlist, roles, data rules and governance before anything is generated, and returns it approved or with the exact edits required. Use whenever the Playwright planner has produced or updated a plan in specs/, or someone asks whether a generated plan is safe to hand to the generator, or a plan file in specs/ must be checked before generation. Not for designing scenarios from requirements (scenario-design), writing specs (spec-authoring), or repairing failing tests (test-healing), or observing agent activity (telemetry-instrumentation).",
       "useWhen": "the Playwright planner has produced or updated a plan in specs/, or someone asks whether a generated plan is safe to hand to the generator, or a plan file in specs/ must be checked before generation.",
       "notFor": "designing scenarios from requirements (scenario-design), writing specs (spec-authoring), or repairing failing tests (test-healing), or observing agent activity (telemetry-instrumentation).",
@@ -84,7 +84,7 @@
     },
     {
       "folder": "api-security-testing",
-      "path": ".agents/skills/api-security-testing/SKILL.md",
+      "path": ".claude/skills/api-security-testing/SKILL.md",
       "name": "api-security-testing",
       "keys": [
         "name",
@@ -117,7 +117,7 @@
     },
     {
       "folder": "api-test-authoring",
-      "path": ".agents/skills/api-test-authoring/SKILL.md",
+      "path": ".claude/skills/api-test-authoring/SKILL.md",
       "name": "api-test-authoring",
       "keys": [
         "name",
@@ -148,7 +148,7 @@
     },
     {
       "folder": "approval-attestation",
-      "path": ".agents/skills/approval-attestation/SKILL.md",
+      "path": ".claude/skills/approval-attestation/SKILL.md",
       "name": "approval-attestation",
       "keys": [
         "name",
@@ -181,7 +181,7 @@
     },
     {
       "folder": "aria-snapshot-testing",
-      "path": ".agents/skills/aria-snapshot-testing/SKILL.md",
+      "path": ".claude/skills/aria-snapshot-testing/SKILL.md",
       "name": "aria-snapshot-testing",
       "keys": [
         "name",
@@ -212,7 +212,7 @@
     },
     {
       "folder": "artifact-redaction",
-      "path": ".agents/skills/artifact-redaction/SKILL.md",
+      "path": ".claude/skills/artifact-redaction/SKILL.md",
       "name": "artifact-redaction",
       "keys": [
         "name",
@@ -243,7 +243,7 @@
     },
     {
       "folder": "auth-setup-project",
-      "path": ".agents/skills/auth-setup-project/SKILL.md",
+      "path": ".claude/skills/auth-setup-project/SKILL.md",
       "name": "auth-setup-project",
       "keys": [
         "name",
@@ -274,7 +274,7 @@
     },
     {
       "folder": "authz-session-testing",
-      "path": ".agents/skills/authz-session-testing/SKILL.md",
+      "path": ".claude/skills/authz-session-testing/SKILL.md",
       "name": "authz-session-testing",
       "keys": [
         "name",
@@ -307,7 +307,7 @@
     },
     {
       "folder": "ci-workflow-authoring",
-      "path": ".agents/skills/ci-workflow-authoring/SKILL.md",
+      "path": ".claude/skills/ci-workflow-authoring/SKILL.md",
       "name": "ci-workflow-authoring",
       "keys": [
         "name",
@@ -338,7 +338,7 @@
     },
     {
       "folder": "clock-time-control",
-      "path": ".agents/skills/clock-time-control/SKILL.md",
+      "path": ".claude/skills/clock-time-control/SKILL.md",
       "name": "clock-time-control",
       "keys": [
         "name",
@@ -369,7 +369,7 @@
     },
     {
       "folder": "config-proposal",
-      "path": ".agents/skills/config-proposal/SKILL.md",
+      "path": ".claude/skills/config-proposal/SKILL.md",
       "name": "config-proposal",
       "keys": [
         "name",
@@ -379,8 +379,8 @@
       "tier": "T1",
       "category": "Meta",
       "default": "on",
-      "allowedTools": "Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*) Bash(git switch -c:*)",
-      "description": "Turns an approved discovery report into a proposed .agents/qa.config.json — environments with owner, ticket, data class, hosts and review date, roles, secret references, gateway and knowledge endpoints — validated and delivered on a branch for human review. Use whenever the discovery report is approved, qa.config.json is empty or invalid, or the first full configuration must be written, or someone asks to propose, fill in or fix the qa config. Not for adding one environment later (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself (repo-discovery), or healing proposals (test-healing).",
+      "allowedTools": "Read Grep Glob Edit(.claude/qa.config.json) Bash(node scripts/validate-config.mjs:*) Bash(git switch -c:*)",
+      "description": "Turns an approved discovery report into a proposed .claude/qa.config.json — environments with owner, ticket, data class, hosts and review date, roles, secret references, gateway and knowledge endpoints — validated and delivered on a branch for human review. Use whenever the discovery report is approved, qa.config.json is empty or invalid, or the first full configuration must be written, or someone asks to propose, fill in or fix the qa config. Not for adding one environment later (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself (repo-discovery), or healing proposals (test-healing).",
       "useWhen": "the discovery report is approved, qa.config.json is empty or invalid, or the first full configuration must be written, or someone asks to propose, fill in or fix the qa config.",
       "notFor": "adding one environment later (environment-allowlist), changing model routes (model-gateway-config), or the discovery itself (repo-discovery), or healing proposals (test-healing).",
       "notForSkills": [
@@ -401,7 +401,7 @@
     },
     {
       "folder": "contract-testing",
-      "path": ".agents/skills/contract-testing/SKILL.md",
+      "path": ".claude/skills/contract-testing/SKILL.md",
       "name": "contract-testing",
       "keys": [
         "name",
@@ -433,7 +433,7 @@
     },
     {
       "folder": "cost-budget-guard",
-      "path": ".agents/skills/cost-budget-guard/SKILL.md",
+      "path": ".claude/skills/cost-budget-guard/SKILL.md",
       "name": "cost-budget-guard",
       "keys": [
         "name",
@@ -464,7 +464,7 @@
     },
     {
       "folder": "data-classification",
-      "path": ".agents/skills/data-classification/SKILL.md",
+      "path": ".claude/skills/data-classification/SKILL.md",
       "name": "data-classification",
       "keys": [
         "name",
@@ -495,7 +495,7 @@
     },
     {
       "folder": "data-factory-authoring",
-      "path": ".agents/skills/data-factory-authoring/SKILL.md",
+      "path": ".claude/skills/data-factory-authoring/SKILL.md",
       "name": "data-factory-authoring",
       "keys": [
         "name",
@@ -526,7 +526,7 @@
     },
     {
       "folder": "dependency-pin-audit",
-      "path": ".agents/skills/dependency-pin-audit/SKILL.md",
+      "path": ".claude/skills/dependency-pin-audit/SKILL.md",
       "name": "dependency-pin-audit",
       "keys": [
         "name",
@@ -557,7 +557,7 @@
     },
     {
       "folder": "docs-generation",
-      "path": ".agents/skills/docs-generation/SKILL.md",
+      "path": ".claude/skills/docs-generation/SKILL.md",
       "name": "docs-generation",
       "keys": [
         "name",
@@ -588,7 +588,7 @@
     },
     {
       "folder": "egress-policy",
-      "path": ".agents/skills/egress-policy/SKILL.md",
+      "path": ".claude/skills/egress-policy/SKILL.md",
       "name": "egress-policy",
       "keys": [
         "name",
@@ -619,7 +619,7 @@
     },
     {
       "folder": "environment-allowlist",
-      "path": ".agents/skills/environment-allowlist/SKILL.md",
+      "path": ".claude/skills/environment-allowlist/SKILL.md",
       "name": "environment-allowlist",
       "keys": [
         "name",
@@ -629,7 +629,7 @@
       "tier": "T1",
       "category": "Gov",
       "default": "on",
-      "allowedTools": "Read Grep Glob Edit(.agents/qa.config.json) Bash(node scripts/validate-config.mjs:*)",
+      "allowedTools": "Read Grep Glob Edit(.claude/qa.config.json) Bash(node scripts/validate-config.mjs:*)",
       "description": "Adds, renews or removes a test environment in qa.config.json with owner, ticket, data class, hosts and a review date, so that only listed non-production hosts can ever be targeted by tests, crawls, healing or security checks. Use whenever a new test environment is onboarded, a host changes, or an environment's review date passes. Not for the first full configuration (config-proposal), runner and sandbox egress lists (egress-policy), or model routes (model-gateway-config).",
       "useWhen": "a new test environment is onboarded, a host changes, or an environment's review date passes.",
       "notFor": "the first full configuration (config-proposal), runner and sandbox egress lists (egress-policy), or model routes (model-gateway-config).",
@@ -650,7 +650,7 @@
     },
     {
       "folder": "evidence-report",
-      "path": ".agents/skills/evidence-report/SKILL.md",
+      "path": ".claude/skills/evidence-report/SKILL.md",
       "name": "evidence-report",
       "keys": [
         "name",
@@ -660,7 +660,7 @@
       "tier": "T0",
       "category": "Meta",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs guard:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs guard:*) Write(.claude/out/**)",
       "description": "Writes the closing evidence block for a task — request, skills with their lock hashes, grounding (cited context ids or no historical grounding), changes, verification commands with exit codes, results and artifact digests, risks — and validates it so no secret, personal data or uncited id leaks. Use whenever a task ends, a CI run needs a summary, or someone asks what was done and how it was proven. Not for merging test reports (merge-reports), explaining a failure (failure-rca), or security findings (security-findings-report).",
       "useWhen": "a task ends, a CI run needs a summary, or someone asks what was done and how it was proven.",
       "notFor": "merging test reports (merge-reports), explaining a failure (failure-rca), or security findings (security-findings-report).",
@@ -682,7 +682,7 @@
     },
     {
       "folder": "failure-rca",
-      "path": ".agents/skills/failure-rca/SKILL.md",
+      "path": ".claude/skills/failure-rca/SKILL.md",
       "name": "failure-rca",
       "keys": [
         "name",
@@ -692,7 +692,7 @@
       "tier": "T0",
       "category": "Exec",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Write(.claude/out/**)",
       "description": "Analyses a failing test from its scrubbed trace, error context, results JSON and similar past defects, decides whether it is a product, test or environment defect, and drafts a deduplicated bug report with evidence. Use whenever a test fails, CI is red, someone asks why a test broke, or a trace or error must be explained, or someone asks why did a test fail. Not for proving flakiness (flake-triage), repairing locators (test-healing), or security findings (security-findings-report), or retries that hide a failure (flake-triage).",
       "useWhen": "a test fails, CI is red, someone asks why a test broke, or a trace or error must be explained, or someone asks why did a test fail.",
       "notFor": "proving flakiness (flake-triage), repairing locators (test-healing), or security findings (security-findings-report), or retries that hide a failure (flake-triage).",
@@ -713,7 +713,7 @@
     },
     {
       "folder": "fixture-authoring",
-      "path": ".agents/skills/fixture-authoring/SKILL.md",
+      "path": ".claude/skills/fixture-authoring/SKILL.md",
       "name": "fixture-authoring",
       "keys": [
         "name",
@@ -744,7 +744,7 @@
     },
     {
       "folder": "flake-quarantine",
-      "path": ".agents/skills/flake-quarantine/SKILL.md",
+      "path": ".claude/skills/flake-quarantine/SKILL.md",
       "name": "flake-quarantine",
       "keys": [
         "name",
@@ -775,7 +775,7 @@
     },
     {
       "folder": "flake-triage",
-      "path": ".agents/skills/flake-triage/SKILL.md",
+      "path": ".claude/skills/flake-triage/SKILL.md",
       "name": "flake-triage",
       "keys": [
         "name",
@@ -785,7 +785,7 @@
       "tier": "T2",
       "category": "Exec",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(npx playwright test:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(npx playwright test:*) Write(.claude/out/**)",
       "description": "Confirms and classifies a suspected flaky test by repeating only that test serially and then in parallel, comparing passing and failing traces, and naming the cause — timing, data, environment or product. Use whenever a test passes and fails without code changes, retries hide failures, or someone asks why a test is flaky, or a test is flaky, fails one run in ten, or retries hide a failure. Not for quarantining it (flake-quarantine), choosing tests for a change (test-impact-selection), or a single deterministic failure (failure-rca).",
       "useWhen": "a test passes and fails without code changes, retries hide failures, or someone asks why a test is flaky, or a test is flaky, fails one run in ten, or retries hide a failure.",
       "notFor": "quarantining it (flake-quarantine), choosing tests for a change (test-impact-selection), or a single deterministic failure (failure-rca).",
@@ -806,7 +806,7 @@
     },
     {
       "folder": "governance-lint",
-      "path": ".agents/skills/governance-lint/SKILL.md",
+      "path": ".claude/skills/governance-lint/SKILL.md",
       "name": "governance-lint",
       "keys": [
         "name",
@@ -837,7 +837,7 @@
     },
     {
       "folder": "injection-testing",
-      "path": ".agents/skills/injection-testing/SKILL.md",
+      "path": ".claude/skills/injection-testing/SKILL.md",
       "name": "injection-testing",
       "keys": [
         "name",
@@ -869,7 +869,7 @@
     },
     {
       "folder": "knowledge-provenance",
-      "path": ".agents/skills/knowledge-provenance/SKILL.md",
+      "path": ".claude/skills/knowledge-provenance/SKILL.md",
       "name": "knowledge-provenance",
       "keys": [
         "name",
@@ -900,7 +900,7 @@
     },
     {
       "folder": "knowledge-retrieval",
-      "path": ".agents/skills/knowledge-retrieval/SKILL.md",
+      "path": ".claude/skills/knowledge-retrieval/SKILL.md",
       "name": "knowledge-retrieval",
       "keys": [
         "name",
@@ -931,7 +931,7 @@
     },
     {
       "folder": "llm-eval-gating",
-      "path": ".agents/skills/llm-eval-gating/SKILL.md",
+      "path": ".claude/skills/llm-eval-gating/SKILL.md",
       "name": "llm-eval-gating",
       "keys": [
         "name",
@@ -962,7 +962,7 @@
     },
     {
       "folder": "locator-selection",
-      "path": ".agents/skills/locator-selection/SKILL.md",
+      "path": ".claude/skills/locator-selection/SKILL.md",
       "name": "locator-selection",
       "keys": [
         "name",
@@ -994,7 +994,7 @@
     },
     {
       "folder": "mcp-server-vetting",
-      "path": ".agents/skills/mcp-server-vetting/SKILL.md",
+      "path": ".claude/skills/mcp-server-vetting/SKILL.md",
       "name": "mcp-server-vetting",
       "keys": [
         "name",
@@ -1025,7 +1025,7 @@
     },
     {
       "folder": "merge-reports",
-      "path": ".agents/skills/merge-reports/SKILL.md",
+      "path": ".claude/skills/merge-reports/SKILL.md",
       "name": "merge-reports",
       "keys": [
         "name",
@@ -1058,7 +1058,7 @@
     },
     {
       "folder": "migration-analysis",
-      "path": ".agents/skills/migration-analysis/SKILL.md",
+      "path": ".claude/skills/migration-analysis/SKILL.md",
       "name": "migration-analysis",
       "keys": [
         "name",
@@ -1068,7 +1068,7 @@
       "tier": "T0",
       "category": "Exec",
       "default": "on",
-      "allowedTools": "Read Grep Glob Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Write(.claude/out/**)",
       "description": "Analyses a Cypress, Selenium, WebdriverIO, TestCafe or Robot Framework suite read-only and maps its commands, waits, selectors, data and CI to Playwright idioms with effort, risks and an order of migration. Use whenever a team plans to move another framework's tests to Playwright or asks how much a migration costs. Not for writing the migrated specs (spec-authoring), selector conversion details (locator-selection), or CI design (ci-workflow-authoring).",
       "useWhen": "a team plans to move another framework's tests to Playwright or asks how much a migration costs.",
       "notFor": "writing the migrated specs (spec-authoring), selector conversion details (locator-selection), or CI design (ci-workflow-authoring).",
@@ -1089,7 +1089,7 @@
     },
     {
       "folder": "mobile-emulation",
-      "path": ".agents/skills/mobile-emulation/SKILL.md",
+      "path": ".claude/skills/mobile-emulation/SKILL.md",
       "name": "mobile-emulation",
       "keys": [
         "name",
@@ -1119,7 +1119,7 @@
     },
     {
       "folder": "model-gateway-config",
-      "path": ".agents/skills/model-gateway-config/SKILL.md",
+      "path": ".claude/skills/model-gateway-config/SKILL.md",
       "name": "model-gateway-config",
       "keys": [
         "name",
@@ -1150,7 +1150,7 @@
     },
     {
       "folder": "module-authoring",
-      "path": ".agents/skills/module-authoring/SKILL.md",
+      "path": ".claude/skills/module-authoring/SKILL.md",
       "name": "module-authoring",
       "keys": [
         "name",
@@ -1181,7 +1181,7 @@
     },
     {
       "folder": "multi-role-auth",
-      "path": ".agents/skills/multi-role-auth/SKILL.md",
+      "path": ".claude/skills/multi-role-auth/SKILL.md",
       "name": "multi-role-auth",
       "keys": [
         "name",
@@ -1212,7 +1212,7 @@
     },
     {
       "folder": "network-mocking",
-      "path": ".agents/skills/network-mocking/SKILL.md",
+      "path": ".claude/skills/network-mocking/SKILL.md",
       "name": "network-mocking",
       "keys": [
         "name",
@@ -1243,7 +1243,7 @@
     },
     {
       "folder": "page-object-authoring",
-      "path": ".agents/skills/page-object-authoring/SKILL.md",
+      "path": ".claude/skills/page-object-authoring/SKILL.md",
       "name": "page-object-authoring",
       "keys": [
         "name",
@@ -1274,7 +1274,7 @@
     },
     {
       "folder": "performance-vitals",
-      "path": ".agents/skills/performance-vitals/SKILL.md",
+      "path": ".claude/skills/performance-vitals/SKILL.md",
       "name": "performance-vitals",
       "keys": [
         "name",
@@ -1304,7 +1304,7 @@
     },
     {
       "folder": "prompt-injection-defense",
-      "path": ".agents/skills/prompt-injection-defense/SKILL.md",
+      "path": ".claude/skills/prompt-injection-defense/SKILL.md",
       "name": "prompt-injection-defense",
       "keys": [
         "name",
@@ -1335,7 +1335,7 @@
     },
     {
       "folder": "release-signing-verify",
-      "path": ".agents/skills/release-signing-verify/SKILL.md",
+      "path": ".claude/skills/release-signing-verify/SKILL.md",
       "name": "release-signing-verify",
       "keys": [
         "name",
@@ -1366,7 +1366,7 @@
     },
     {
       "folder": "repo-discovery",
-      "path": ".agents/skills/repo-discovery/SKILL.md",
+      "path": ".claude/skills/repo-discovery/SKILL.md",
       "name": "repo-discovery",
       "keys": [
         "name",
@@ -1376,7 +1376,7 @@
       "tier": "T0",
       "category": "Meta",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(git ls-files:*) Bash(git log:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(git ls-files:*) Bash(git log:*) Write(.claude/out/**)",
       "description": "Read-only scan of the repository estate — product purpose, stack, Playwright layout, page objects, fixtures, CI, candidate environments, knowledge sources, auth flows and risk hot spots — written to a discovery report that cites the file behind every fact. Use whenever the pack is installed into an unfamiliar repository, qa.config.json is unconfigured, or someone asks what the test estate looks like. Not for writing the configuration (config-proposal), planning a framework migration (migration-analysis), or scanning for leaked secrets (secrets-scan), or filling in qa.config.json (config-proposal).",
       "useWhen": "the pack is installed into an unfamiliar repository, qa.config.json is unconfigured, or someone asks what the test estate looks like.",
       "notFor": "writing the configuration (config-proposal), planning a framework migration (migration-analysis), or scanning for leaked secrets (secrets-scan), or filling in qa.config.json (config-proposal).",
@@ -1397,7 +1397,7 @@
     },
     {
       "folder": "runner-image-pinning",
-      "path": ".agents/skills/runner-image-pinning/SKILL.md",
+      "path": ".claude/skills/runner-image-pinning/SKILL.md",
       "name": "runner-image-pinning",
       "keys": [
         "name",
@@ -1428,7 +1428,7 @@
     },
     {
       "folder": "sbom-generation",
-      "path": ".agents/skills/sbom-generation/SKILL.md",
+      "path": ".claude/skills/sbom-generation/SKILL.md",
       "name": "sbom-generation",
       "keys": [
         "name",
@@ -1438,7 +1438,7 @@
       "tier": "T1",
       "category": "Gov",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(npm sbom:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(npm sbom:*) Write(.claude/out/**)",
       "description": "Generates a CycloneDX software bill of materials for the pack and the test project with npm sbom, and attaches it to the release as a signed attestation. Use whenever a release is prepared, a customer or auditor asks for an SBOM, or dependencies change significantly. Not for pin audits (dependency-pin-audit), signature verification (release-signing-verify), or vulnerability triage.",
       "useWhen": "a release is prepared, a customer or auditor asks for an SBOM, or dependencies change significantly.",
       "notFor": "pin audits (dependency-pin-audit), signature verification (release-signing-verify), or vulnerability triage.",
@@ -1458,7 +1458,7 @@
     },
     {
       "folder": "scenario-design",
-      "path": ".agents/skills/scenario-design/SKILL.md",
+      "path": ".claude/skills/scenario-design/SKILL.md",
       "name": "scenario-design",
       "keys": [
         "name",
@@ -1468,7 +1468,7 @@
       "tier": "T0",
       "category": "Design",
       "default": "on",
-      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs scenarios:*) Bash(node rag/cli.mjs context:*) Write(.agents/out/**)",
+      "allowedTools": "Read Grep Glob Bash(node rag/cli.mjs scenarios:*) Bash(node rag/cli.mjs context:*) Write(.claude/out/**)",
       "description": "Designs test scenarios from a requirement and the project's history — acceptance criteria, existing tests, executions, defects and RCA — marks what is already covered, adds positive, negative, boundary, permission, state and regression scenarios, and cites a context id for each. Use whenever someone asks for test scenarios, test cases, a test plan or test ideas for a ticket, feature or acceptance criteria. Not for writing spec code (spec-authoring), reviewing a Playwright planner plan (agent-plan-intake), or security test design (security-scope-verify).",
       "useWhen": "someone asks for test scenarios, test cases, a test plan or test ideas for a ticket, feature or acceptance criteria.",
       "notFor": "writing spec code (spec-authoring), reviewing a Playwright planner plan (agent-plan-intake), or security test design (security-scope-verify).",
@@ -1489,7 +1489,7 @@
     },
     {
       "folder": "secret-provider-fixture",
-      "path": ".agents/skills/secret-provider-fixture/SKILL.md",
+      "path": ".claude/skills/secret-provider-fixture/SKILL.md",
       "name": "secret-provider-fixture",
       "keys": [
         "name",
@@ -1520,7 +1520,7 @@
     },
     {
       "folder": "secrets-scan",
-      "path": ".agents/skills/secrets-scan/SKILL.md",
+      "path": ".claude/skills/secrets-scan/SKILL.md",
       "name": "secrets-scan",
       "keys": [
         "name",
@@ -1551,7 +1551,7 @@
     },
     {
       "folder": "security-findings-report",
-      "path": ".agents/skills/security-findings-report/SKILL.md",
+      "path": ".claude/skills/security-findings-report/SKILL.md",
       "name": "security-findings-report",
       "keys": [
         "name",
@@ -1586,7 +1586,7 @@
     },
     {
       "folder": "security-headers-check",
-      "path": ".agents/skills/security-headers-check/SKILL.md",
+      "path": ".claude/skills/security-headers-check/SKILL.md",
       "name": "security-headers-check",
       "keys": [
         "name",
@@ -1618,7 +1618,7 @@
     },
     {
       "folder": "security-scope-verify",
-      "path": ".agents/skills/security-scope-verify/SKILL.md",
+      "path": ".claude/skills/security-scope-verify/SKILL.md",
       "name": "security-scope-verify",
       "keys": [
         "name",
@@ -1651,7 +1651,7 @@
     },
     {
       "folder": "sharding-config",
-      "path": ".agents/skills/sharding-config/SKILL.md",
+      "path": ".claude/skills/sharding-config/SKILL.md",
       "name": "sharding-config",
       "keys": [
         "name",
@@ -1682,7 +1682,7 @@
     },
     {
       "folder": "skill-authoring",
-      "path": ".agents/skills/skill-authoring/SKILL.md",
+      "path": ".claude/skills/skill-authoring/SKILL.md",
       "name": "skill-authoring",
       "keys": [
         "name",
@@ -1692,7 +1692,7 @@
       "tier": "T1",
       "category": "Meta",
       "default": "on",
-      "allowedTools": "Read Grep Glob Edit(.agents/skills/**) Write(.agents/skills/**) Edit(.agents/skills-catalog.json) Edit(tests/skills/trigger-cases.json) Edit(AGENTS.md) Bash(node scripts/check-skills.mjs:*) Bash(node scripts/skill-scan.mjs:*) Bash(node scripts/check-allowed-tools.mjs:*)",
+      "allowedTools": "Read Grep Glob Edit(.claude/skills/**) Write(.claude/skills/**) Edit(.claude/skills-catalog.json) Edit(tests/skills/trigger-cases.json) Edit(AGENTS.md) Bash(node scripts/check-skills.mjs:*) Bash(node scripts/skill-scan.mjs:*) Bash(node scripts/check-allowed-tools.mjs:*)",
       "description": "Writes one new narrow skill — kebab-case name, a description with Use whenever and Not for lines, least-privilege allowed-tools for its tier, the required sections and trigger cases — and registers it in the catalogue and the routing table. Use whenever a capability has no owning skill, a skill does two jobs and must be split, or a description must be reworded to stop routing overlap, or someone asks to create a new skill, split a skill or reword a skill description. Not for scanning skills for unsafe content (skill-scan), measuring routing accuracy (skill-routing-eval), or regenerating the guide (docs-generation).",
       "useWhen": "and",
       "notFor": "lines, least-privilege allowed-tools for its tier, the required sections and trigger cases — and registers it in the catalogue and the routing table. Use whenever a capability has no owning skill, a skill does two jobs and must be split, or a description must be reworded to stop routing overlap, or someone asks to create a new skill, split a skill or reword a skill description. Not for scanning skills for unsafe content (skill-scan), measuring routing accuracy (skill-routing-eval), or regenerating the guide (docs-generation).",
@@ -1713,7 +1713,7 @@
     },
     {
       "folder": "skill-router",
-      "path": ".agents/skills/skill-router/SKILL.md",
+      "path": ".claude/skills/skill-router/SKILL.md",
       "name": "skill-router",
       "keys": [
         "name",
@@ -1743,7 +1743,7 @@
     },
     {
       "folder": "skill-routing-eval",
-      "path": ".agents/skills/skill-routing-eval/SKILL.md",
+      "path": ".claude/skills/skill-routing-eval/SKILL.md",
       "name": "skill-routing-eval",
       "keys": [
         "name",
@@ -1774,7 +1774,7 @@
     },
     {
       "folder": "skill-scan",
-      "path": ".agents/skills/skill-scan/SKILL.md",
+      "path": ".claude/skills/skill-scan/SKILL.md",
       "name": "skill-scan",
       "keys": [
         "name",
@@ -1785,8 +1785,8 @@
       "category": "Meta",
       "default": "on",
       "allowedTools": "Read Grep Glob Bash(node scripts/skill-scan.mjs:*)",
-      "description": "Statically scans skills, AGENTS.md, CLAUDE.md, prompts and agent definitions for hidden or obfuscated characters, instruction overrides, remote-fetch or pipe-to-shell instructions, credential paths, unknown URLs and over-broad tools, and fails on any high finding. Use whenever files under .agents/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters. Not for routing accuracy (skill-routing-eval), secrets in application code (secrets-scan), or MCP tool descriptions (mcp-server-vetting).",
-      "useWhen": "files under .agents/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters.",
+      "description": "Statically scans skills, AGENTS.md, CLAUDE.md, prompts and agent definitions for hidden or obfuscated characters, instruction overrides, remote-fetch or pipe-to-shell instructions, credential paths, unknown URLs and over-broad tools, and fails on any high finding. Use whenever files under .claude/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters. Not for routing accuracy (skill-routing-eval), secrets in application code (secrets-scan), or MCP tool descriptions (mcp-server-vetting).",
+      "useWhen": "files under .claude/skills, prompts or .claude change, before a release is signed, or when a third-party skill is proposed for adoption, or someone asks to check prompts, skills or agent files for hidden characters.",
       "notFor": "routing accuracy (skill-routing-eval), secrets in application code (secrets-scan), or MCP tool descriptions (mcp-server-vetting).",
       "notForSkills": [
         "mcp-server-vetting",
@@ -1805,7 +1805,7 @@
     },
     {
       "folder": "spec-authoring",
-      "path": ".agents/skills/spec-authoring/SKILL.md",
+      "path": ".claude/skills/spec-authoring/SKILL.md",
       "name": "spec-authoring",
       "keys": [
         "name",
@@ -1837,7 +1837,7 @@
     },
     {
       "folder": "telemetry-instrumentation",
-      "path": ".agents/skills/telemetry-instrumentation/SKILL.md",
+      "path": ".claude/skills/telemetry-instrumentation/SKILL.md",
       "name": "telemetry-instrumentation",
       "keys": [
         "name",
@@ -1868,7 +1868,7 @@
     },
     {
       "folder": "test-healing",
-      "path": ".agents/skills/test-healing/SKILL.md",
+      "path": ".claude/skills/test-healing/SKILL.md",
       "name": "test-healing",
       "keys": [
         "name",
@@ -1899,7 +1899,7 @@
     },
     {
       "folder": "test-impact-selection",
-      "path": ".agents/skills/test-impact-selection/SKILL.md",
+      "path": ".claude/skills/test-impact-selection/SKILL.md",
       "name": "test-impact-selection",
       "keys": [
         "name",
@@ -1930,7 +1930,7 @@
     },
     {
       "folder": "visual-baseline-approval",
-      "path": ".agents/skills/visual-baseline-approval/SKILL.md",
+      "path": ".claude/skills/visual-baseline-approval/SKILL.md",
       "name": "visual-baseline-approval",
       "keys": [
         "name",
@@ -1962,7 +1962,7 @@
     },
     {
       "folder": "visual-snapshot-authoring",
-      "path": ".agents/skills/visual-snapshot-authoring/SKILL.md",
+      "path": ".claude/skills/visual-snapshot-authoring/SKILL.md",
       "name": "visual-snapshot-authoring",
       "keys": [
         "name",
@@ -1993,7 +1993,7 @@
     },
     {
       "folder": "waiver-registry",
-      "path": ".agents/skills/waiver-registry/SKILL.md",
+      "path": ".claude/skills/waiver-registry/SKILL.md",
       "name": "waiver-registry",
       "keys": [
         "name",

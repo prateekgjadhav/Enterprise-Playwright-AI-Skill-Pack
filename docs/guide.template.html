@@ -76,7 +76,7 @@
 <li><b>Evidence</b><span>hashes, ids, exit codes</span></li>
 </ol>
 
-<p>Each skill does one job and names the requests it is <em>not</em> for. <code>AGENTS.md</code> holds the workflow, the routing table and ten rules; it is read by Claude Code (through a one-line <code>CLAUDE.md</code>), Copilot, Cursor, Codex, Antigravity and any Agent Skills or MCP host. Project values live in <code>.agents/qa.config.json</code>, which ships empty on purpose: nothing can be targeted until an owner approves an environment.</p>
+<p>Each skill does one job and names the requests it is <em>not</em> for. <code>AGENTS.md</code> holds the workflow, the routing table and ten rules; it is read by Claude Code (through a one-line <code>CLAUDE.md</code>), Copilot, Cursor, Codex, Antigravity and any Agent Skills or MCP host. Project values live in <code>.claude/qa.config.json</code>, which ships empty on purpose: nothing can be targeted until an owner approves an environment.</p>
 <p>The design is <strong>vendor-neutral</strong>: model calls go to any OpenAI-compatible gateway, secrets come from CI, Vault, a cloud secret manager or 1Password through their own CLIs, telemetry goes to any OTLP backend, and the knowledge layer runs offline with no dependencies or against a shared vector store. Models are used only while authoring: tests run deterministically.</p>
 <p>This build: lock digest <code>{{DIGEST12}}</code> · {{FILE_COUNT}} locked files · {{SKILL_COUNT}} skills · {{CASE_COUNT}} routing cases · {{TEST_COUNT}} pack self-tests · no version numbers anywhere.</p>
 
@@ -132,8 +132,8 @@
 <p>Prompts that become part of the pack go into <code>prompts/</code> through a pull request with no owner, metadata or version fields; <code>check-prompts</code> and <code>skill-scan</code> check them, and the lock covers them.</p>
 
 <h2 id="config">Configuration</h2>
-<p>One file, <code>.agents/qa.config.json</code>, validated by one implementation (<code>scripts/lib/qa-config.mjs</code>) that Playwright, CI, the hooks and <code>validate-config</code> share. It fails closed: an empty project, no environments, a production-like or placeholder host, a review date in the past or more than 90 days ahead, a missing role reference or content capture switched on are all errors. The shipped file:</p>
-<pre class="skill"><code>{{INCLUDE:.agents/qa.config.json}}</code></pre>
+<p>One file, <code>.claude/qa.config.json</code>, validated by one implementation (<code>scripts/lib/qa-config.mjs</code>) that Playwright, CI, the hooks and <code>validate-config</code> share. It fails closed: an empty project, no environments, a production-like or placeholder host, a review date in the past or more than 90 days ahead, a missing role reference or content capture switched on are all errors. The shipped file:</p>
+<pre class="skill"><code>{{INCLUDE:.claude/qa.config.json}}</code></pre>
 <p>An environment entry (every field required): <code>{ "name": "staging", "owner": "team:shop-qa", "ticket": "QA-1", "dataClass": "internal", "hosts": ["staging.shop.example.test"], "reviewBy": "&lt;at most 90 days ahead&gt;" }</code>. Secret references are names your store understands (an environment variable for <code>ci-env</code>, a path for Vault, <code>op://…</code> for 1Password), never values.</p>
 
 <h2 id="orchestration">Orchestration</h2>
@@ -193,7 +193,7 @@
 <p>Agent hosts export their own <code>invoke_agent</code> and <code>chat</code> spans to the OTLP endpoint in managed settings; the knowledge layer exports <code>execute_tool</code> spans with <code>gen_ai.*</code> attributes plus <code>qa.skill.name</code>, <code>qa.skill.hash</code> and <code>qa.data_class</code>. Content is never captured. Because the GenAI conventions are still at Development status, the attribute set is pinned in <code>telemetry/span-contract.json</code> and contract-tested in CI.</p>
 
 <h2 id="catalogue">Skill catalogue</h2>
-<p>All {{SKILL_COUNT}} skills, generated from <code>.agents/skills-catalog.json</code> and each skill's frontmatter. Skill names open the file. Frontmatter holds only <code>name</code>, <code>description</code> and <code>allowed-tools</code>.</p>
+<p>All {{SKILL_COUNT}} skills, generated from <code>.claude/skills-catalog.json</code> and each skill's frontmatter. Skill names open the file. Frontmatter holds only <code>name</code>, <code>description</code> and <code>allowed-tools</code>.</p>
 <div class="filters" role="search" aria-label="Filter skills">
 <label>Search <input id="fText" type="search" placeholder="name or trigger"></label>
 <label>Tier <select id="fTier"><option value="">all</option><option>T0</option><option>T1</option><option>T2</option><option>T3</option><option>T4</option></select></label>

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// Build the skill manifest from every .agents/skills/<name>/SKILL.md. Node built-ins only. The output is
+// Build the skill manifest from every .claude/skills/<name>/SKILL.md. Node built-ins only. The output is
 // deterministic (no timestamps, no metadata), so the committed manifest changes only when a skill does.
 // Frontmatter holds name, description and allowed-tools only; tier, category and default live in the catalogue.
-// Usage: node scripts/build-skill-manifest.mjs [.agents/skills] > .agents/skills-manifest.json
+// Usage: node scripts/build-skill-manifest.mjs [.claude/skills] > .claude/skills-manifest.json
 import { readFileSync, readdirSync, existsSync, statSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-/** The catalogue, in one place: .agents/skills-catalog.json holds each skill's category, risk tier and default. */
-const CATALOG_PATH = process.env.QA_SKILLS_CATALOG ?? '.agents/skills-catalog.json';
+/** The catalogue, in one place: .claude/skills-catalog.json holds each skill's category, risk tier and default. */
+const CATALOG_PATH = process.env.QA_SKILLS_CATALOG ?? '.claude/skills-catalog.json';
 export const CATALOG = existsSync(CATALOG_PATH) ? JSON.parse(readFileSync(CATALOG_PATH, 'utf8')) : { tiers: {}, categories: {}, skills: {} };
 export const TIERS = CATALOG.tiers;
 export const CATEGORIES = CATALOG.categories;
@@ -85,7 +85,7 @@ export function readSkill(skillsDir, folder) {
   }
 }
 
-export function buildManifest(skillsDir = '.agents/skills') {
+export function buildManifest(skillsDir = '.claude/skills') {
   const folders = existsSync(skillsDir)
     ? readdirSync(skillsDir).filter((f) => !f.startsWith('.') && statSync(join(skillsDir, f)).isDirectory()).sort()
     : [];
@@ -105,7 +105,7 @@ const invokedDirectly = (() => {
   try { return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(process.argv[1] ?? ''); } catch { return false; }
 })();
 if (invokedDirectly) {
-  const dir = process.argv[2] ?? '.agents/skills';
+  const dir = process.argv[2] ?? '.claude/skills';
   if (!existsSync(dir)) { console.error(`build-skill-manifest: ${dir} not found`); process.exit(1); }
   process.stdout.write(JSON.stringify(buildManifest(dir), null, 2) + '\n');
 }

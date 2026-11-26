@@ -92,7 +92,7 @@ export async function ingest(cfg, { log = () => {} } = {}) {
   saveCache(cfg, Object.fromEntries(Object.entries(cache).filter(([k]) => live.has(k))));
   t.mark('embed');
 
-  const skills = readJson(join(root, '.agents/skills-manifest.json'), { skills: [] })?.skills ?? [];
+  const skills = readJson(join(root, '.claude/skills-manifest.json'), { skills: [] })?.skills ?? [];
   const graph = rag.graph.enabled ? buildGraph(docs, { skills }) : { nodes: {}, edges: [], adj: {} };
   t.mark('graph');
 

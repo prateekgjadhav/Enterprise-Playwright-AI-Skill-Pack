@@ -16,7 +16,7 @@ export const SECRET_PATH = new RegExp([
   String.raw`(^|[\s/'"=])\.(npmrc|netrc|pypirc|git-credentials)\b`,
   String.raw`(~|\$HOME|/home/[^/\s]+|/Users/[^/\s]+)/\.(ssh|aws|azure|kube|docker|gnupg)(/|$|\s)`,
   String.raw`\.config/gcloud\b`,
-  String.raw`\.agents/rag-index\b`,
+  String.raw`\.claude/rag-index\b`,
 ].join('|'), 'i');
 export const ENV_DUMP = /(^|[;&|]\s*)(printenv\b|env\s*($|[;&|>])|set\s*($|[;&|>])|export\s+-p\b|declare\s+-x\b)|\/proc\/[^\s]*\/environ|\bGet-ChildItem\s+env:/i;
 

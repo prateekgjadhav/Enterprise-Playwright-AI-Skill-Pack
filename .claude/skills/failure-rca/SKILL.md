@@ -7,7 +7,7 @@ description: >-
   trace or error must be explained, or someone asks why did a test fail. Not for proving flakiness
   (flake-triage), repairing locators (test-healing), or security findings (security-findings-report),
   or retries that hide a failure (flake-triage).
-allowed-tools: Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Write(.agents/out/**)
+allowed-tools: Read Grep Glob Bash(node rag/cli.mjs context:*) Bash(node rag/cli.mjs search:*) Write(.claude/out/**)
 ---
 
 # Failure root-cause analysis

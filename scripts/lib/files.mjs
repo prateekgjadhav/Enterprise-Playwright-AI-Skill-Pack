@@ -5,7 +5,7 @@ import { join, relative } from 'node:path';
 
 /** Never part of the pack: derived data, local state, dependencies, git internals. Mirrors .gitignore. */
 export const IGNORED = [/^\.git\//, /^node_modules\//, /(^|\/)node_modules\//, /^\.auth\//, /^\.env($|\.)/, /^secrets\//,
-  /^\.agents\/(rag-index|telemetry|out|discovery)\//, /^\.agents\/memory\/pending\//, /^\.agents\/skills-manifest\.json$/, /^evals\/results\//, /^reports\//,
+  /^\.claude\/(rag-index|telemetry|out|discovery)\//, /^\.claude\/memory\/pending\//, /^\.claude\/skills-manifest\.json$/, /^evals\/results\//, /^reports\//,
   /^test-results\//, /^blob-report\//, /^playwright-report\//, /^scrubbed\//, /^dist\//, /^\.skill-pack\.patch$/, /^\.claude\/skills\//,
   /(^|\/)__pycache__\//, /\.pyc$/, /(^|\/)\.DS_Store$/];
 /** Part of the repository but not of the lock: the lock itself, its signature and the guide generated from it. */

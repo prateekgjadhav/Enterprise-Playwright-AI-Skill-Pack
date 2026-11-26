@@ -6,11 +6,11 @@ node_modules/
 !.env.example
 secrets/
 # derived data: indexes, telemetry, results, scratch output, reports
-.agents/rag-index/
-.agents/telemetry/
-.agents/memory/pending/
-.agents/out/
-.agents/discovery/
+.claude/rag-index/
+.claude/telemetry/
+.claude/memory/pending/
+.claude/out/
+.claude/discovery/
 evals/results/
 reports/
 test-results/

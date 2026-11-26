@@ -7,7 +7,7 @@ description: >-
   someone asks for test scenarios, test cases, a test plan or test ideas for a ticket, feature or
   acceptance criteria. Not for writing spec code (spec-authoring), reviewing a Playwright planner plan
   (agent-plan-intake), or security test design (security-scope-verify).
-allowed-tools: Read Grep Glob Bash(node rag/cli.mjs scenarios:*) Bash(node rag/cli.mjs context:*) Write(.agents/out/**)
+allowed-tools: Read Grep Glob Bash(node rag/cli.mjs scenarios:*) Bash(node rag/cli.mjs context:*) Write(.claude/out/**)
 ---
 
 # Scenario design

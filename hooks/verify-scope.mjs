@@ -38,7 +38,7 @@ export async function verifyScope(root, scopeRel, { now = Date.now(), cosign = p
   if (!scope.ticket || !scope.authorized_by) errors.push('the scope needs a ticket and authorized_by');
   const { checkTarget } = await packModule('rag/lib/targets.mjs');
   let qa = {};
-  try { qa = JSON.parse(readFileSync(join(root, '.agents', 'qa.config.json'), 'utf8')); } catch { errors.push('cannot read .agents/qa.config.json'); }
+  try { qa = JSON.parse(readFileSync(join(root, '.claude', 'qa.config.json'), 'utf8')); } catch { errors.push('cannot read .claude/qa.config.json'); }
   for (const h of scope.targets ?? []) { const r = checkTarget(h, qa); if (!r.ok) errors.push(`target ${h}: ${r.reason}`); }
   return errors;
 }
@@ -54,7 +54,7 @@ export async function checkCommand(root, cmd, env = process.env) {
   }
   if (TARGETED.test(cmd)) {
     const { checkTarget } = await packModule('rag/lib/targets.mjs');
-    const qa = JSON.parse(readFileSync(join(root, '.agents', 'qa.config.json'), 'utf8'));
+    const qa = JSON.parse(readFileSync(join(root, '.claude', 'qa.config.json'), 'utf8'));
     for (const u of cmd.match(/https?:\/\/[^\s"'`)]+/g) ?? []) {
       const r = checkTarget(u, qa);
       if (!r.ok) return `target refused: ${r.reason}`;
